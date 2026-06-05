@@ -1,6 +1,9 @@
 # Contexte privé Claude Code — ne jamais committer
 .claude/
 
+# Repos clonés pour étude/fusion — repos git imbriqués, ne pas committer
+sources/
+
 # OS
 .DS_Store
 Thumbs.db
