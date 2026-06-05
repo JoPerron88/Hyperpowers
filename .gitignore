@@ -4,6 +4,12 @@
 # Repos clonés pour étude/fusion — repos git imbriqués, ne pas committer
 sources/
 
+# Mémoire de travail planning-with-files (transitoire, comme .claude/)
+/task_plan.md
+/findings.md
+/progress.md
+/.planning/
+
 # OS
 .DS_Store
 Thumbs.db

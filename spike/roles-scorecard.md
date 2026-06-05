@@ -71,4 +71,49 @@ Pour chaque rôle : interventions concrètes, valeur, coût en contexte, verdict
   latitude. Inhérent au design choisi.
 - **karpathy** : son apport observé (consolidation d'imports) est un cleanup ordinaire, pas une
   prise de sur-complexité spectaculaire. Valeur réelle mais modeste, à ne pas surinterpréter.
-- **pwf** : 1 rôle sur 3 non exercé (écart de protocole ci-dessus).
+- **pwf** : 1 rôle sur 3 non exercé (écart de protocole ci-dessus). **→ Repris en 3/3 ci-dessous.**
+
+---
+
+# Addendum — pwf réellement activé (reprise 3/3)
+
+Décision humaine au checkpoint : **refaire avec pwf actif**. pwf a piloté une vraie tâche
+multi-étapes (construction des fixtures du spike = Tasks 2.1 + 2.2, ~30 appels d'outils,
+5 phases). Voici le **constat earned** (remplace l'« hypothèse non testée » ci-dessus).
+
+## Constat 1 — l'automatisation pwf est INERTE dans cet install (mesuré, décisif)
+- `task_plan.md`/`findings.md`/`progress.md` créés via le script d'init de pwf ; plan rempli.
+- Malgré `task_plan.md` présent, **aucun hook pwf n'a émis de sortie** sur ~10 Write/Edit
+  (pas de relance « update progress.md », pas de ré-injection `===BEGIN PLAN DATA===`).
+- Preuve isolée : le **gate** du hook PostToolUse est satisfait (lancé à la main, il imprime
+  bien sa relance) → ce n'est pas le gate. Et pwf est **absent de `settings.json`** : ses hooks
+  ne vivent que dans le frontmatter (install **skill-only** via `npx skills add`, pas plugin).
+- **Conclusion** : le harnais n'exécute pas les hooks frontmatter de cette skill. Le **mécanisme
+  différenciateur** de pwf (ré-injection auto du plan dans l'attention, relances progress, 
+  check-complete au Stop) **n'opère pas** ici.
+
+## Constat 2 — sans les hooks, la méthodologie se dégrade d'elle-même (observé)
+- Ce qui reste exerçable = la **méthodologie manuelle** (tenir 3 .md à jour).
+- Observé sur moi-même : **je n'ai PAS tenu `progress.md` à jour** au fil des phases sans
+  relance. C'est exactement la preuve que **les hooks SONT la valeur** de pwf — la discipline
+  manuelle décroît sans le rappel automatique.
+
+## Constat 3 — sur une tâche déjà planifiée, pwf double le plan (observé)
+- `task_plan.md` a **dupliqué** le plan directeur existant (`docs/superpowers/plans/...`).
+  Le seul apport durable unique = `findings.md` captant la découverte « hooks inertes » — mais
+  c'est le bénéfice générique « écrire des notes », pas propre à pwf.
+
+## Verdict earned (pwf)
+- **Dans l'install actuel (skill-only) : pwf ne gagne PAS son coût.** Son automatisation est
+  morte ; il ne reste qu'un overhead manuel qui double le plan superpowers.
+- **Conditions pour qu'il le gagne** : (a) install **plugin** avec hooks vérifiés actifs au
+  démarrage, **ET** (b) une tâche **sans** plan statique pré-écrit (sinon tracking redondant).
+- **Recommandation Conductor** (maintenant un constat, plus une hypothèse) : soit réinstaller
+  pwf en plugin et **vérifier que les hooks tirent** (sinon il est inutile), soit le couper et
+  laisser (plan superpowers statique + un tracker mince) tenir la voix « chef de projet ».
+  La sonde confirme analyse #6 : **une seule voix de management suffit** pour une tâche planifiée.
+
+## Limite de cet addendum
+- Toujours n=1. Le cas testé (tâche AVEC plan préexistant) est le **pire cas** de pwf
+  (redondance maximale). Un test équitable de sa valeur exigerait un install plugin fonctionnel
+  **et** une tâche exploratoire non planifiée — non couvert ici.
