@@ -5,6 +5,7 @@ import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { homedir } from "node:os";
+import { execFileSync } from "node:child_process";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -52,4 +53,27 @@ test("toutes les skills superpowers citées dans standard.md existent", () => {
   for (const r of refs) {
     assert.ok(installed.has(r), `référence morte : superpowers:${r}`);
   }
+});
+
+test("plugin.json est un JSON valide avec name=hyperpowers", () => {
+  const m = JSON.parse(
+    readFileSync(join(root, ".claude-plugin/plugin.json"), "utf8"),
+  );
+  assert.equal(m.name, "hyperpowers");
+  assert.ok(m.description && m.description.length > 0);
+});
+
+test("hooks.json déclare un SessionStart non vide", () => {
+  const h = JSON.parse(readFileSync(join(root, "hooks/hooks.json"), "utf8"));
+  assert.ok(Array.isArray(h.hooks.SessionStart), "SessionStart manquant");
+  assert.ok(h.hooks.SessionStart.length > 0);
+});
+
+test("la commande du hook SessionStart émet les 4 principes", () => {
+  const h = JSON.parse(readFileSync(join(root, "hooks/hooks.json"), "utf8"));
+  const cmd = h.hooks.SessionStart[0].hooks[0].command;
+  const resolved = cmd.replaceAll("${CLAUDE_PLUGIN_ROOT}", root);
+  const out = execFileSync("sh", ["-c", resolved], { encoding: "utf8" });
+  assert.ok(out.includes("Réfléchir avant de coder"));
+  assert.ok(out.includes("Piloté par objectif"));
 });
