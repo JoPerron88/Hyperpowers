@@ -59,6 +59,6 @@ Pour chaque tâche `tasks/NN-xxx/` et chaque condition :
 ## État
 
 - [x] Harnais + tâche-exemple `01-surgical-change` (cette session)
-- [ ] Tâches 02–06 (à répliquer après réaction)
-- [ ] Exécution des 2×N runs + tableau de résultats
-- [ ] Lecture vs seuil → vert/rouge
+- [x] Tâches 02–06 (détecteurs validés 8/8)
+- [x] Exécution des 2×6 runs + tableau de résultats (`RESULTS.md`)
+- [x] Lecture vs seuil → **🔴 rouge** (voir `RESULTS.md`)
