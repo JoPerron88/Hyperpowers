@@ -2,6 +2,17 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## État courant — reprise (2026-06-05)
+
+**Phase : exécution** (la conception est faite). Branche git : `spike`.
+- Plan directeur : `docs/superpowers/plans/2026-06-05-sondes-roles-et-memoire.md`
+- Journal détaillé : `.claude/JOURNAL.md` · Analyses : `docs/analyse-*.md`
+- **Reprendre à : Phase 1 — Sonde des rôles** = construire `spike/score.mjs` (TDD) avec
+  superpowers + planning-with-files + karpathy actifs, et remplir `spike/roles-scorecard.md`.
+- Mode : subagent-driven (Sonde 1 plutôt inline pour observer les outils en live ; Sonde 2 en subagents).
+- Décidé : architecture « Conductor » ; étoile polaire = **qualité du code** ; mempalace **différé**
+  (testé en oracle par la Sonde 2 du spike).
+
 ## Projet
 
 **Hyperpowers** est un skill/plugin pour Claude Code. Son objectif distinctif :
