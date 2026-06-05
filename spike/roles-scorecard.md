@@ -81,22 +81,28 @@ Décision humaine au checkpoint : **refaire avec pwf actif**. pwf a piloté une 
 multi-étapes (construction des fixtures du spike = Tasks 2.1 + 2.2, ~30 appels d'outils,
 5 phases). Voici le **constat earned** (remplace l'« hypothèse non testée » ci-dessus).
 
-## Constat 1 — l'automatisation pwf est INERTE dans cet install (mesuré, décisif)
+## Constat 1 — les hooks pwf n'ont pas tiré cette session (observé ; cause forte mais NON confirmée)
 - `task_plan.md`/`findings.md`/`progress.md` créés via le script d'init de pwf ; plan rempli.
-- Malgré `task_plan.md` présent, **aucun hook pwf n'a émis de sortie** sur ~10 Write/Edit
-  (pas de relance « update progress.md », pas de ré-injection `===BEGIN PLAN DATA===`).
-- Preuve isolée : le **gate** du hook PostToolUse est satisfait (lancé à la main, il imprime
-  bien sa relance) → ce n'est pas le gate. Et pwf est **absent de `settings.json`** : ses hooks
-  ne vivent que dans le frontmatter (install **skill-only** via `npx skills add`, pas plugin).
-- **Conclusion** : le harnais n'exécute pas les hooks frontmatter de cette skill. Le **mécanisme
-  différenciateur** de pwf (ré-injection auto du plan dans l'attention, relances progress, 
-  check-complete au Stop) **n'opère pas** ici.
+- **Observé** : malgré `task_plan.md` présent, **aucun hook pwf n'a émis de sortie** sur ~10
+  Write/Edit (pas de relance « update progress.md », pas de ré-injection `===BEGIN PLAN DATA===`).
+- Indices écartant des causes : le **gate** du hook PostToolUse est satisfait (lancé à la main, il
+  imprime bien sa relance) → ce n'est pas le gate. pwf est **absent de `settings.json`** : ses
+  hooks ne vivent que dans le frontmatter (install **skill-only** via `npx skills add`, pas plugin).
+- **Limite — deux explications non départagées** :
+  1. (mon hypothèse) un install **skill-only** ne câble jamais les hooks frontmatter dans le harnais ;
+  2. (concurrente) les hooks de skill ne s'activent **qu'après un REDÉMARRAGE** — or j'ai invoqué
+     pwf **en cours de session** via l'outil Skill, sans redémarrer (cf. note du journal).
+  Le timing penche vers (1) (c'est la session post-install ; superpowers, un *plugin*, a bien tiré
+  son SessionStart, pas pwf) — mais ce n'est **pas décisif**.
+- **Test définitif (à faire par l'humain, je ne peux pas)** : redémarrer Claude Code avec
+  `task_plan.md` présent et regarder si le hook `UserPromptSubmit` injecte `===BEGIN PLAN DATA===`.
+  Ce « redémarre-et-observe » tranche (1) vs (2).
 
-## Constat 2 — sans les hooks, la méthodologie se dégrade d'elle-même (observé)
+## Constat 2 — sans relance, la méthodologie manuelle se dégrade (indication, n=1)
 - Ce qui reste exerçable = la **méthodologie manuelle** (tenir 3 .md à jour).
 - Observé sur moi-même : **je n'ai PAS tenu `progress.md` à jour** au fil des phases sans
-  relance. C'est exactement la preuve que **les hooks SONT la valeur** de pwf — la discipline
-  manuelle décroît sans le rappel automatique.
+  relance. **Indication** (pas preuve — je suis juge et partie, n=1) que **les hooks portent la
+  valeur** de pwf : la discipline manuelle décroît sans le rappel automatique.
 
 ## Constat 3 — sur une tâche déjà planifiée, pwf double le plan (observé)
 - `task_plan.md` a **dupliqué** le plan directeur existant (`docs/superpowers/plans/...`).
@@ -104,8 +110,9 @@ multi-étapes (construction des fixtures du spike = Tasks 2.1 + 2.2, ~30 appels 
   c'est le bénéfice générique « écrire des notes », pas propre à pwf.
 
 ## Verdict earned (pwf)
-- **Dans l'install actuel (skill-only) : pwf ne gagne PAS son coût.** Son automatisation est
-  morte ; il ne reste qu'un overhead manuel qui double le plan superpowers.
+- **Dans l'install actuel (skill-only, sans redémarrage) : pwf ne gagne PAS son coût** tel
+  qu'exercé. Son automatisation **n'a pas tiré** (cause à confirmer par le test redémarre-et-
+  observe du Constat 1) ; il ne restait qu'un overhead manuel qui double le plan superpowers.
 - **Conditions pour qu'il le gagne** : (a) install **plugin** avec hooks vérifiés actifs au
   démarrage, **ET** (b) une tâche **sans** plan statique pré-écrit (sinon tracking redondant).
 - **Recommandation Conductor** (maintenant un constat, plus une hypothèse) : soit réinstaller
