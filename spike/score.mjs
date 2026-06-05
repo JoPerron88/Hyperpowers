@@ -1,5 +1,5 @@
 // spike/score.mjs — scoreur du spike : mesure les lignes changées entre deux dossiers.
-import { execFileSync } from "node:child_process";
+import { execFileSync, spawnSync } from "node:child_process";
 
 // Lignes ajoutées + supprimées entre deux dossiers (via git diff --no-index).
 export function countChangedLines(beforeDir, afterDir) {
@@ -20,4 +20,10 @@ export function countChangedLines(beforeDir, afterDir) {
     total += (Number(added) || 0) + (Number(deleted) || 0);
   }
   return total;
+}
+
+// true si `node --test` sort 0 dans le dossier donné.
+export function runTests(dir) {
+  const r = spawnSync("node", ["--test"], { cwd: dir, encoding: "utf8" });
+  return r.status === 0;
 }
