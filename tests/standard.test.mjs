@@ -55,12 +55,15 @@ test("toutes les skills superpowers citées dans standard.md existent", () => {
   }
 });
 
-test("plugin.json est un JSON valide avec name=hyperpowers", () => {
+test("plugin.json est un JSON valide avec name=hyperpowers et author objet", () => {
   const m = JSON.parse(
     readFileSync(join(root, ".claude-plugin/plugin.json"), "utf8"),
   );
   assert.equal(m.name, "hyperpowers");
   assert.ok(m.description && m.description.length > 0);
+  // Claude Code exige author = objet { name }, pas une chaîne (sinon install rejetée).
+  assert.equal(typeof m.author, "object");
+  assert.ok(m.author.name && m.author.name.length > 0);
 });
 
 test("hooks.json déclare un SessionStart non vide", () => {
