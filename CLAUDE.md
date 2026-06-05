@@ -35,13 +35,14 @@ un `.gitignore`. Les décisions ci-dessous ne sont pas encore prises.
 
 ### À définir (à mettre à jour dès que tranché)
 
-- **Langage** : non décidé.
-- **Type de livrable** : plugin complet, skill unique, ou marketplace de skills — non décidé.
-- **Outillage** : gestionnaire de paquets, framework de tests, linter, build — non décidé.
+- **Langage** : Node.js (ESM, `node:test`, zéro-dépendance).
+- **Type de livrable** : plugin Claude Code (le dépôt EST le plugin).
+- **Outillage** : npm pour les scripts ; pas de linter/build pour l'instant.
 
-Quand une de ces décisions est prise, mettre à jour la section correspondante
-**et** ajouter les commandes concrètes (build / lint / test, dont comment lancer
-un seul test) dans une section « Commandes ».
+## Commandes
+
+- Tests : `npm test` (= `node --test`).
+- Un seul fichier de test : `node --test tests/standard.test.mjs`.
 
 ## Conventions Claude Code (référence)
 
