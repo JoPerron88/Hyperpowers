@@ -7,12 +7,17 @@ les skills superpowers qui les réalisent — au lieu de doublonner leur philoso
 
 ## Installation
 
-1. Installer ce dépôt comme plugin via `/plugin` (marketplace local ou chemin du dépôt).
-2. **Désinstaller le plugin karpathy autonome** (`andrej-karpathy-skills`) via `/plugin` :
+Ce dépôt est à la fois un **marketplace** (`.claude-plugin/marketplace.json`) et le **plugin**
+qu'il publie (`source: "./"`). Dans Claude Code :
+
+1. Ajouter le marketplace : `/plugin marketplace add JoPerron88/Hyperpowers`
+   (ou, en local, `/plugin marketplace add /home/jonathanp/Documents/Hyperpowers`).
+2. Installer le plugin : `/plugin install hyperpowers@hyperpowers`.
+3. **Désinstaller le plugin karpathy autonome** (`andrej-karpathy-skills`) via `/plugin` :
    son contenu vit désormais dans `standard.md` (source unique). Sans ça, doublon temporaire.
-3. Garder **superpowers** installé tel quel (non modifié).
-4. Redémarrer Claude Code, puis vérifier que le standard apparaît dans le bloc de contexte
-   SessionStart.
+4. Garder **superpowers** installé tel quel (non modifié).
+5. **Redémarrer** Claude Code, puis vérifier que le standard apparaît dans le bloc de contexte
+   SessionStart (les 4 principes).
 
 ## Tester
 
@@ -20,8 +25,9 @@ les skills superpowers qui les réalisent — au lieu de doublonner leur philoso
 npm test
 ```
 
-Valide : `standard.md` présent et complet, références superpowers vivantes, manifeste JSON
-valide, et que le hook émet bien le standard.
+Valide : `standard.md` présent et complet, références superpowers vivantes, manifestes
+(`plugin.json`, `marketplace.json`) valides, et que le hook émet bien le contrat
+`hookSpecificOutput.additionalContext` de Claude Code contenant les 4 principes.
 
 ## Portée
 

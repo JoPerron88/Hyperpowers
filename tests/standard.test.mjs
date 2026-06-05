@@ -69,17 +69,31 @@ test("hooks.json déclare un SessionStart non vide", () => {
   assert.ok(h.hooks.SessionStart.length > 0);
 });
 
-test("la commande du hook SessionStart émet les 4 principes", () => {
+test("la commande du hook SessionStart émet le contrat additionalContext de Claude Code", () => {
   const h = JSON.parse(readFileSync(join(root, "hooks/hooks.json"), "utf8"));
   const cmd = h.hooks.SessionStart[0].hooks[0].command;
   const resolved = cmd.replaceAll("${CLAUDE_PLUGIN_ROOT}", root);
   const out = execFileSync("sh", ["-c", resolved], { encoding: "utf8" });
+  // Claude Code attend du JSON : hookSpecificOutput.additionalContext (pas du stdout brut).
+  const parsed = JSON.parse(out);
+  assert.equal(parsed.hookSpecificOutput.hookEventName, "SessionStart");
+  const ctx = parsed.hookSpecificOutput.additionalContext;
   for (const titre of [
     "Réfléchir avant de coder",
     "Simplicité d'abord",
     "Changements chirurgicaux",
     "Piloté par objectif",
   ]) {
-    assert.ok(out.includes(titre), `principe absent de la sortie du hook : ${titre}`);
+    assert.ok(ctx.includes(titre), `principe absent du contexte injecté : ${titre}`);
   }
+});
+
+test("marketplace.json déclare le plugin hyperpowers à la racine", () => {
+  const mk = JSON.parse(
+    readFileSync(join(root, ".claude-plugin/marketplace.json"), "utf8"),
+  );
+  assert.ok(Array.isArray(mk.plugins) && mk.plugins.length >= 1);
+  const p = mk.plugins.find((x) => x.name === "hyperpowers");
+  assert.ok(p, "plugin hyperpowers absent du marketplace");
+  assert.equal(p.source, "./");
 });
