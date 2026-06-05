@@ -74,6 +74,12 @@ test("la commande du hook SessionStart émet les 4 principes", () => {
   const cmd = h.hooks.SessionStart[0].hooks[0].command;
   const resolved = cmd.replaceAll("${CLAUDE_PLUGIN_ROOT}", root);
   const out = execFileSync("sh", ["-c", resolved], { encoding: "utf8" });
-  assert.ok(out.includes("Réfléchir avant de coder"));
-  assert.ok(out.includes("Piloté par objectif"));
+  for (const titre of [
+    "Réfléchir avant de coder",
+    "Simplicité d'abord",
+    "Changements chirurgicaux",
+    "Piloté par objectif",
+  ]) {
+    assert.ok(out.includes(titre), `principe absent de la sortie du hook : ${titre}`);
+  }
 });
