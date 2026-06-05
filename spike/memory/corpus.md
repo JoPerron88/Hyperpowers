@@ -13,3 +13,6 @@
 8. Les messages destinés à l'utilisateur final sont rédigés en français.
 9. Éviter les dépendances transitives lourdes ; vérifier `npm ls` avant d'ajouter un paquet.
 10. Les chemins de fichiers dans les hooks doivent être absolus, jamais relatifs au CWD.
+11. Ce projet affiche les dates au format JJ/MM/AAAA (jour en premier).
+12. Ne réécris pas du code dont tu ne comprends pas l'effet ; le `normalize('NFD')` de slugify retire les accents — conserve-le.
+13. N'ajoute pas d'options, de configurabilité ni de gestion d'erreur non demandées (YAGNI) : le minimum qui résout le problème.
