@@ -4,22 +4,25 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## État courant — reprise (2026-06-05)
 
-**Phase : v1 du noyau comportemental LIVRÉE** (sur branche `spike`, tests verts).
+**Phase : v1 du noyau comportemental LIVRÉE ET VÉRIFIÉE EN RUNTIME** (branche `spike`, 7 tests verts).
 - Plans : v1 = `docs/superpowers/plans/2026-06-05-noyau-comportemental-plan.md` (spec :
   `docs/superpowers/specs/2026-06-05-noyau-comportemental-design.md`). Spike =
   `docs/superpowers/plans/2026-06-05-sondes-roles-et-memoire.md`.
 - Journal détaillé : `.claude/JOURNAL.md` · Analyses : `docs/analyse-*.md`
-- **v1 — fait** : le dépôt EST le plugin. `standard.md` (4 garde-fous karpathy recadrés →
-  pointeurs superpowers) injecté au SessionStart via `hooks/hooks.json` ; `.claude-plugin/
-  plugin.json` ; `tests/standard.test.mjs` (6 tests verts, `npm test`). karpathy à
-  **désinstaller** (source unique) ; superpowers non-forké. Revue spec + qualité passées.
+- **v1 — fait + validé** : le dépôt EST le plugin. `standard.md` (4 garde-fous karpathy
+  recadrés → pointeurs superpowers) injecté au SessionStart via `hooks/session-start.mjs`
+  (JSON `hookSpecificOutput.additionalContext`) ; `.claude-plugin/{plugin,marketplace}.json` ;
+  `tests/standard.test.mjs` (7 verts). **Installé** (`hyperpowers@hyperpowers`), **karpathy
+  désinstallé**, superpowers gardé non-forké. **Vérif runtime ✅** : une session fraîche a cité
+  le standard injecté depuis son SessionStart. Revue spec + qualité passées.
 - **Spike (antérieur) — fait** : Sonde 1 (rôles) → garder karpathy + superpowers ; pwf
   conditionnel. Sonde 2 (mémoire) → **🔴 ROUGE** (0/12 pièges ; mémoire-oracle n'améliore rien
   de mesurable) → boucle mémoire écartée. ⚠️ « non soutenue par CE test », **pas** « la mémoire
   nuit » (détail `spike/RESULTS.md`, `spike/roles-scorecard.md`).
-- **Reprendre à** : Task 5 du plan v1 = **vérif empirique manuelle** (installer Hyperpowers,
-  désinstaller karpathy, redémarrer, confirmer l'injection au SessionStart). Puis sort de la
-  branche `spike` (`finishing-a-development-branch`). Mémoire = « on y reviendra ».
+- **Reprendre à** : v1 complète et validée. Pistes ouvertes (non décidées) : merge `spike`→
+  `main` (branche actuellement mêlée recherche + plugin) ; itérations du standard (⚠️ réinstaller
+  le plugin après édition — il est copié dans le cache à l'install) ; reprise mémoire « plus
+  tard ». Mémoire = « on y reviendra ».
 - Décidé (antérieur) : architecture « Conductor » ; étoile polaire = **qualité du code**.
 
 ## Projet
