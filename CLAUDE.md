@@ -41,7 +41,8 @@ un `.gitignore`. Les décisions ci-dessous ne sont pas encore prises.
 
 ## Commandes
 
-- Tests : `npm test` (= `node --test`).
+- Tests : `npm test` (= `node --test 'tests/**/*.test.mjs'`, scopé à `tests/` car le dépôt
+  contient aussi des `*.test.mjs` dans `spike/` et `sources/` qu'il ne faut pas lancer ici).
 - Un seul fichier de test : `node --test tests/standard.test.mjs`.
 
 ## Conventions Claude Code (référence)
