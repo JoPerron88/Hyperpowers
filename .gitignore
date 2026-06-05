@@ -1,0 +1,6 @@
+# Contexte privé Claude Code — ne jamais committer
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db
