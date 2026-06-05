@@ -19,18 +19,24 @@ Pour chaque rôle : interventions concrètes, valeur, coût en contexte, verdict
   échecs). Le bootstrap reste un coût fixe à amortir sur des tâches plus grosses.
 
 ## planning-with-files (Chef de projet)
-- **Interventions** : **aucune**. Skill non déclenchée — le plan directeur
-  (`docs/superpowers/plans/...`) jouait déjà le rôle de tracker « chef de projet ». Choix
-  délibéré de ne pas sur-outiller le suivi (karpathy : simplicité) face aux relances
-  répétées du harnais (« use TaskCreate »). task_plan.md / findings.md / progress.md
-  auraient dupliqué le plan existant.
-- **Valeur** : nulle observée sur cette tâche (non déclenchée ; aurait fait doublon).
-- **Coût contexte** : ses hooks sont **globaux** (se déclenchent dans toutes les sessions) ;
-  injection potentielle par appel d'outil. Sur cette tâche : pas de manifestation visible
-  mais coût latent permanent.
-- **Verdict** : **bruit net** pour une tâche courte avec plan pré-existant. Le fichier de plan
-  remplit déjà la voix « chef de projet ». Redondant ici → candidat à couper sur tâches
-  courtes (cf. analyse #6 : consolidation des voix de management).
+> ⚠️ **Écart de protocole** : le plan exigeait les 3 rôles *actifs*. pwf n'a **pas été activé**
+> (je n'ai ni invoqué la skill ni créé `task_plan.md`/`.planning/`). J'ai donc roulé **2 rôles
+> sur 3**. Ci-dessous : ce qui est *mesuré* vs ce qui reste *non testé* — pas de verdict garde/coupe.
+
+- **Activation** : non. Skill non invoquée ; aucun fichier de plan créé. Choix initial de ne pas
+  sur-outiller le suivi (karpathy : simplicité) face aux relances du harnais (« use TaskCreate » —
+  qui est le task-tool du harnais, **pas** pwf).
+- **Coût contexte — MESURÉ** : les hooks pwf sont globaux et **ont bien fait feu** cette session,
+  mais **tous gated** sur l'existence d'un `task_plan.md`/`.planning/` (sinon `exit 0` silencieux).
+  Vérifié : ni `task_plan.md` ni `.planning/` ne sont présents dans le repo → **chaque hook a
+  no-op, zéro sortie de contexte**. Coût quasi nul cette session. (Correction : ma 1re version
+  affirmait « injection par appel d'outil » — c'est **faux**, le `PreToolUse` n'injecte que si un
+  fichier de plan existe.)
+- **Valeur — NON TESTÉE** : pwf jamais activé → **aucune observation** de l'aide qu'aurait apportée
+  son tracking. Je ne peux ni confirmer ni infirmer sa valeur ici.
+- **Hypothèse (non un constat)** : avec un plan directeur statique déjà présent, le tracker pwf
+  *semble* redondant sur la voix « chef de projet ». À **tester en l'activant réellement** (créer
+  `task_plan.md`, le laisser piloter) avant tout verdict garde/coupe — cf. analyse #6.
 
 ## karpathy (Reviewer)
 - **Interventions** : oui, concrètes. A informé deux décisions chirurgicales — consolider les
@@ -53,7 +59,16 @@ Pour chaque rôle : interventions concrètes, valeur, coût en contexte, verdict
   - **karpathy (reviewer)** = meilleur rapport coût/valeur (coût quasi nul, cleanups concrets) → garder.
   - **superpowers (TDD + process)** = mérite sa place (a attrapé les échecs pour la bonne raison),
     mais bootstrap = coût fixe lourd → garder, amortir sur des tâches plus grosses.
-  - **planning-with-files** = non déclenchée, aurait fait doublon avec le plan → **bruit net sur
-    tâche courte**. À couper / à ne déclencher que sur tâches longues sans plan pré-écrit.
-  - Recommandation pour le Conductor : la voix « chef de projet » est saturée par le couple
-    (plan statique + tracker). Une seule suffit selon la longueur de la tâche.
+  - **planning-with-files** = **non activé → pas de verdict**. Mesuré : coût quasi nul (hooks
+    no-op faute de `task_plan.md`). Non testé : sa valeur. Sonde n=2/3 rôles. À réactiver
+    réellement pour trancher (hypothèse : redondant avec le plan statique sur tâche courte).
+  - Recommandation pour le Conductor : **provisoire**, conditionnée à une reprise de la sonde
+    pwf. L'hypothèse — la voix « chef de projet » saturée par (plan statique + tracker) — n'est
+    pas encore un constat.
+
+## Limites de la sonde (à garder en tête)
+- **n=1, tâche pré-scriptée** : le plan dictait le code ; le « tech-lead/reviewer » avait peu de
+  latitude. Inhérent au design choisi.
+- **karpathy** : son apport observé (consolidation d'imports) est un cleanup ordinaire, pas une
+  prise de sur-complexité spectaculaire. Valeur réelle mais modeste, à ne pas surinterpréter.
+- **pwf** : 1 rôle sur 3 non exercé (écart de protocole ci-dessus).
