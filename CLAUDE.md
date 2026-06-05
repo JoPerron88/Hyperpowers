@@ -7,9 +7,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **Phase : exécution** (la conception est faite). Branche git : `spike`.
 - Plan directeur : `docs/superpowers/plans/2026-06-05-sondes-roles-et-memoire.md`
 - Journal détaillé : `.claude/JOURNAL.md` · Analyses : `docs/analyse-*.md`
-- **Reprendre à : Phase 1 — Sonde des rôles** = construire `spike/score.mjs` (TDD) avec
-  superpowers + planning-with-files + karpathy actifs, et remplir `spike/roles-scorecard.md`.
-- Mode : subagent-driven (Sonde 1 plutôt inline pour observer les outils en live ; Sonde 2 en subagents).
+- **Fait** : Sonde 1 (scoreur `spike/score.mjs` en TDD + `roles-scorecard.md` rempli, repris en
+  3/3 avec pwf réellement actif). Fixtures de la Sonde 2 construites (corpus 11–13, clé, tâches
+  02–06 avec détecteurs validés 8/8). Voir `spike/roles-scorecard.md` (addendum pwf).
+- **Reprendre à : Task 2.3 du plan — dispatch des 12 subagents** (2×6, cold/memory). ⚠️ exige le
+  **feu vert humain explicite** avant de lancer. Puis Task 2.4 : `spike/RESULTS.md` + verdict vs seuil.
+- **À résoudre par l'humain** (test redémarre-et-observe) : les hooks pwf n'ont pas tiré cette
+  session — déterminer si c'est l'install skill-only ou l'absence de redémarrage (détail dans
+  l'addendum de `roles-scorecard.md`).
+- Mode : subagent-driven (Sonde 1 inline pour observer les outils ; Sonde 2 en subagents).
 - Décidé : architecture « Conductor » ; étoile polaire = **qualité du code** ; mempalace **différé**
   (testé en oracle par la Sonde 2 du spike).
 
