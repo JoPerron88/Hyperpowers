@@ -56,6 +56,21 @@ pour cet objectif). L'hypothèse centrale d'Hyperpowers (« se souvenir amélior
   **maintenant**. Réponse : non.
 - n petit (1 run par cellule), pas de « itérations jusqu'au vert » (proportionnalité, analyse #5).
 
+### Confounder reconnu : les prompts à froid n'étaient pas « mémoire-naïfs »
+De la guidance s'est glissée dans les specs/le préambule des deux bras :
+- **Préambule commun** : « Effectue exactement la tâche suivante, **rien de plus** » ≈ note #13
+  (YAGNI) — remise au bras témoin sur **toutes** les tâches (affaiblit surtout le piège 06).
+- **02 froid** : « formatée selon **la convention du projet** » ≈ note #11 (format de date).
+- **04 froid** : la spec énonce le comportement async correct (« en séquence… ne résout qu'à la
+  fin ») → piège quasi inatteignable.
+Conséquence : « le modèle n'a pas besoin de cette mémoire » est **trop fort**. Le constat exact,
+et **plus robuste**, est : *un énoncé de tâche correct + un générique « fais exactement ça, rien
+de plus » portent déjà ce que la note mémoire apporterait → un système de mémoire dédié n'ajoute
+rien **par-dessus un prompting décent**.* Cela défend le rouge contre l'objection « ton témoin
+n'était que Claude capable ». Ce n'est **pas** une raison de re-jouer (la pré-enregistration rend
+ce rouge décisif ; re-jouer avec des pièges plus durs = la boucle de biais de confirmation que
+l'analyse #5 a déjà fermée).
+
 ## Méthode / reproductibilité
 - Scoreur : `spike/score.mjs` (`countChangedLines`, `runTests`), construit en TDD (Sonde 1).
 - Scoring des runs : `spike/score-runs.mjs` (lignes + verify caché pour 02-05).
