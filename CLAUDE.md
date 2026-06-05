@@ -5,8 +5,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## État courant — reprise (2026-06-05)
 
 **Phase : v1 LIVRÉE, VÉRIFIÉE EN RUNTIME, ET MERGÉE SUR `main`** (7 tests verts).
-Branche canonique = `main` (merge `--no-ff` de `spike`, commit `b45d599`). `spike` conservée
-comme archive. Les deux sont sur `origin` (github.com/JoPerron88/Hyperpowers).
+Branche unique = `main` (le merge `--no-ff` de `spike` est le commit `b45d599` ; `spike` a été
+supprimée après merge, son historique vit dans `main`). Sur `origin` (github.com/JoPerron88/Hyperpowers).
 - Plans : v1 = `docs/superpowers/plans/2026-06-05-noyau-comportemental-plan.md` (spec :
   `docs/superpowers/specs/2026-06-05-noyau-comportemental-design.md`). Spike =
   `docs/superpowers/plans/2026-06-05-sondes-roles-et-memoire.md`.
