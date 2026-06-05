@@ -4,7 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## État courant — reprise (2026-06-05)
 
-**Phase : v1 du noyau comportemental LIVRÉE ET VÉRIFIÉE EN RUNTIME** (branche `spike`, 7 tests verts).
+**Phase : v1 LIVRÉE, VÉRIFIÉE EN RUNTIME, ET MERGÉE SUR `main`** (7 tests verts).
+Branche canonique = `main` (merge `--no-ff` de `spike`, commit `b45d599`). `spike` conservée
+comme archive. Les deux sont sur `origin` (github.com/JoPerron88/Hyperpowers).
 - Plans : v1 = `docs/superpowers/plans/2026-06-05-noyau-comportemental-plan.md` (spec :
   `docs/superpowers/specs/2026-06-05-noyau-comportemental-design.md`). Spike =
   `docs/superpowers/plans/2026-06-05-sondes-roles-et-memoire.md`.
@@ -19,11 +21,29 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   conditionnel. Sonde 2 (mémoire) → **🔴 ROUGE** (0/12 pièges ; mémoire-oracle n'améliore rien
   de mesurable) → boucle mémoire écartée. ⚠️ « non soutenue par CE test », **pas** « la mémoire
   nuit » (détail `spike/RESULTS.md`, `spike/roles-scorecard.md`).
-- **Reprendre à** : v1 complète et validée. Pistes ouvertes (non décidées) : merge `spike`→
-  `main` (branche actuellement mêlée recherche + plugin) ; itérations du standard (⚠️ réinstaller
-  le plugin après édition — il est copié dans le cache à l'install) ; reprise mémoire « plus
-  tard ». Mémoire = « on y reviendra ».
+- **Pistes ouvertes (non décidées)** : itérations du standard `standard.md` (⚠️ réinstaller le
+  plugin après édition — il est copié dans le cache à l'install) ; v2 éventuelle (ex. commandes,
+  agents) ; reprise de la couche mémoire « on y reviendra ».
 - Décidé (antérieur) : architecture « Conductor » ; étoile polaire = **qualité du code**.
+
+### Reprendre sur une AUTRE machine
+
+Ce qui voyage dans git (tout le travail) : code du plugin, `docs/` (5 analyses + spec + plans),
+`spike/` (RESULTS, scorecards, harnais). Ce qui NE voyage PAS (gitignoré / hors-repo) :
+`.claude/JOURNAL.md` (journal privé), la mémoire privée de Claude (`~/.claude/projects/...`),
+`sources/` (clones d'étude — **non nécessaires**, le spike est clos). La substance des décisions
+est entièrement dans `docs/` et ce bloc.
+
+Setup sur la nouvelle machine :
+1. `git clone https://github.com/JoPerron88/Hyperpowers.git` (récupère `main` + `spike`).
+2. Avoir **Node** (≥ v22 ; testé v26). Tests : `npm test` (zéro dépendance à installer).
+3. Réinstaller l'environnement Claude Code :
+   - garder/installer le plugin **superpowers** (marketplace officiel) — dépendance du standard ;
+   - `/plugin marketplace add <chemin-du-clone>` puis `/plugin install hyperpowers@hyperpowers` ;
+   - **désinstaller** `andrej-karpathy-skills` s'il est présent (source unique = Hyperpowers) ;
+   - redémarrer ; le standard doit apparaître au SessionStart.
+4. Lire ce `CLAUDE.md` + `docs/superpowers/specs/` pour le contexte. (Le journal détaillé
+   `.claude/JOURNAL.md` reste privé/local ; le copier à la main si tu le veux ailleurs.)
 
 ## Projet
 
