@@ -4,20 +4,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## État courant — reprise (2026-06-05)
 
-**Phase : exécution** (la conception est faite). Branche git : `spike`.
+**Phase : spike CLOS (rouge).** Branche git : `spike`.
 - Plan directeur : `docs/superpowers/plans/2026-06-05-sondes-roles-et-memoire.md`
 - Journal détaillé : `.claude/JOURNAL.md` · Analyses : `docs/analyse-*.md`
-- **Fait** : Sonde 1 (scoreur `spike/score.mjs` en TDD + `roles-scorecard.md` rempli, repris en
-  3/3 avec pwf réellement actif). Fixtures de la Sonde 2 construites (corpus 11–13, clé, tâches
-  02–06 avec détecteurs validés 8/8). Voir `spike/roles-scorecard.md` (addendum pwf).
-- **Reprendre à : Task 2.3 du plan — dispatch des 12 subagents** (2×6, cold/memory). ⚠️ exige le
-  **feu vert humain explicite** avant de lancer. Puis Task 2.4 : `spike/RESULTS.md` + verdict vs seuil.
-- **À résoudre par l'humain** (test redémarre-et-observe) : les hooks pwf n'ont pas tiré cette
-  session — déterminer si c'est l'install skill-only ou l'absence de redémarrage (détail dans
-  l'addendum de `roles-scorecard.md`).
-- Mode : subagent-driven (Sonde 1 inline pour observer les outils ; Sonde 2 en subagents).
-- Décidé : architecture « Conductor » ; étoile polaire = **qualité du code** ; mempalace **différé**
-  (testé en oracle par la Sonde 2 du spike).
+- **Sonde 1 (rôles) — fait** : scoreur `spike/score.mjs` (TDD) + `spike/roles-scorecard.md`.
+  Constat : garder **karpathy** + **superpowers** ; **pwf** conditionnel (utile seulement en
+  install *plugin* avec hooks + tâche *sans* plan préexistant). Note : les hooks pwf SE
+  déclenchent bien (UserPromptSubmit injecte le plan au tour utilisateur).
+- **Sonde 2 (mémoire) — fait** : 12 runs, `spike/RESULTS.md`. **Verdict 🔴 ROUGE** : 0/12 pièges
+  touchés, le bras à froid ne dégrade jamais → mémoire-oracle n'améliore rien de mesurable.
+  → **Boucle mémoire non investie ; mempalace écarté pour cet objectif.**
+- ⚠️ **Cadrage du rouge** (ne pas surinterpréter) : « non soutenue par CE test », **pas** « la
+  mémoire nuit » ; pièges plus durs / modèle plus faible **non testés** ; re-jouer pour chercher
+  le vert = biais de confirmation (analyse #5). Détail + confound dans `spike/RESULTS.md`.
+- **Reprendre à** : décision produit de l'humain (le spike a tranché « stop mémoire »). Pistes
+  ouvertes non décidées : façonner Hyperpowers autour de karpathy+superpowers (sans la couche
+  mémoire), ou réorienter. Voir `finishing-a-development-branch` pour le sort de la branche `spike`.
+- Décidé (antérieur) : architecture « Conductor » ; étoile polaire = **qualité du code**.
 
 ## Projet
 
