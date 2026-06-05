@@ -2,6 +2,29 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## État courant — reprise (2026-06-05)
+
+**Phase : v1 du noyau comportemental LIVRÉE ET VÉRIFIÉE EN RUNTIME** (branche `spike`, 7 tests verts).
+- Plans : v1 = `docs/superpowers/plans/2026-06-05-noyau-comportemental-plan.md` (spec :
+  `docs/superpowers/specs/2026-06-05-noyau-comportemental-design.md`). Spike =
+  `docs/superpowers/plans/2026-06-05-sondes-roles-et-memoire.md`.
+- Journal détaillé : `.claude/JOURNAL.md` · Analyses : `docs/analyse-*.md`
+- **v1 — fait + validé** : le dépôt EST le plugin. `standard.md` (4 garde-fous karpathy
+  recadrés → pointeurs superpowers) injecté au SessionStart via `hooks/session-start.mjs`
+  (JSON `hookSpecificOutput.additionalContext`) ; `.claude-plugin/{plugin,marketplace}.json` ;
+  `tests/standard.test.mjs` (7 verts). **Installé** (`hyperpowers@hyperpowers`), **karpathy
+  désinstallé**, superpowers gardé non-forké. **Vérif runtime ✅** : une session fraîche a cité
+  le standard injecté depuis son SessionStart. Revue spec + qualité passées.
+- **Spike (antérieur) — fait** : Sonde 1 (rôles) → garder karpathy + superpowers ; pwf
+  conditionnel. Sonde 2 (mémoire) → **🔴 ROUGE** (0/12 pièges ; mémoire-oracle n'améliore rien
+  de mesurable) → boucle mémoire écartée. ⚠️ « non soutenue par CE test », **pas** « la mémoire
+  nuit » (détail `spike/RESULTS.md`, `spike/roles-scorecard.md`).
+- **Reprendre à** : v1 complète et validée. Pistes ouvertes (non décidées) : merge `spike`→
+  `main` (branche actuellement mêlée recherche + plugin) ; itérations du standard (⚠️ réinstaller
+  le plugin après édition — il est copié dans le cache à l'install) ; reprise mémoire « plus
+  tard ». Mémoire = « on y reviendra ».
+- Décidé (antérieur) : architecture « Conductor » ; étoile polaire = **qualité du code**.
+
 ## Projet
 
 **Hyperpowers** est un skill/plugin pour Claude Code. Son objectif distinctif :
@@ -10,18 +33,20 @@ améliorer leur symbiose** — c.-à-d. faire en sorte que des capacités jusque
 séparées se composent mieux (réutilisation de contexte, déclenchements croisés,
 évitement des doublons).
 
-Statut : **démarrage** — le dépôt ne contient encore que ce fichier, un README et
-un `.gitignore`. Les décisions ci-dessous ne sont pas encore prises.
+Statut : **v1 livrée** (noyau comportemental). Le dépôt est désormais un plugin Claude Code
+fonctionnel ; les décisions de base ci-dessous sont tranchées.
 
-### À définir (à mettre à jour dès que tranché)
+### Décisions de base (tranchées)
 
-- **Langage** : non décidé.
-- **Type de livrable** : plugin complet, skill unique, ou marketplace de skills — non décidé.
-- **Outillage** : gestionnaire de paquets, framework de tests, linter, build — non décidé.
+- **Langage** : Node.js (ESM, `node:test`, zéro-dépendance).
+- **Type de livrable** : plugin Claude Code (le dépôt EST le plugin).
+- **Outillage** : npm pour les scripts ; pas de linter/build pour l'instant.
 
-Quand une de ces décisions est prise, mettre à jour la section correspondante
-**et** ajouter les commandes concrètes (build / lint / test, dont comment lancer
-un seul test) dans une section « Commandes ».
+## Commandes
+
+- Tests : `npm test` (= `node --test 'tests/**/*.test.mjs'`, scopé à `tests/` car le dépôt
+  contient aussi des `*.test.mjs` dans `spike/` et `sources/` qu'il ne faut pas lancer ici).
+- Un seul fichier de test : `node --test tests/standard.test.mjs`.
 
 ## Conventions Claude Code (référence)
 
