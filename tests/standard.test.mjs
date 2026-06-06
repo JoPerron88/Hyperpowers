@@ -1,10 +1,18 @@
 // tests/standard.test.mjs — smoke-tests du noyau comportemental Hyperpowers.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync, existsSync, readdirSync } from "node:fs";
+import {
+  readFileSync,
+  existsSync,
+  readdirSync,
+  mkdtempSync,
+  mkdirSync,
+  writeFileSync,
+  rmSync,
+} from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
-import { homedir } from "node:os";
+import { homedir, tmpdir } from "node:os";
 import { execFileSync } from "node:child_process";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -107,7 +115,7 @@ test("la commande du hook SessionStart émet le contrat additionalContext de Cla
   const h = JSON.parse(readFileSync(join(root, "hooks/hooks.json"), "utf8"));
   const cmd = h.hooks.SessionStart[0].hooks[0].command;
   const resolved = cmd.replaceAll("${CLAUDE_PLUGIN_ROOT}", root);
-  const out = execFileSync("sh", ["-c", resolved], { encoding: "utf8" });
+  const out = execFileSync("sh", ["-c", resolved], { encoding: "utf8", input: "" });
   // Claude Code attend du JSON : hookSpecificOutput.additionalContext (pas du stdout brut).
   const parsed = JSON.parse(out);
   assert.equal(parsed.hookSpecificOutput.hookEventName, "SessionStart");
@@ -166,4 +174,45 @@ test("standard.md contient le 6ᵉ principe (Garder le cap)", () => {
   assert.ok(c.includes("Garder le cap"), "titre du 6ᵉ principe absent");
   assert.ok(c.includes(".hyperpowers/goal.md"), "chemin du fichier de cap absent");
   assert.ok(c.includes("relis"), "consigne de récitation (relis) absente");
+});
+
+const hookPath = join(root, "hooks/session-start.mjs");
+const standardContent = readFileSync(join(root, "standard.md"), "utf8");
+
+function runHook(input) {
+  const out = execFileSync("node", [hookPath], { input, encoding: "utf8" });
+  return JSON.parse(out).hookSpecificOutput.additionalContext;
+}
+
+test("le hook injecte le FinalGoal quand .hyperpowers/goal.md existe", () => {
+  const dir = mkdtempSync(join(tmpdir(), "hp-goal-"));
+  try {
+    mkdirSync(join(dir, ".hyperpowers"));
+    const goal = "Logiciel de prise de notes assisté par IA.";
+    writeFileSync(join(dir, ".hyperpowers/goal.md"), goal);
+    const ctx = runHook(JSON.stringify({ cwd: dir, hook_event_name: "SessionStart" }));
+    assert.ok(ctx.startsWith(standardContent), "le standard doit rester injecté en tête");
+    assert.ok(ctx.includes(goal), "le contenu du FinalGoal doit être injecté");
+    assert.ok(ctx.length > standardContent.length, "un bloc doit être ajouté au standard");
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("le hook reste dormant quand .hyperpowers/goal.md est absent", () => {
+  const dir = mkdtempSync(join(tmpdir(), "hp-nogoal-"));
+  try {
+    const ctx = runHook(JSON.stringify({ cwd: dir, hook_event_name: "SessionStart" }));
+    assert.equal(ctx, standardContent, "sans cap, additionalContext = standard verbatim");
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("le hook ne plante pas si stdin est vide (fallback process.cwd())", () => {
+  const ctx = runHook("");
+  assert.ok(
+    ctx.includes("Réfléchir avant de coder"),
+    "le standard doit être injecté même sans stdin",
+  );
 });
