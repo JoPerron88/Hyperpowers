@@ -50,5 +50,16 @@ planning-with-files (seuil trop bas — il pousserait tout vers pwf et sur-plani
 que je devrai me rappeler plus tard ? » Oui → pwf ; non → superpowers. En cas de doute,
 **rester au tier inférieur**.
 
+## 6. Garder le cap (le FinalGoal)
+Si un cap projet est posé (`.hyperpowers/goal.md` présent), garder le travail aligné dessus.
+Aux checkpoints — avant de figer un plan, avant de déclarer une étape finie — **relis**
+`.hyperpowers/goal.md` (récitation) et demande-toi : « est-ce que ça sert le FinalGoal ? ». Si ça
+dévie, **signale-le et demande**, sans bloquer. Tout but temporaire (en-tête `Goal:` d'un plan,
+section Goal de `task_plan.md`) doit **tracer vers le FinalGoal** ; sinon, dis-le.
+Fréquence selon le tier (principe 5) : moyenne → au plan figé et à l'étape finie ; grosse / pwf
+actif → à chaque phase. Garde-le léger : le cap oriente, il ne rigidifie pas (le nombre de
+features ou l'esthétique ne sont pas le cap).
+Absent (`.hyperpowers/goal.md` non présent) → ce principe est dormant.
+
 ## Priorité
 Process d'abord (brainstorming/debugging décident l'approche), implémentation ensuite.

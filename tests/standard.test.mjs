@@ -118,6 +118,7 @@ test("la commande du hook SessionStart émet le contrat additionalContext de Cla
     "Changements chirurgicaux",
     "Piloté par objectif",
     "Planifier à la bonne échelle",
+    "Garder le cap",
   ]) {
     assert.ok(ctx.includes(titre), `principe absent du contexte injecté : ${titre}`);
   }
@@ -158,4 +159,11 @@ test("standard.md cite planning-with-files et la skill existe (référence vivan
     planningWithFilesInstalled(),
     "planning-with-files non installé — référence morte (installer la skill/plugin pwf)",
   );
+});
+
+test("standard.md contient le 6ᵉ principe (Garder le cap)", () => {
+  const c = readFileSync(join(root, "standard.md"), "utf8");
+  assert.ok(c.includes("Garder le cap"), "titre du 6ᵉ principe absent");
+  assert.ok(c.includes(".hyperpowers/goal.md"), "chemin du fichier de cap absent");
+  assert.ok(c.includes("relis"), "consigne de récitation (relis) absente");
 });
