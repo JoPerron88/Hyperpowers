@@ -30,5 +30,25 @@ Transformer la tâche en critères vérifiables et boucler jusqu'au vert (« cor
 → `superpowers:test-driven-development` (rouge→vert) puis
   `superpowers:verification-before-completion` (preuve avant de déclarer terminé).
 
+## 5. Planifier à la bonne échelle
+Router le travail selon la taille de la tâche, pour ne pas sur-planifier. Trois niveaux, chacun
+pointe vers la voix de management qui le réalise :
+
+- **Petite** — changement unique et bien défini, une approche évidente, peu d'outils :
+  **pas de plan**. → `superpowers:test-driven-development` directement.
+- **Moyenne** — multi-étapes, demande conception/découpage, mais bornée et mono-session :
+  → `superpowers:brainstorming` (si créatif), puis `superpowers:writing-plans`, puis
+  `superpowers:executing-plans` / `superpowers:subagent-driven-development`.
+  **Récite** : relis le plan avant chaque décision clé (contre le « lost in the middle »).
+- **Grosse / longue** — nombreuses phases, franchit plusieurs sessions, va probablement croiser
+  un `/clear` ou une compaction, découvertes qui s'accumulent :
+  → `planning-with-files` (plan vivant `task_plan.md`/`findings.md`/`progress.md` + reprise).
+
+Arbitrage moyen ↔ grosse : le discriminant n'est PAS le « 5+ tool calls » qu'annonce
+planning-with-files (seuil trop bas — il pousserait tout vers pwf et sur-planifierait), mais :
+« la tâche franchit-elle des sessions / une compaction, et des découvertes vont-elles s'accumuler
+que je devrai me rappeler plus tard ? » Oui → pwf ; non → superpowers. En cas de doute,
+**rester au tier inférieur**.
+
 ## Priorité
 Process d'abord (brainstorming/debugging décident l'approche), implémentation ensuite.
