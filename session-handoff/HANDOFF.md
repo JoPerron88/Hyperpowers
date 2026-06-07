@@ -28,11 +28,10 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
     produit ce dossier.
 
 ## Ce qui était prévu ensuite
-1. **v5 = implémenter le modèle C** (distro curée). Faire du `.claude-plugin/marketplace.json` un
-   marketplace qui référence **superpowers** (`source: url|git-subdir` → github.com/obra/superpowers) +
-   **planning-with-files** (`source: url` → github.com/OthmanAdi/planning-with-files) +
-   **hyperpowers** (`./`). Faisabilité confirmée (le marketplace officiel utilise déjà ces sources).
-3. **Nouveaux skills / artefacts à concevoir** (idées de l'auteur — **périmètre non cadré, passer
+> **v5 (marketplace multi-plugin) = abandonné** — sur-engineeré pour un usage personnel. Le git
+> suffit comme point de distribution ; OUTILLAGE.md couvre la reprise sur machine neuve.
+
+1. **Nouveaux skills / artefacts à concevoir** (idées de l'auteur — **périmètre non cadré, passer
    par `superpowers:brainstorming` avant de coder**) :
    - **`brainstorming-advanced`** — un 2ᵉ skill d'idéation, plus avancé que `superpowers:brainstorming`.
    - **« bible de projet »** — document/skill de référence durable du projet (à définir).
