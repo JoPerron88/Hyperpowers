@@ -3,6 +3,13 @@
 > Conçu le 2026-06-06 (skill `superpowers:brainstorming`). Indépendant de v2/v3 (branche
 > `v4-session-handoff` partant de `main`). **Premier skill embarqué** par le plugin Hyperpowers
 > (v1-v3 = `standard.md` + hook ; ici on ajoute un dossier `skills/`).
+>
+> **Évolution (2026-06-06, post-tests `superpowers:writing-skills`)** : le livrable n'est plus un
+> `HANDOFF.md` à la racine mais un **dossier `session-handoff/`** commité, contenant `HANDOFF.md`
+> (état) **et** `OUTILLAGE.md` (plugins/skills Claude Code utilisés + install + repli), pour qu'une
+> reprise après `git clone` soit possible **même sans les plugins/skills installés**. La procédure
+> détaillée vit dans le `SKILL.md` (artefact vivant, affiné par test comportemental) ; cette spec
+> garde le **design et les décisions**.
 
 ## Objectif
 
@@ -22,15 +29,25 @@ dépôt** voyagent au `git clone`. Donc :
   machine, différente pour un nouvel utilisateur) → on n'y met qu'un **pointeur**, pas le contenu ;
 - le **`JOURNAL.md`** est gitignoré → ne voyage pas → reste l'**historique local**, pas la source
   de reprise ;
-- la note humaine de reprise **doit être un fichier commité** → `HANDOFF.md`.
+- la note humaine de reprise **doit être commitée** → le dossier `session-handoff/`.
+- corollaire (évolution) : pour reprendre **sans les plugins/skills**, le dossier doit aussi dire
+  **quoi installer** (et comment s'en passer) → fichier `OUTILLAGE.md`.
 
-## Décisions du brainstorming
+## Décisions du brainstorming (+ évolution post-tests)
 
-- **Note humaine** = **`HANDOFF.md`** dédié, commité (racine du projet).
-- **Frontière avec `CLAUDE.md`** : `HANDOFF.md` **remplace** le rôle du bloc « État courant —
-  reprise » de `CLAUDE.md`. Le skill **réduit** ce bloc à un **pointeur** (« pour reprendre, lis
-  `HANDOFF.md` »). → **une seule source de vérité** pour l'état de reprise (pas de 3ᵉ artefact
-  concurrent : c'est la mission anti-doublon d'Hyperpowers).
+- **Livrable** = un **dossier `session-handoff/`** commité (racine du projet), qui **suit le projet
+  dans git** et voyage au clone. Il contient :
+  - `HANDOFF.md` — l'état de reprise (but, où on en est + surface de perte, prévu ensuite, setup
+    **projet**, pièges, décisions) ;
+  - `OUTILLAGE.md` — l'**outillage Claude Code** utilisé (dérivé de `installed_plugins.json` +
+    indices repo), comment l'installer, et un **repli** pour continuer **sans** l'installer.
+  *(Décision initiale du brainstorming : un `HANDOFF.md` à la racine. Évoluée en dossier + OUTILLAGE
+  après les tests writing-skills, qui ont montré qu'un repreneur machine-neuve ne savait pas quoi
+  installer.)*
+- **Frontière avec `CLAUDE.md`** : le dossier `session-handoff/` **remplace** le rôle du bloc
+  « État courant — reprise » de `CLAUDE.md`. Le skill **réduit** ce bloc à un **pointeur** (« pour
+  reprendre, lis le dossier `session-handoff/` »). → **une seule source de vérité** pour l'état de
+  reprise (pas de 3ᵉ artefact concurrent : c'est la mission anti-doublon d'Hyperpowers).
 - **Dosage** = **auto-d'abord, questions pour les trous**.
 - **Mécanisme** = un **skill invocable** par l'utilisateur, déclenchable aussi par des formules
   (« fini pour aujourd'hui », « done for today », « je m'arrête / on met en pause »). Procédure en
@@ -43,8 +60,8 @@ dépôt** voyagent au `git clone`. Donc :
   déclenchement sur Stop/SessionEnd.
 - **Pas de principe ajouté au `standard.md`** → aucune modif de `standard.md`, branche
   indépendante (depuis `main`, pas d'empilement sur v3).
-- **Pas de contenu de mémoire IA riche** : juste un pointeur « lis `HANDOFF.md` » (la mémoire ne
-  voyage pas ; le `HANDOFF.md` commité re-sème le contexte au clone).
+- **Pas de contenu de mémoire IA riche** : juste un pointeur « lis le dossier `session-handoff/` »
+  (la mémoire ne voyage pas ; le dossier commité re-sème le contexte au clone).
 - **Pas de gestion multi-projets**, pas de chiffrement, pas d'historique versionné des handoffs
   (git fait déjà l'historique de `HANDOFF.md`).
 
@@ -55,70 +72,53 @@ Le **dépôt EST le plugin**. On ajoute un dossier `skills/` (Claude Code auto-d
 
 ```
 skills/session-handoff/SKILL.md   — la procédure (frontmatter name/description + corps en prose)
-HANDOFF.md                        — (créé DANS LE PROJET de l'utilisateur, pas dans ce dépôt)
+session-handoff/                  — (créé DANS LE PROJET de l'utilisateur, commité, voyage au clone)
+  HANDOFF.md                      — état de reprise
+  OUTILLAGE.md                    — outillage Claude Code à installer + repli
 ```
 
 ### Le skill `session-handoff`
 
 Frontmatter : `name: session-handoff`, `description` orientée déclenchement (« Use when the user
-is wrapping up / stopping for the day / pausing a project that may be resumed much later or on
-another machine — produces a cold-resume HANDOFF.md »), `user-invocable: true`.
+is wrapping up / stopping for the day / pausing a project that may be resumed much later, on
+another machine, or by someone without the project's plugins/skills installed »), `user-invocable:
+true`. (Pas de résumé de workflow dans la description — cf. CSO de `writing-skills`.)
 
-Corps (procédure que Claude suit) :
+Procédure (outline design ; la version exécutable et affinée vit dans le `SKILL.md`) :
 
-1. **Auto-dériver les faits génériques** (commandes git uniquement — agnostique au projet) :
-   - branche courante (`git branch --show-current`) ;
-   - derniers commits (`git log --oneline -n`) ;
-   - état non-commité et non-poussé (`git status --short`, `git log @{u}..` si upstream) ;
-   - présence de docs de planif (`docs/superpowers/specs|plans`), du `JOURNAL.md`, et du FinalGoal
-     (`.hyperpowers/goal.md`) → à citer comme pointeurs.
-   - **Ne PAS deviner** la commande de test/build/lancement : inconnue pour un projet quelconque.
-
-2. **Poser les questions de trou** (ce que seul l'utilisateur sait), une à une :
-   - ① **Ce qui était prévu ensuite** (l'info #1 pour un futur-toi qui a oublié).
-   - ② **Reprendre sur machine neuve** : cloner / installer / lancer / tester **ce** projet.
-     **Le plus crucial** ; pré-remplir à partir d'indices (`package.json` scripts, README) mais
-     **faire CONFIRMER** — ne jamais inventer (un nouvel utilisateur qui suit des étapes
-     fabriquées = le scénario d'échec).
-   - ③ **Pièges / gotchas** non-évidents à connaître.
-   - ④ **Décisions clés & pourquoi** (pour qu'un nouvel arrivant ne re-débatte pas).
-
-3. **Écrire `HANDOFF.md`** (réécrit intégralement), structure :
-   ```
-   # Handoff — <projet>
-   > Dernière mise à jour : <date>. Lis ce fichier en premier pour reprendre à froid.
-
-   ## Le but (FinalGoal)        — depuis .hyperpowers/goal.md si présent, sinon demandé
-   ## Où on en est              — auto (branche, commits, non-commité/non-poussé)
-   ## Ce qui était prévu ensuite — demandé ①
-   ## Reprendre sur machine neuve — demandé+confirmé ②
-   ## Pièges à connaître         — demandé ③
-   ## Décisions clés & pourquoi  — demandé ④ / specs
-   ## Où trouver le détail       — auto (pointeurs specs/plans/JOURNAL)
-   ```
-
-4. **Réduire le bloc reprise de `CLAUDE.md`** (s'il existe) à un pointeur vers `HANDOFF.md` —
-   pour supprimer le doublon. Si `CLAUDE.md` n'existe pas, ne rien forcer.
-
-5. **Appondre une entrée au `JOURNAL.md`** (historique de session, via la pratique existante).
-
-6. **Poser un pointeur mémoire IA** : une ligne « pour ce projet, lis `HANDOFF.md` » (pas de
-   duplication du contenu).
-
-7. **Committer** `HANDOFF.md` (+ `CLAUDE.md` aminci) — le `JOURNAL.md` reste gitignoré/local.
+1. **Dériver les faits git** (agnostique au projet) : branche, derniers commits, **surface de
+   perte** (non-commité, non-poussé, absence de remote → ⚠️ ne voyage pas au clone : signaler +
+   demander, ne jamais commiter le WIP en douce). Repérer les docs de contexte (README, `docs/`,
+   journal, `.hyperpowers/goal.md`) comme pointeurs. **Ne PAS deviner** la commande de
+   test/build/lancement.
+2. **Dériver l'outillage Claude Code** utilisé : `installed_plugins.json` + indices repo
+   (`docs/superpowers/`→superpowers, `.hyperpowers/`→Hyperpowers, `task_plan.md`→planning-with-files).
+   Noter l'install de chacun ; **source d'install incertaine = à confirmer**, jamais inventée.
+3. **Poser les questions de trou** (ce que seul l'utilisateur sait) : ① prévu ensuite ; ② setup
+   **projet** machine-neuve (pré-rempli mais **confirmé**, jamais inventé) ; ③ pièges ; ④ décisions.
+   Mode une-passe / utilisateur absent → marqueurs « à confirmer », ne pas bloquer.
+4. **Écrire le dossier `session-handoff/`** (réécriture, en préservant les réponses déjà
+   confirmées) :
+   - `HANDOFF.md` : but (FinalGoal) · où on en est (+ surface de perte) · prévu ensuite · setup
+     projet · pièges · décisions · où trouver le détail.
+   - `OUTILLAGE.md` : plugins/skills + install + **repli** (continuer sans les installer).
+5. **Réduire le bloc reprise de `CLAUDE.md`** (s'il existe) à un pointeur vers `session-handoff/`.
+6. **Appondre une entrée au `JOURNAL.md`** (historique local).
+7. **Pointeur mémoire IA** : une ligne « lis le dossier `session-handoff/` » (sauter si pas de
+   store accessible).
+8. **Committer** `session-handoff/` (+ `CLAUDE.md` aminci) ; le `JOURNAL.md` reste local.
 
 ## Flux de données
 
 ```
 Invocation (« fini pour aujourd'hui »)
-  └─ git (branche/commits/état) ─────────────┐
-  └─ pointeurs (specs/plans/JOURNAL/goal) ────┤→ assemble le brouillon
-  └─ questions ①②③④ à l'utilisateur ──────────┘
-       └─ écrit HANDOFF.md (commité)
-       └─ amincit le bloc reprise de CLAUDE.md → pointeur
-       └─ append JOURNAL.md (local)
-       └─ pointeur mémoire IA
-       └─ commit
+  └─ git (branche/commits/surface de perte) ──┐
+  └─ outillage (installed_plugins + indices) ─┤
+  └─ pointeurs (specs/plans/JOURNAL/goal) ─────┤→ assemble le brouillon
+  └─ questions ①②③④ à l'utilisateur ───────────┘
+       └─ écrit session-handoff/ (HANDOFF.md + OUTILLAGE.md, commité)
+       └─ amincit le bloc reprise de CLAUDE.md → pointeur vers session-handoff/
+       └─ append JOURNAL.md (local) · pointeur mémoire IA · commit
 ```
 
 ## Gestion d'erreur / cas limites
@@ -126,29 +126,33 @@ Invocation (« fini pour aujourd'hui »)
 - **Pas un dépôt git** → sauter l'auto-dérivation git, s'appuyer davantage sur les questions ;
   `HANDOFF.md` reste produit.
 - **Pas de `CLAUDE.md`** → ne pas en créer un juste pour le pointeur ; HANDOFF.md se suffit.
-- **`HANDOFF.md` déjà présent** → le **réécrire** (c'est l'instantané courant), pas l'appondre.
-  L'historique est dans git.
-- **Setup machine neuve inconnu / l'utilisateur ne sait pas** → l'écrire explicitement
-  (« setup non documenté — à reconstituer ») plutôt qu'inventer des étapes.
+- **Dossier `session-handoff/` déjà présent** → le **réécrire** (instantané courant) en
+  **préservant les réponses déjà confirmées** ; l'historique est dans git.
+- **Setup projet inconnu / l'utilisateur ne sait pas** → l'écrire explicitement (« setup non
+  documenté — à reconstituer ») plutôt qu'inventer des étapes.
+- **Aucun outillage particulier détecté** → `OUTILLAGE.md` le dit (« projet git standard, aucun
+  plugin/skill requis ») plutôt qu'inventer une liste.
 
 ## Stratégie de test (honnête)
 
 La substance est une **procédure en prose**, pas du code → **pas de tests-tautologies** (« le
 SKILL.md contient tel mot » ne vérifie rien d'utile). Validation :
-- **Revue** du `SKILL.md` (clarté, complétude de la procédure, déclenchement correct).
-- **Essai à blanc en runtime** : invoquer le skill dans un projet de test et vérifier qu'il produit
-  un `HANDOFF.md` cohérent, amincit le bloc CLAUDE.md, et n'invente pas le setup.
-- **Au plus** un smoke-test minimal : `skills/session-handoff/SKILL.md` existe et a un frontmatter
-  YAML valide avec `name` et `description` (pas d'assertion sur le contenu de la prose).
+- **Smoke-test structurel** : `skills/session-handoff/SKILL.md` existe et a un frontmatter YAML
+  valide (`name`, `description`, `user-invocable`) — pas d'assertion sur la prose. (`tests/session-handoff.test.mjs`.)
+- **Test comportemental `superpowers:writing-skills` (fait)** : scénarios d'application avec
+  subagents frais, RED (sans skill) → GREEN (avec). A validé : le skill produit le dossier, dérive
+  l'outillage, n'invente pas la source d'install, traite la surface de perte ; et — côté
+  **consommateur** — un agent machine-neuve sans plugins, à qui on dit « lis `session-handoff/` »,
+  sait quoi installer (ou s'en passer via le repli), comprend le projet, et sait où reprendre.
 
 ## Critères de done (vérifiables)
 
-- [ ] `skills/session-handoff/SKILL.md` existe (frontmatter valide `name`/`description`,
-      `user-invocable: true`).
-- [ ] Plugin réinstallé ; le skill est **découvert** (apparaît dans la liste des skills) et
-      **invocable**.
-- [ ] Essai runtime : sur un projet de test, l'invocation produit un `HANDOFF.md` couvrant les 7
-      sections, amincit le bloc reprise de `CLAUDE.md` en pointeur, et **n'invente pas** le setup
-      (le demande/le marque inconnu).
-- [ ] **Honnêteté** : le skill aide à reprendre à froid ; il ne garantit pas une reprise
-      sans friction si l'utilisateur n'a pas su documenter le setup.
+- [x] `skills/session-handoff/SKILL.md` existe (frontmatter valide `name`/`description`,
+      `user-invocable: true`) ; smoke-test vert.
+- [x] **Test comportemental** (writing-skills) : producteur (crée `session-handoff/` avec
+      `HANDOFF.md` + `OUTILLAGE.md`, dérive l'outillage, n'invente pas la source) **et**
+      consommateur (agent machine-neuve sans plugins reprend depuis le seul dossier) validés.
+- [ ] Plugin réinstallé ; le skill est **découvert** (liste des skills) et **invocable** (gate
+      humaine — non encore faite).
+- [ ] **Honnêteté** : le skill aide à reprendre à froid ; il ne garantit pas une reprise sans
+      friction si le setup projet ou l'outillage n'ont pas pu être documentés.
