@@ -11,10 +11,11 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
 (non commercial).
 
 ## Où on en est
-- Branche : **`main`** (branche unique), commit `8d4e6d0`, **arbre propre**, à jour avec `origin`.
-- **Tout est commité ET poussé** sur `origin` (github.com/JoPerron88/Hyperpowers) **ET** présent
-  dans ce dossier (copier-coller → rien ne se perd). Pas de modif non commitée, pas de commit non
-  poussé, remote présent. ✅ surface de perte nulle.
+- Branche : **`main`** (branche unique), **arbre propre**, à jour avec `origin` (dernier commit :
+  `git log -1`). **Tout est commité ET poussé** sur `origin` (github.com/JoPerron88/Hyperpowers)
+  **ET** présent dans ce dossier (copier-coller → rien ne se perd). ✅ surface de perte nulle.
+- Inclus le **README détaillé** (avec crédits aux dépôts d'origine) et la **feuille de route**
+  ci-dessous.
 - **v1→v4 livrées et mergées sur `main`** (`--no-ff`, **16 tests verts**) :
   - **v1** — noyau comportemental : `standard.md` injecté au SessionStart (`hooks/session-start.mjs`),
     4 garde-fous karpathy recadrés en pointeurs vers superpowers.
