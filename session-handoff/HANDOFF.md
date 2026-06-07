@@ -16,7 +16,7 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
   **ET** présent dans ce dossier (copier-coller → rien ne se perd). ✅ surface de perte nulle.
 - Inclus le **README détaillé** (avec crédits aux dépôts d'origine) et la **feuille de route**
   ci-dessous.
-- **v1→v4 livrées et mergées sur `main`** (`--no-ff`, **16 tests verts**), **gate runtime ✅ entièrement vérifié** :
+- **v1→v4 livrées + `brainstorming-advanced` livré post-v4**, **17 tests verts** (18 au total — 1 échec pré-existant : `planning-with-files` non installé sur cette machine), **gate runtime ✅ entièrement vérifié** :
   - **v1** — noyau comportemental : `standard.md` injecté au SessionStart (`hooks/session-start.mjs`),
     4 garde-fous karpathy recadrés en pointeurs vers superpowers.
   - **v2** — routage des plans (**principe 5** de `standard.md`) : petite=TDD / moyenne=superpowers /
