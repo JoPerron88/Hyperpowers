@@ -1,6 +1,6 @@
 ---
 name: brainstorming-advanced
-description: Use when facing complex architectural decisions with genuine design tensions and multiple valid approaches — where independent reasoning from different perspectives would produce better outcomes than a single brainstorm.
+description: Use when a decision has real trade-offs that a single perspective won't resolve — two approaches both seem valid, significant architectural stakes, or you need to pressure-test a design before committing.
 user-invocable: true
 ---
 
@@ -173,3 +173,13 @@ Après le choix de l'utilisateur :
 - L'utilisateur a **toujours le dernier mot**
 - La sortie est **toujours compatible** avec `superpowers:writing-plans`
 - **Jamais sans accord explicite** de l'utilisateur
+
+## Erreurs courantes
+
+| Erreur | Ce qui se passe | Correction |
+|--------|----------------|------------|
+| Simuler les personas en texte au lieu d'appeler `Agent` | Chambre d'écho : les 3 voix partagent le même contexte — aucune indépendance réelle | Appeler l'outil `Agent` pour chaque entité, sans exception |
+| Le Modérateur prend position pendant les tours | Le débat est biaisé dès le départ | Neutre pendant les tours ; recommandation uniquement à la clôture |
+| Garder un expert pour les tours suivants | Son contexte pollue les tours et gonfle les prompts | Libérer l'expert immédiatement après sa contribution |
+| Invoquer le skill sans attendre la confirmation | L'utilisateur n'a pas consenti | Attendre le "oui" explicite ; sinon invoquer `superpowers:brainstorming` |
+| Lancer un 4ᵉ tour "pour plus de valeur" | Violation de la limite absolue | 3 tours maximum — aller à la clôture quoi qu'il arrive |
