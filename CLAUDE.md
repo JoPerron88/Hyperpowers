@@ -2,29 +2,33 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## État courant — reprise (2026-06-05)
+## État courant — reprise (2026-06-07)
 
-**Phase : v1 LIVRÉE, VÉRIFIÉE EN RUNTIME, ET MERGÉE SUR `main`** (7 tests verts).
-Branche unique = `main` (le merge `--no-ff` de `spike` est le commit `b45d599` ; `spike` a été
-supprimée après merge, son historique vit dans `main`). Sur `origin` (github.com/JoPerron88/Hyperpowers).
-- Plans : v1 = `docs/superpowers/plans/2026-06-05-noyau-comportemental-plan.md` (spec :
-  `docs/superpowers/specs/2026-06-05-noyau-comportemental-design.md`). Spike =
-  `docs/superpowers/plans/2026-06-05-sondes-roles-et-memoire.md`.
-- Journal détaillé : `.claude/JOURNAL.md` · Analyses : `docs/analyse-*.md`
-- **v1 — fait + validé** : le dépôt EST le plugin. `standard.md` (4 garde-fous karpathy
-  recadrés → pointeurs superpowers) injecté au SessionStart via `hooks/session-start.mjs`
-  (JSON `hookSpecificOutput.additionalContext`) ; `.claude-plugin/{plugin,marketplace}.json` ;
-  `tests/standard.test.mjs` (7 verts). **Installé** (`hyperpowers@hyperpowers`), **karpathy
-  désinstallé**, superpowers gardé non-forké. **Vérif runtime ✅** : une session fraîche a cité
-  le standard injecté depuis son SessionStart. Revue spec + qualité passées.
-- **Spike (antérieur) — fait** : Sonde 1 (rôles) → garder karpathy + superpowers ; pwf
-  conditionnel. Sonde 2 (mémoire) → **🔴 ROUGE** (0/12 pièges ; mémoire-oracle n'améliore rien
-  de mesurable) → boucle mémoire écartée. ⚠️ « non soutenue par CE test », **pas** « la mémoire
-  nuit » (détail `spike/RESULTS.md`, `spike/roles-scorecard.md`).
-- **Pistes ouvertes (non décidées)** : itérations du standard `standard.md` (⚠️ réinstaller le
-  plugin après édition — il est copié dans le cache à l'install) ; v2 éventuelle (ex. commandes,
-  agents) ; reprise de la couche mémoire « on y reviendra ».
-- Décidé (antérieur) : architecture « Conductor » ; étoile polaire = **qualité du code**.
+**Phase : v1 + v2 + v3 + v4 LIVRÉES et MERGÉES sur `main`** (16 tests verts ; `--no-ff`).
+Branche unique = `main`. Sur `origin` (github.com/JoPerron88/Hyperpowers). Spec/plans dans
+`docs/superpowers/` ; journal détaillé `.claude/JOURNAL.md`.
+- **v1 — fait + vérifié runtime ✅** : le dépôt EST le plugin. `standard.md` (4 garde-fous karpathy
+  → pointeurs superpowers) injecté au SessionStart via `hooks/session-start.mjs`. karpathy
+  **désinstallé** ; superpowers + planning-with-files gardés **non-forkés** (dépendances).
+- **v2 — routage des plans** (principe 5 de `standard.md`) : petite=TDD direct / moyenne=superpowers /
+  grosse=`planning-with-files` ; arbitrage du « 5+ tool calls » de pwf (discriminant =
+  franchit sessions/compaction + découvertes qui s'accumulent).
+- **v3 — FinalGoal** (principe 6 + `hooks/session-start.mjs` étendu) : cap projet persistant dans
+  `<projet>/.hyperpowers/goal.md`, **dormant par défaut**, injecté si présent (le hook lit le `cwd`
+  via stdin JSON ; `CLAUDE_PROJECT_DIR` écarté), relu aux checkpoints (anti-dérive du but, non bloquant).
+- **v4 — skill `session-handoff`** (1er skill embarqué, `skills/session-handoff/SKILL.md`) : « fini
+  pour aujourd'hui » → produit un dossier `session-handoff/` commité (`HANDOFF.md` + `OUTILLAGE.md`)
+  pour une reprise à froid **auto-suffisante même sans les plugins**. Durci + testé via
+  `superpowers:writing-skills` (RED-GREEN, producteur + consommateur).
+- **⚠️ Runtime NON vérifié pour v2/v3/v4** : tests unitaires + comportementaux verts, mais l'injection
+  réelle (principes 5/6 au SessionStart, FinalGoal, **découverte du skill**) après **réinstall** du
+  plugin reste à constater en session fraîche. NE PAS écrire « vérifié runtime » avant ce constat
+  humain. (Le plugin est copié dans le cache à l'install → toute édition `standard.md`/hook/skill
+  exige réinstall + redémarrage.)
+- **Spike (antérieur) — clos** : mémoire→qualité **🔴 ROUGE** (boucle mémoire écartée ; « non
+  soutenue par CE test », pas « la mémoire nuit » ; détail `spike/RESULTS.md`).
+- **Architecture — modèle C tranché (2026-06-07)** : Hyperpowers = **distro curée** (non-fork).
+  Étoile polaire = **qualité du code** ; architecture « Conductor ». Voir « Décisions de base ».
 
 ### Reprendre sur une AUTRE machine
 
@@ -38,10 +42,15 @@ Setup sur la nouvelle machine :
 1. `git clone https://github.com/JoPerron88/Hyperpowers.git` (récupère `main` + `spike`).
 2. Avoir **Node** (≥ v22 ; testé v26). Tests : `npm test` (zéro dépendance à installer).
 3. Réinstaller l'environnement Claude Code :
-   - garder/installer le plugin **superpowers** (marketplace officiel) — dépendance du standard ;
+   - installer **superpowers** (marketplace officiel) ET **planning-with-files** (dépôt OthmanAdi) —
+     tous deux référencés par le standard (principes 2-6) ; le test « références vivantes » échoue
+     s'ils manquent ;
    - `/plugin marketplace add <chemin-du-clone>` puis `/plugin install hyperpowers@hyperpowers` ;
    - **désinstaller** `andrej-karpathy-skills` s'il est présent (source unique = Hyperpowers) ;
-   - redémarrer ; le standard doit apparaître au SessionStart.
+   - redémarrer ; au SessionStart doivent apparaître les **6 principes** du standard ; le skill
+     **`session-handoff`** doit être dans la liste des skills.
+   - (Quand le modèle C sera implémenté, cette install manuelle sera remplacée par le marketplace
+     curé d'Hyperpowers qui tire superpowers + pwf automatiquement.)
 4. Lire ce `CLAUDE.md` + `docs/superpowers/specs/` pour le contexte. (Le journal détaillé
    `.claude/JOURNAL.md` reste privé/local ; le copier à la main si tu le veux ailleurs.)
 
@@ -53,14 +62,22 @@ améliorer leur symbiose** — c.-à-d. faire en sorte que des capacités jusque
 séparées se composent mieux (réutilisation de contexte, déclenchements croisés,
 évitement des doublons).
 
-Statut : **v1 livrée** (noyau comportemental). Le dépôt est désormais un plugin Claude Code
-fonctionnel ; les décisions de base ci-dessous sont tranchées.
+Statut : **v1→v4 livrées et mergées sur `main`** (noyau comportemental + routage des plans +
+FinalGoal + skill `session-handoff`) ; runtime de v2/v3/v4 à re-vérifier. Le dépôt est un plugin
+Claude Code fonctionnel ; les décisions de base ci-dessous sont tranchées.
 
 ### Décisions de base (tranchées)
 
 - **Langage** : Node.js (ESM, `node:test`, zéro-dépendance).
 - **Type de livrable** : plugin Claude Code (le dépôt EST le plugin).
 - **Outillage** : npm pour les scripts ; pas de linter/build pour l'instant.
+- **Modèle d'architecture = C, « distro curée » (tranché 2026-06-07)** : Hyperpowers **ne forke
+  rien**. Il référencera superpowers + planning-with-files via leurs **sources externes** dans son
+  `marketplace.json` (faisable : `source: git-subdir|url`, comme le marketplace officiel) et ajoute
+  sa propre **glue** (Standard, routage, FinalGoal, `session-handoff`). Un seul point d'entrée curé.
+  Écartés : (A) simple couche à côté, (B) fork/fusion de l'amont dedans (maintenance intenable).
+  **Pas encore implémenté** : le `marketplace.json` ne liste encore que `hyperpowers` (≈ chantier v5).
+  Contexte : outil **personnel** (non commercial), garder simple.
 
 ## Commandes
 
