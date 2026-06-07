@@ -122,7 +122,7 @@ Si `CLAUDE.md` existe et contient un bloc d'état/reprise, **remplace ce bloc** 
 court : « Pour reprendre, lis le dossier `session-handoff/` (`OUTILLAGE.md` puis `HANDOFF.md`). »
 S'il n'y a pas de `CLAUDE.md`, ne pas en créer un.
 
-### 6. Appondre au journal
+### 6. Ajouter une entrée au journal
 Ajoute une entrée au journal (`.claude/JOURNAL.md` selon la pratique du projet) : date, ce qui a
 été fait, état, prochaine étape. Le journal est l'**historique** ; `session-handoff/` est
 l'**instantané courant**.
