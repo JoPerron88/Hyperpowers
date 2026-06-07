@@ -2,57 +2,12 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## État courant — reprise (2026-06-07)
+## État courant — reprise
 
-**Phase : v1 + v2 + v3 + v4 LIVRÉES et MERGÉES sur `main`** (16 tests verts ; `--no-ff`).
-Branche unique = `main`. Sur `origin` (github.com/JoPerron88/Hyperpowers). Spec/plans dans
-`docs/superpowers/` ; journal détaillé `.claude/JOURNAL.md`.
-- **v1 — fait + vérifié runtime ✅** : le dépôt EST le plugin. `standard.md` (4 garde-fous karpathy
-  → pointeurs superpowers) injecté au SessionStart via `hooks/session-start.mjs`. karpathy
-  **désinstallé** ; superpowers + planning-with-files gardés **non-forkés** (dépendances).
-- **v2 — routage des plans** (principe 5 de `standard.md`) : petite=TDD direct / moyenne=superpowers /
-  grosse=`planning-with-files` ; arbitrage du « 5+ tool calls » de pwf (discriminant =
-  franchit sessions/compaction + découvertes qui s'accumulent).
-- **v3 — FinalGoal** (principe 6 + `hooks/session-start.mjs` étendu) : cap projet persistant dans
-  `<projet>/.hyperpowers/goal.md`, **dormant par défaut**, injecté si présent (le hook lit le `cwd`
-  via stdin JSON ; `CLAUDE_PROJECT_DIR` écarté), relu aux checkpoints (anti-dérive du but, non bloquant).
-- **v4 — skill `session-handoff`** (1er skill embarqué, `skills/session-handoff/SKILL.md`) : « fini
-  pour aujourd'hui » → produit un dossier `session-handoff/` commité (`HANDOFF.md` + `OUTILLAGE.md`)
-  pour une reprise à froid **auto-suffisante même sans les plugins**. Durci + testé via
-  `superpowers:writing-skills` (RED-GREEN, producteur + consommateur).
-- **⚠️ Runtime NON vérifié pour v2/v3/v4** : tests unitaires + comportementaux verts, mais l'injection
-  réelle (principes 5/6 au SessionStart, FinalGoal, **découverte du skill**) après **réinstall** du
-  plugin reste à constater en session fraîche. NE PAS écrire « vérifié runtime » avant ce constat
-  humain. (Le plugin est copié dans le cache à l'install → toute édition `standard.md`/hook/skill
-  exige réinstall + redémarrage.)
-- **Spike (antérieur) — clos** : mémoire→qualité **🔴 ROUGE** (boucle mémoire écartée ; « non
-  soutenue par CE test », pas « la mémoire nuit » ; détail `spike/RESULTS.md`).
-- **Architecture — modèle C tranché (2026-06-07)** : Hyperpowers = **distro curée** (non-fork).
-  Étoile polaire = **qualité du code** ; architecture « Conductor ». Voir « Décisions de base ».
-
-### Reprendre sur une AUTRE machine
-
-Ce qui voyage dans git (tout le travail) : code du plugin, `docs/` (5 analyses + spec + plans),
-`spike/` (RESULTS, scorecards, harnais). Ce qui NE voyage PAS (gitignoré / hors-repo) :
-`.claude/JOURNAL.md` (journal privé), la mémoire privée de Claude (`~/.claude/projects/...`),
-`sources/` (clones d'étude — **non nécessaires**, le spike est clos). La substance des décisions
-est entièrement dans `docs/` et ce bloc.
-
-Setup sur la nouvelle machine :
-1. `git clone https://github.com/JoPerron88/Hyperpowers.git` (récupère `main` + `spike`).
-2. Avoir **Node** (≥ v22 ; testé v26). Tests : `npm test` (zéro dépendance à installer).
-3. Réinstaller l'environnement Claude Code :
-   - installer **superpowers** (marketplace officiel) ET **planning-with-files** (dépôt OthmanAdi) —
-     tous deux référencés par le standard (principes 2-6) ; le test « références vivantes » échoue
-     s'ils manquent ;
-   - `/plugin marketplace add <chemin-du-clone>` puis `/plugin install hyperpowers@hyperpowers` ;
-   - **désinstaller** `andrej-karpathy-skills` s'il est présent (source unique = Hyperpowers) ;
-   - redémarrer ; au SessionStart doivent apparaître les **6 principes** du standard ; le skill
-     **`session-handoff`** doit être dans la liste des skills.
-   - (Quand le modèle C sera implémenté, cette install manuelle sera remplacée par le marketplace
-     curé d'Hyperpowers qui tire superpowers + pwf automatiquement.)
-4. Lire ce `CLAUDE.md` + `docs/superpowers/specs/` pour le contexte. (Le journal détaillé
-   `.claude/JOURNAL.md` reste privé/local ; le copier à la main si tu le veux ailleurs.)
+Pour reprendre — **état, prochaine étape, setup machine-neuve, pièges, décisions** — lis le dossier
+**`session-handoff/`** : d'abord `OUTILLAGE.md` (quoi installer), puis `HANDOFF.md` (où on en est).
+C'est la **source unique** de l'état de reprise, tenue à jour par le skill `session-handoff`
+(« fini pour aujourd'hui »). Les décisions de fond stables restent ci-dessous.
 
 ## Projet
 
