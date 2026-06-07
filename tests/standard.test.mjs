@@ -237,3 +237,33 @@ test("standard.md mentionne brainstorming-advanced comme option opt-in", () => {
     "standard.md doit préciser que l'accord utilisateur est requis",
   );
 });
+
+test("newproject skill existe et a un frontmatter valide", () => {
+  const skillPath = join(root, "skills/newproject/SKILL.md");
+  const content = readFileSync(skillPath, "utf8");
+  assert.ok(content.startsWith("---"), "SKILL.md doit commencer par frontmatter YAML");
+  assert.ok(content.includes("name: newproject"), "name requis");
+  assert.ok(content.includes("description:"), "description requise");
+  assert.ok(content.includes("user-invocable: true"), "user-invocable requis");
+});
+
+test("newproject skill décrit les 3 artefacts obligatoires", () => {
+  const content = readFileSync(join(root, "skills/newproject/SKILL.md"), "utf8");
+  assert.ok(content.includes("CLAUDE.md"), "artefact CLAUDE.md requis");
+  assert.ok(content.includes(".hyperpowers/goal.md"), "artefact goal.md requis");
+  assert.ok(content.includes("git init"), "artefact git init requis");
+});
+
+test("newproject skill mentionne brainstorming comme option en phase 2", () => {
+  const content = readFileSync(join(root, "skills/newproject/SKILL.md"), "utf8");
+  assert.ok(
+    content.includes("superpowers:brainstorming"),
+    "option brainstorming requise en phase 2",
+  );
+});
+
+test("newproject skill décrit le débat de phase 3 avec Enthousiaste et Sage", () => {
+  const content = readFileSync(join(root, "skills/newproject/SKILL.md"), "utf8");
+  assert.ok(content.includes("Enthousiaste"), "agent Enthousiaste requis dans le débat");
+  assert.ok(content.includes("Sage"), "agent Sage requis dans le débat");
+});
