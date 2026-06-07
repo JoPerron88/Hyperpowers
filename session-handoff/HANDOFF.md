@@ -16,13 +16,14 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
   **ET** présent dans ce dossier (copier-coller → rien ne se perd). ✅ surface de perte nulle.
 - Inclus le **README détaillé** (avec crédits aux dépôts d'origine) et la **feuille de route**
   ci-dessous.
-- **v1→v4 livrées et mergées sur `main`** (`--no-ff`, **16 tests verts**), **gate runtime ✅ vérifié** :
+- **v1→v4 livrées et mergées sur `main`** (`--no-ff`, **16 tests verts**), **gate runtime ✅ entièrement vérifié** :
   - **v1** — noyau comportemental : `standard.md` injecté au SessionStart (`hooks/session-start.mjs`),
     4 garde-fous karpathy recadrés en pointeurs vers superpowers.
   - **v2** — routage des plans (**principe 5** de `standard.md`) : petite=TDD / moyenne=superpowers /
     grosse=planning-with-files ; arbitrage du « 5+ tool calls » de pwf.
   - **v3** — FinalGoal (**principe 6** + hook étendu) : cap projet dans `<projet>/.hyperpowers/goal.md`,
-    dormant par défaut, injecté si présent, relu aux checkpoints (anti-dérive du but).
+    dormant par défaut, injecté si présent, relu aux checkpoints (anti-dérive du but). ✅ testé
+    (dormant sans `goal.md`, bloc injecté avec).
   - **v4** — skill **`session-handoff`** (`skills/session-handoff/SKILL.md`) : c'est lui qui a
     produit ce dossier.
 
