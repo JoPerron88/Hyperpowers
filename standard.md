@@ -10,6 +10,8 @@ Expliciter les hypothèses ; si plusieurs interprétations existent, les présen
 choisir une en silence ; si une approche plus simple existe, le dire. Si quelque chose est
 flou : s'arrêter, nommer le flou, demander.
 → Process : `superpowers:brainstorming` avant tout travail créatif.
+  Pour les décisions architecturales avec de vraies tensions de conception,
+  `hyperpowers:brainstorming-advanced` peut être **suggéré** — jamais sans accord explicite de l'utilisateur.
 
 ## 2. Simplicité d'abord (YAGNI)
 Le minimum qui résout le problème, rien de spéculatif : pas d'options/config/abstraction non

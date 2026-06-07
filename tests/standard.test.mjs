@@ -216,3 +216,24 @@ test("le hook ne plante pas si stdin est vide (fallback process.cwd())", () => {
     "le standard doit être injecté même sans stdin",
   );
 });
+
+test("brainstorming-advanced skill existe et a un frontmatter valide", () => {
+  const skillPath = join(root, "skills/brainstorming-advanced/SKILL.md");
+  const content = readFileSync(skillPath, "utf8");
+  assert.ok(content.startsWith("---"), "SKILL.md doit commencer par frontmatter YAML");
+  assert.ok(content.includes("name: brainstorming-advanced"), "name requis");
+  assert.ok(content.includes("description:"), "description requise");
+  assert.ok(content.includes("user-invocable: true"), "user-invocable requis");
+});
+
+test("standard.md mentionne brainstorming-advanced comme option opt-in", () => {
+  const content = readFileSync(join(root, "standard.md"), "utf8");
+  assert.ok(
+    content.includes("brainstorming-advanced"),
+    "standard.md doit mentionner brainstorming-advanced",
+  );
+  assert.ok(
+    content.includes("accord explicite"),
+    "standard.md doit préciser que l'accord utilisateur est requis",
+  );
+});
