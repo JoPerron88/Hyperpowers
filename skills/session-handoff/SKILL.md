@@ -27,6 +27,7 @@ Exécute et garde les sorties :
 Repère les pointeurs présents : `docs/superpowers/specs` et `/plans`, le journal (souvent
 `.claude/JOURNAL.md`), et le FinalGoal `.hyperpowers/goal.md`.
 **N'essaie pas** de deviner la commande de test/build/lancement — inconnue pour un projet quelconque.
+Note aussi la **date du jour** : elle remplit l'en-tête « Dernière mise à jour » du `HANDOFF.md`.
 
 ### 2. Poser les questions de trou (une à la fois)
 1. **Ce qui était prévu ensuite ?** (l'info la plus précieuse pour un futur-toi.)
@@ -86,7 +87,9 @@ duplique pas le contenu (la mémoire ne voyage pas vers une autre machine/un aut
 le handoff de session »). Le journal reste gitignoré/local.
 
 ## Cas limites
-- **Pas un dépôt git** : saute l'étape 1, appuie-toi sur les questions ; produis quand même `HANDOFF.md`.
+- **Pas un dépôt git** : saute les étapes 1 et 7 (pas de commit possible), appuie-toi sur les
+  questions ; produis quand même `HANDOFF.md` et signale à l'utilisateur de le sauvegarder
+  manuellement (son moyen de partage).
 - **`HANDOFF.md` déjà présent** : réécris-le (instantané courant) ; l'historique est dans git.
 - **Setup inconnu** : marque-le explicitement, n'invente pas.
 
