@@ -290,3 +290,23 @@ test("newproject description ne résume pas le workflow (CSO)", () => {
     "description ne doit pas résumer le workflow (CSO — piège de déclenchement)",
   );
 });
+
+test("GEMINI.md existe et référence standard.md via @-include", () => {
+  const content = readFileSync(join(root, "GEMINI.md"), "utf8");
+  assert.ok(content.includes("@standard.md"), "@-include de standard.md requis");
+});
+
+test("opencode.json est valide et inclut standard.md", () => {
+  const config = JSON.parse(readFileSync(join(root, "opencode.json"), "utf8"));
+  assert.ok(Array.isArray(config.instructions), "instructions doit être un tableau");
+  assert.ok(
+    config.instructions.includes("standard.md"),
+    "standard.md doit être dans instructions",
+  );
+});
+
+test("AGENTS.md existe et contient le standard (généré)", () => {
+  const content = readFileSync(join(root, "AGENTS.md"), "utf8");
+  assert.ok(content.includes("AUTO-GÉNÉRÉ"), "en-tête AUTO-GÉNÉRÉ requis");
+  assert.ok(content.includes("Réfléchir avant de coder"), "contenu standard requis");
+});

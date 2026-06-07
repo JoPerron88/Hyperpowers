@@ -92,6 +92,26 @@ Hyperpowers dépend de deux plugins amont. Sur une machine fraîche :
 > 🔭 *À venir (modèle C)* : un marketplace curé qui tirera superpowers + planning-with-files
 > automatiquement — « ajouter le marketplace Hyperpowers » suffira.
 
+## Utiliser sur d'autres plateformes
+
+Le standard de qualité et les skills sont disponibles sur d'autres plateformes via les
+fichiers d'entrée présents à la racine :
+
+| Plateforme | Fichier | Mécanisme |
+|---|---|---|
+| **Gemini CLI** | `GEMINI.md` | `@-include` natif — automatique |
+| **OpenCode** | `opencode.json` | `instructions` array natif — automatique |
+| **Codex (OpenAI)** | `AGENTS.md` | Contenu embarqué — régénérer après modifs |
+| **Mistral Vibe** | `AGENTS.md` | Idem — remplace le prompt système |
+
+**Limitation :** le hook dynamique FinalGoal (`.hyperpowers/goal.md`) est Claude Code-only.
+Sur les autres plateformes, le standard est injecté statiquement.
+
+**Régénérer `AGENTS.md`** après toute modification de `standard.md` ou des skills :
+```bash
+npm run build:agents
+```
+
 ## Utilisation
 
 - **Le Standard** s'applique tout seul (injecté au SessionStart). Rien à faire.
