@@ -1,5 +1,5 @@
 # Handoff — Hyperpowers
-> Dernière mise à jour : 2026-06-07 (soir). Reprise à froid : si tu n'as pas l'outillage de ce projet,
+> Dernière mise à jour : 2026-06-07 (fin de soirée). Reprise à froid : si tu n'as pas l'outillage de ce projet,
 > lis d'abord `OUTILLAGE.md` (à côté), puis ce fichier.
 
 ## Le but (FinalGoal)
@@ -33,7 +33,9 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
 
 1. **Nouveaux skills / artefacts à concevoir** (idées de l'auteur — **périmètre non cadré, passer
    par `superpowers:brainstorming` avant de coder**) :
-   - **`brainstorming-advanced`** — un 2ᵉ skill d'idéation, plus avancé que `superpowers:brainstorming`.
+   - **`brainstorming-advanced`** ✅ **livré** — skill `hyperpowers:brainstorming-advanced` :
+     débat multi-agents (3 vrais sous-agents via `Agent`), 2 modes d'experts, clôture avec
+     recommandation, sortie compatible `superpowers:writing-plans`. Testé (17 verts). Commité et poussé.
    - **« bible de projet »** — document/skill de référence durable du projet (à définir).
    - **« cahier maître »** — journal/registre maître transverse (à définir).
 
