@@ -23,6 +23,10 @@ Détectés via `~/.claude/plugins/installed_plugins.json` + la structure du dép
   hyperpowers@hyperpowers`. ⚠️ **désinstaller `andrej-karpathy-skills`** s'il est présent (son
   contenu est absorbé dans Hyperpowers — source unique).
 
+- **warp** (Warp terminal, marketplace `claude-code-warp`) — intégration Warp Terminal pour Claude
+  Code : notifications natives et extras à venir. Confort de workflow, non requis pour le projet.
+  Installer : `/plugin install warp@claude-code-warp` (marketplace `github.com/warpdotdev/claude-code-warp`).
+
 > Quand le **modèle C / v5** sera implémenté, le `marketplace.json` d'Hyperpowers tirera
 > superpowers + pwf automatiquement : « ajouter le marketplace Hyperpowers » suffira.
 
