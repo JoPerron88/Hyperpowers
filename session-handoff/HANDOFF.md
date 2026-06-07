@@ -1,5 +1,5 @@
 # Handoff — Hyperpowers
-> Dernière mise à jour : 2026-06-07. Reprise à froid : si tu n'as pas l'outillage de ce projet,
+> Dernière mise à jour : 2026-06-07 (soir). Reprise à froid : si tu n'as pas l'outillage de ce projet,
 > lis d'abord `OUTILLAGE.md` (à côté), puis ce fichier.
 
 ## Le but (FinalGoal)
@@ -16,7 +16,7 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
   **ET** présent dans ce dossier (copier-coller → rien ne se perd). ✅ surface de perte nulle.
 - Inclus le **README détaillé** (avec crédits aux dépôts d'origine) et la **feuille de route**
   ci-dessous.
-- **v1→v4 livrées et mergées sur `main`** (`--no-ff`, **16 tests verts**) :
+- **v1→v4 livrées et mergées sur `main`** (`--no-ff`, **16 tests verts**), **gate runtime ✅ vérifié** :
   - **v1** — noyau comportemental : `standard.md` injecté au SessionStart (`hooks/session-start.mjs`),
     4 garde-fous karpathy recadrés en pointeurs vers superpowers.
   - **v2** — routage des plans (**principe 5** de `standard.md`) : petite=TDD / moyenne=superpowers /
@@ -27,12 +27,7 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
     produit ce dossier.
 
 ## Ce qui était prévu ensuite
-1. **Gate runtime (v2/v3/v4) — PAS encore faite.** Réinstaller le plugin + redémarrer, puis
-   constater en session fraîche : les **6 principes** du standard injectés ; le **FinalGoal**
-   (dormant sans `.hyperpowers/goal.md`, injecté avec) ; le skill **`session-handoff`** présent dans
-   la liste des skills. C'est la seule chose qui permettra d'écrire « vérifié runtime » dans
-   `CLAUDE.md`.
-2. **v5 = implémenter le modèle C** (distro curée). Faire du `.claude-plugin/marketplace.json` un
+1. **v5 = implémenter le modèle C** (distro curée). Faire du `.claude-plugin/marketplace.json` un
    marketplace qui référence **superpowers** (`source: url|git-subdir` → github.com/obra/superpowers) +
    **planning-with-files** (`source: url` → github.com/OthmanAdi/planning-with-files) +
    **hyperpowers** (`./`). Faisabilité confirmée (le marketplace officiel utilise déjà ces sources).
@@ -56,10 +51,10 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
 
 ## Pièges à connaître
 - **Plugin copié dans le cache à l'install** : toute édition de `standard.md` / hook / skill n'a
-  **aucun effet runtime** tant que le plugin n'est pas **réinstallé + redémarré**. (C'est pour ça
-  que la gate runtime reste à faire.)
-- **Runtime de v2/v3/v4 non vérifié** : tests unitaires + comportementaux verts, mais l'injection
-  réelle pas constatée. Ne pas affirmer « vérifié runtime » avant.
+  **aucun effet runtime** tant que le plugin n'est pas **réinstallé + redémarré**.
+- **Double injection (réglée)** : le hook `SessionStart` existait à la fois dans `~/.claude/settings.json`
+  (entrée manuelle héritée) et dans `hooks/hooks.json` du plugin. L'entrée manuelle a été retirée
+  de `settings.json` le 2026-06-07 — le plugin seul l'enregistre désormais.
 - Tests **scopés à `tests/`** (le dépôt a aussi des `*.test.mjs` dans `spike/` à ne pas lancer).
 - `.claude/` est **gitignoré** (journal privé) — ne pas le committer.
 
