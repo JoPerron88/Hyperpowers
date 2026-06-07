@@ -21,11 +21,20 @@ setup machine-neuve (un nouvel arrivant qui suit des étapes fabriquées = le sc
 Exécute et garde les sorties :
 - `git branch --show-current`
 - `git log --oneline -8`
-- `git status --short`
+- `git status --short` (modifications non commitées)
 - `git log --oneline @{u}.. 2>/dev/null` (commits non poussés, si un upstream existe)
+- `git remote -v` (un remote existe-t-il ?)
 
-Repère les pointeurs présents : `docs/superpowers/specs` et `/plans`, le journal (souvent
-`.claude/JOURNAL.md`), et le FinalGoal `.hyperpowers/goal.md`.
+**⚠️ Surface de perte — crucial pour la « machine neuve ».** Ce qui NE voyage PAS au `git clone` :
+les modifications **non commitées**, les commits **non poussés**, ou l'**absence de remote**. Si tu
+en repères, **signale-le explicitement à l'utilisateur** et **demande** s'il veut commiter / pousser
+pour ne rien perdre — **ne commite jamais son travail en cours en douce** (c'est le sien). Reflète
+cet état dans la section « Où on en est » du `HANDOFF.md`.
+
+Repère les docs de contexte présents (universels) : `README`, un dossier `docs/`, un journal
+(souvent `.claude/JOURNAL.md`), un fichier de but `.hyperpowers/goal.md`. Si le projet utilise
+Hyperpowers, aussi `docs/superpowers/specs` et `/plans` — mais **ne traite pas** ces chemins comme
+universels.
 **N'essaie pas** de deviner la commande de test/build/lancement — inconnue pour un projet quelconque.
 Note aussi la **date du jour** : elle remplit l'en-tête « Dernière mise à jour » du `HANDOFF.md`.
 
@@ -39,6 +48,9 @@ Note aussi la **date du jour** : elle remplit l'en-tête « Dernière mise à jo
 
 Si l'utilisateur ne sait pas pour le point 2, écris-le explicitement (« setup non documenté — à
 reconstituer ») au lieu d'inventer.
+Si tu ne peux **pas** poser ces questions de façon interactive (exécution en une passe, utilisateur
+absent), écris des marqueurs explicites « à confirmer » dans `HANDOFF.md` pour les parties humaines —
+ne bloque pas, n'invente pas.
 
 ### 3. Écrire `HANDOFF.md` (racine du projet, réécriture complète)
 ```markdown
@@ -50,7 +62,7 @@ reconstituer ») au lieu d'inventer.
 
 ## Où on en est
 - Branche : <…> · Derniers commits : <…>
-- Non commité / non poussé : <…>
+- Non commité / non poussé / remote : <…> — ⚠️ tant que non poussé, ça ne voyage PAS au clone
 
 ## Ce qui était prévu ensuite
 <réponse 1>
@@ -81,6 +93,8 @@ courant**.
 ### 6. Pointeur mémoire IA
 Laisse une note mémoire d'**une ligne** : « Projet <nom> : pour reprendre, lis `HANDOFF.md`. » Ne
 duplique pas le contenu (la mémoire ne voyage pas vers une autre machine/un autre utilisateur).
+Si ton environnement n'a **pas** de système mémoire accessible pour ce projet, **saute cette
+étape** — n'invente pas de fichier mémoire.
 
 ### 7. Committer
 `git add HANDOFF.md` (+ `CLAUDE.md` s'il a été aminci), puis un commit clair (ex. « Mettre à jour
@@ -90,7 +104,9 @@ le handoff de session »). Le journal reste gitignoré/local.
 - **Pas un dépôt git** : saute les étapes 1 et 7 (pas de commit possible), appuie-toi sur les
   questions ; produis quand même `HANDOFF.md` et signale à l'utilisateur de le sauvegarder
   manuellement (son moyen de partage).
-- **`HANDOFF.md` déjà présent** : réécris-le (instantané courant) ; l'historique est dans git.
+- **`HANDOFF.md` déjà présent** : réécris l'instantané courant, mais **préserve les réponses déjà
+  confirmées** par l'utilisateur (ne les efface pas, ne ré-interroge pas inutilement) ; l'historique
+  reste dans git.
 - **Setup inconnu** : marque-le explicitement, n'invente pas.
 
 ## Honnêteté
