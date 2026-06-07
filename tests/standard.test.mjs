@@ -267,3 +267,26 @@ test("newproject skill décrit le débat de phase 3 avec Enthousiaste et Sage", 
   assert.ok(content.includes("Enthousiaste"), "agent Enthousiaste requis dans le débat");
   assert.ok(content.includes("Sage"), "agent Sage requis dans le débat");
 });
+
+test("newproject skill contient une section erreurs courantes", () => {
+  const content = readFileSync(join(root, "skills/newproject/SKILL.md"), "utf8");
+  assert.ok(content.includes("Erreurs courantes"), "section erreurs courantes requise");
+});
+
+test("newproject skill précise le contexte à passer au Tour 2 du débat", () => {
+  const content = readFileSync(join(root, "skills/newproject/SKILL.md"), "utf8");
+  assert.ok(content.includes("Tour 2"), "référence au Tour 2 requise");
+  assert.ok(
+    content.includes("Tour 1"),
+    "contexte du Tour 1 doit être mentionné pour le Tour 2",
+  );
+});
+
+test("newproject description ne résume pas le workflow (CSO)", () => {
+  const content = readFileSync(join(root, "skills/newproject/SKILL.md"), "utf8");
+  const frontmatter = content.split("---")[1];
+  assert.ok(
+    !frontmatter.includes("Guides through"),
+    "description ne doit pas résumer le workflow (CSO — piège de déclenchement)",
+  );
+});

@@ -1,10 +1,8 @@
 ---
 name: newproject
 description: >
-  Use when starting a brand new project from scratch — before any code, any file, any
-  structure. Invoke as /NewProject [short description] to start. Guides through idea
-  verbalization, technology choices, scope, risks, and creates the essential artefacts
-  (CLAUDE.md, .hyperpowers/goal.md, git init) to start clean.
+  Use when starting a brand new project from scratch — before any code, any file,
+  or folder structure exists. Invoke as /NewProject [description].
   Do NOT use for projects already in progress.
 user-invocable: true
 ---
@@ -137,7 +135,8 @@ Réponds en 150-200 mots."
 
 **Si le débat n'est pas épuisé**, formuler un Tour 2 :
 Tension : "Y a-t-il une version plus simple qui livre 80% de la valeur ?"
-Même format. **Maximum 2 tours.**
+Même format — passer en contexte les réponses des deux agents du Tour 1 dans les prompts.
+**Maximum 2 tours.**
 
 **Clôture du débat — présenter 2-3 options de scope :**
 
@@ -249,6 +248,16 @@ Puis handoff explicite :
 > puis `superpowers:writing-plans` pour la planifier avant de coder."
 
 ---
+
+## Erreurs courantes
+
+| Erreur | Correction |
+|--------|------------|
+| Poser 2 questions dans le même message | Une seule question par message — toujours |
+| Créer CLAUDE.md avant goal.md | Ordre imposé : goal.md → CLAUDE.md → git init |
+| Forcer le débat Phase 3 si le scope est évident | Le débat est optionnel — ne le proposer que si l'utilisateur est incertain |
+| Continuer à coder après Phase 5 | Ce skill s'arrête à Phase 5 ; handoff explicite vers les skills habituels |
+| Commiter sans demander confirmation | Afficher le résumé des 3 artefacts, attendre le "ok" de l'utilisateur |
 
 ## Règles absolues
 
