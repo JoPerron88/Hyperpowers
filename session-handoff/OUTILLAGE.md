@@ -8,8 +8,8 @@ Détectés via `~/.claude/plugins/installed_plugins.json` + la structure du dép
   `brainstorming`, `writing-plans`, `subagent-driven-development`, `test-driven-development`,
   `writing-skills`, `finishing-a-development-branch`, etc. **Hyperpowers en dépend** : le standard et
   les principes 1-6 pointent vers ses skills (le test « références vivantes » échoue s'il manque).
-  Installer : le marketplace `claude-plugins-official` est officiel → `/plugin install
-  superpowers@claude-plugins-official` (ajouter le marketplace officiel d'abord s'il n'est pas là).
+  Installer : `/plugin install superpowers@claude-plugins-official` (ajouter le marketplace officiel
+  d'abord s'il n'est pas présent).
 
 - **planning-with-files** (pwf — dépôt **github.com/OthmanAdi**, à confirmer l'URL exacte) — fichiers
   persistants `task_plan.md`/`findings.md`/`progress.md`, reprise après `/clear`. Référencé par les
@@ -18,25 +18,22 @@ Détectés via `~/.claude/plugins/installed_plugins.json` + la structure du dép
   était installé en **skill-only** dans `~/.claude/skills/planning-with-files`.)
 
 - **hyperpowers** (CE projet) — la **glue** : standard de qualité injecté au SessionStart + routage
-  des plans (principe 5) + FinalGoal (principe 6 + hook) + skill `session-handoff`. Installer depuis
-  ce dossier : `/plugin marketplace add <chemin-de-ce-dossier>` puis `/plugin install
-  hyperpowers@hyperpowers`. ⚠️ **désinstaller `andrej-karpathy-skills`** s'il est présent (son
-  contenu est absorbé dans Hyperpowers — source unique).
+  des plans (principe 5) + FinalGoal (principe 6 + hook) + skills `session-handoff`, `newproject`,
+  `brainstorming-advanced`. Installer depuis ce dossier : `/plugin marketplace add <chemin-de-ce-dossier>`
+  puis `/plugin install hyperpowers@hyperpowers`. ⚠️ **désinstaller `andrej-karpathy-skills`** s'il
+  est présent (son contenu est absorbé dans Hyperpowers — source unique).
 
 - **warp** (Warp terminal, marketplace `claude-code-warp`) — intégration Warp Terminal pour Claude
-  Code : notifications natives et extras à venir. Confort de workflow, non requis pour le projet.
-  Installer : `/plugin install warp@claude-code-warp` (marketplace `github.com/warpdotdev/claude-code-warp`).
-
-> Quand le **modèle C / v5** sera implémenté, le `marketplace.json` d'Hyperpowers tirera
-> superpowers + pwf automatiquement : « ajouter le marketplace Hyperpowers » suffira.
+  Code : notifications natives et extras. Confort de workflow, non requis pour le projet.
+  Installer : `/plugin install warp@claude-code-warp`.
 
 ## Repli — si tu n'installes pas l'outillage
-Tu peux quand même continuer : c'est un dépôt **Node standard** (`npm test` marche tel quel, 16 verts).
-- **Sans superpowers** : les skills de process ne se déclenchent pas automatiquement. Reproduis la
-  méthode à la main : brainstorm → spec dans `docs/superpowers/specs/` → plan → TDD → revue.
-- **Sans hyperpowers** : le standard (penser avant · simplicité/YAGNI · chirurgical · piloté par
-  objectif · planifier à la bonne échelle · garder le cap) n'est pas injecté — applique-le
-  consciemment (il est lisible dans `standard.md`).
+Tu peux quand même continuer : c'est un dépôt **Node standard** (`npm test` marche tel quel, 27 verts).
+- **Sans superpowers** : skills de process non déclenchés automatiquement. Reproduis à la main :
+  brainstorm → spec dans `docs/superpowers/specs/` → plan → TDD → revue.
+- **Sans hyperpowers** : le standard n'est pas injecté au SessionStart — applique-le consciemment
+  (lisible dans `standard.md`). Les skills `newproject` et `brainstorming-advanced` ne sont pas
+  disponibles.
 - **Sans planning-with-files** : pas de suivi vivant pour les grosses tâches ; un plan statique
   superpowers suffit pour le moyen.
 

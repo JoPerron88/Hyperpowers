@@ -11,68 +11,76 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
 (non commercial).
 
 ## Où on en est
-- Branche : **`main`** (branche unique), **arbre propre**, à jour avec `origin` (dernier commit :
-  `git log -1`). **Tout est commité ET poussé** sur `origin` (github.com/JoPerron88/Hyperpowers)
-  **ET** présent dans ce dossier (copier-coller → rien ne se perd). ✅ surface de perte nulle.
-- Inclus le **README détaillé** (avec crédits aux dépôts d'origine) et la **feuille de route**
-  ci-dessous.
-- **v1→v4 livrées + `brainstorming-advanced` livré post-v4**, **17 tests verts** (18 au total — 1 échec pré-existant : `planning-with-files` non installé sur cette machine), **gate runtime ✅ entièrement vérifié** :
-  - **v1** — noyau comportemental : `standard.md` injecté au SessionStart (`hooks/session-start.mjs`),
-    4 garde-fous karpathy recadrés en pointeurs vers superpowers.
-  - **v2** — routage des plans (**principe 5** de `standard.md`) : petite=TDD / moyenne=superpowers /
-    grosse=planning-with-files ; arbitrage du « 5+ tool calls » de pwf.
-  - **v3** — FinalGoal (**principe 6** + hook étendu) : cap projet dans `<projet>/.hyperpowers/goal.md`,
-    dormant par défaut, injecté si présent, relu aux checkpoints (anti-dérive du but). ✅ testé
-    (dormant sans `goal.md`, bloc injecté avec).
-  - **v4** — skill **`session-handoff`** (`skills/session-handoff/SKILL.md`) : c'est lui qui a
-    produit ce dossier.
+- Branche : **`main`** (branche unique), **arbre propre**.
+- **⚠️ 3 commits NON POUSSÉS** vers `origin` (github.com/JoPerron88/Hyperpowers) :
+  - `c0c934c` feat: support multi-plateforme — Gemini CLI, OpenCode, Codex, Mistral Vibe
+  - `51f9f99` refine: newproject — corrections writing-skills (CSO, erreurs courantes, Tour 2)
+  - `c971b2e` feat: ajouter hyperpowers:newproject — skill d'amorçage de projet en 5 phases
+  → Pousser avec `git push` pour sécuriser avant reprise sur une autre machine.
+- **27 tests verts** (28 au total — 1 rouge pré-existant toléré : `planning-with-files` non
+  installé sur cette machine).
+- **v1→v4 livrées** + skills post-v4 livrés cette session :
+  - **`brainstorming-advanced`** ✅ livré — débat multi-agents (Enthousiaste + Sage + Modérateur
+    via vrais sous-agents `Agent`), 2 modes experts, clôture avec recommandation.
+  - **`newproject`** ✅ livré — skill d'amorçage projet en 5 phases (Verbalisation → Tech →
+    Scope/Risques → 3 artefacts → Roadmap). Corrigé via writing-skills (CSO, Erreurs courantes,
+    Tour 2 du débat). Tests comportementaux Iron Law effectués.
+  - **Support multi-plateforme** ✅ livré (statiquement) — `GEMINI.md` (@-include), `opencode.json`
+    (instructions array), `scripts/build-agents.mjs` + `AGENTS.md` (contenu embarqué pour Codex +
+    Mistral Vibe). Ces fichiers servent le repo Hyperpowers lui-même.
 
 ## Ce qui était prévu ensuite
-> **v5 (marketplace multi-plugin) = abandonné** — sur-engineeré pour un usage personnel. Le git
-> suffit comme point de distribution ; OUTILLAGE.md couvre la reprise sur machine neuve.
+**À faire en début de prochaine session :**
 
-1. **Nouveaux skills / artefacts à concevoir** (idées de l'auteur — **périmètre non cadré, passer
-   par `superpowers:brainstorming` avant de coder**) :
-   - **`brainstorming-advanced`** ✅ **livré** — skill `hyperpowers:brainstorming-advanced` :
-     débat multi-agents (3 vrais sous-agents via `Agent`), 2 modes d'experts, clôture avec
-     recommandation, sortie compatible `superpowers:writing-plans`. Testé (17 verts). Commité et poussé.
-   - **« bible de projet »** — document/skill de référence durable du projet (à définir).
+1. **A — Configs globales** ← **PROCHAIN CHANTIER** (décidé fin de session 2026-06-07)
+   - Écrire `scripts/install.mjs` : détecte les plateformes IA installées sur la machine
+     (`~/.gemini/`, config OpenCode, etc.) et copie/lie les fichiers d'entrée vers leurs
+     emplacements globaux.
+   - Brainstormer d'abord avec `superpowers:brainstorming` pour cadrer :
+     - Emplacements globaux exacts pour chaque plateforme (à vérifier — ne pas inventer)
+     - Comportement si plateforme absente (skip silencieux vs. warning)
+     - Mise à jour : est-ce que `npm run build:agents` doit aussi relancer l'install ?
+   - **Lacune actuelle** : les fichiers `GEMINI.md` / `opencode.json` / `AGENTS.md` sont dans le
+     repo Hyperpowers mais pas dans les configs globales des plateformes → les autres plateformes
+     ne voient rien dans les projets utilisateur.
+
+2. **Skills à concevoir** (périmètre non cadré — passer par brainstorming avant) :
+   - **« bible de projet »** — document de référence durable d'un projet (à définir).
    - **« cahier maître »** — journal/registre maître transverse (à définir).
 
 ## Reprendre sur une machine neuve (le projet)
-- **Méthode prévue : copier-coller du dossier complet** → tu obtiens `.git` (historique),
-  `.claude/JOURNAL.md` (journal privé, gitignoré mais physiquement présent), tout le code.
-  *(Alternative : `git clone https://github.com/JoPerron88/Hyperpowers.git` → identique, sauf le
-  JOURNAL qui ne suit pas.)*
-- **Node ≥ v22** (testé v26.2.0). Tests : `npm test` (zéro dépendance à installer) → doit afficher
-  **16 verts**.
+- `git clone https://github.com/JoPerron88/Hyperpowers.git` *(après avoir poussé les 3 commits)*
+- **Node ≥ v22** (testé v26.2.0). Tests : `npm test` → doit afficher **27 verts** (28 total,
+  1 rouge toléré si planning-with-files absent).
+- `npm run build:agents` pour régénérer `AGENTS.md` si besoin.
 - Outillage Claude Code à installer sur la nouvelle machine : **voir `OUTILLAGE.md`**.
-- Ce qui NE voyage PAS, même en copier-coller : la **mémoire privée de Claude**
-  (`~/.claude/projects/...`, hors dossier). Ce `HANDOFF.md` + `CLAUDE.md` + `docs/` re-sèment le
-  contexte.
+- Ce qui NE voyage PAS au clone : la mémoire privée de Claude (`~/.claude/projects/...`).
+  `HANDOFF.md` + `CLAUDE.md` + `docs/` re-sèment le contexte.
 
 ## Pièges à connaître
 - **Plugin copié dans le cache à l'install** : toute édition de `standard.md` / hook / skill n'a
   **aucun effet runtime** tant que le plugin n'est pas **réinstallé + redémarré**.
-- **Double injection (réglée)** : le hook `SessionStart` existait à la fois dans `~/.claude/settings.json`
-  (entrée manuelle héritée) et dans `hooks/hooks.json` du plugin. L'entrée manuelle a été retirée
-  de `settings.json` le 2026-06-07 — le plugin seul l'enregistre désormais.
+- **Double injection (réglée)** : l'entrée manuelle dans `~/.claude/settings.json` a été retirée
+  le 2026-06-07 — le plugin seul enregistre le hook désormais.
 - Tests **scopés à `tests/`** (le dépôt a aussi des `*.test.mjs` dans `spike/` à ne pas lancer).
 - `.claude/` est **gitignoré** (journal privé) — ne pas le committer.
+- **Multi-plateforme = statique seulement** : `GEMINI.md` / `opencode.json` / `AGENTS.md` sont
+  dans le repo mais pas installés globalement. Le prochain chantier (configs globales) comble ça.
+- **`AGENTS.md` à régénérer** après toute modif de `standard.md` ou des skills :
+  `npm run build:agents`.
 
 ## Décisions clés & pourquoi
 - **Modèle C (distro curée, non-fork)** — tranché 2026-06-07. Ne pas forker superpowers/pwf
-  (activement maintenus → re-merge à vie, intenable) ; les **référencer** + ajouter la glue.
-  Écartés : A (couche à côté), B (fork dedans).
-- **Spike mémoire = 🔴 ROUGE** : « se souvenir améliore le code » **non soutenue par CE test**
-  (0/12 pièges). Boucle mémoire écartée. ⚠️ PAS « la mémoire nuit ». Ne pas rejouer pour chercher
-  le vert (biais de confirmation déjà fermé).
+  (activement maintenus) ; les **référencer** + ajouter la glue.
+- **Spike mémoire = 🔴 ROUGE** : boucle mémoire écartée. PAS « la mémoire nuit » — ne pas rejouer.
 - **FinalGoal = advisory** : réduit la dérive du but, ne la garantit pas à zéro.
-- karpathy **absorbé** (→ `standard.md`) puis désinstallé ; superpowers + pwf **non-forkés**.
+- **NewProject = skill autonome** (non couplé à brainstorming-advanced) — option 2, skill standard
+  invocable par `/NewProject [Description]`.
+- **Multi-plateforme = fichiers statiques dans le repo** (YAGNI) — les configs globales sont le
+  prochain chantier, pas un surcoût de la spec initiale.
 
 ## Où trouver le détail
-- Specs/plans (v1→v4) : `docs/superpowers/specs` et `docs/superpowers/plans`.
-- Analyses de conception : `docs/analyse-*.md`.
-- Spike (clos) : `spike/RESULTS.md`, `spike/roles-scorecard.md`.
-- Journal détaillé (privé, voyage en copier-coller) : `.claude/JOURNAL.md`.
+- Specs/plans : `docs/superpowers/specs/` et `docs/superpowers/plans/`.
+- Skills livrés : `skills/brainstorming-advanced/`, `skills/newproject/`, `skills/session-handoff/`.
+- Journal détaillé (privé, gitignoré) : `.claude/JOURNAL.md`.
 - Guidance projet stable : `CLAUDE.md`.
