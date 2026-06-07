@@ -32,10 +32,14 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
    la liste des skills. C'est la seule chose qui permettra d'écrire « vérifié runtime » dans
    `CLAUDE.md`.
 2. **v5 = implémenter le modèle C** (distro curée). Faire du `.claude-plugin/marketplace.json` un
-   marketplace qui référence **superpowers** (`source: git-subdir` vers le dépôt Anthropic) +
-   **planning-with-files** (`source: url` vers le dépôt OthmanAdi) + **hyperpowers** (`./`).
-   Faisabilité confirmée (le marketplace officiel utilise déjà ces sources). Détail à régler :
-   URL/`path`/`ref` exacts de superpowers dans le dépôt Anthropic.
+   marketplace qui référence **superpowers** (`source: url|git-subdir` → github.com/obra/superpowers) +
+   **planning-with-files** (`source: url` → github.com/OthmanAdi/planning-with-files) +
+   **hyperpowers** (`./`). Faisabilité confirmée (le marketplace officiel utilise déjà ces sources).
+3. **Nouveaux skills / artefacts à concevoir** (idées de l'auteur — **périmètre non cadré, passer
+   par `superpowers:brainstorming` avant de coder**) :
+   - **`brainstorming-advanced`** — un 2ᵉ skill d'idéation, plus avancé que `superpowers:brainstorming`.
+   - **« bible de projet »** — document/skill de référence durable du projet (à définir).
+   - **« cahier maître »** — journal/registre maître transverse (à définir).
 
 ## Reprendre sur une machine neuve (le projet)
 - **Méthode prévue : copier-coller du dossier complet** → tu obtiens `.git` (historique),
