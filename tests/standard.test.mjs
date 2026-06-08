@@ -392,11 +392,13 @@ test("brainstorming-advanced SKILL.md contient le mécanisme d'élévation d'exp
   assert.ok(content.includes("élév"), "mécanisme d'élévation requis (élevé/élévation/élevable)");
 });
 
-test("brainstorming-advanced SKILL.md frontmatter description mentionne le méta-routage", () => {
+test("brainstorming-advanced SKILL.md frontmatter description commence par 'Use when' et distingue du brainstorming simple", () => {
   const content = readFileSync(join(root, "skills/brainstorming-advanced/SKILL.md"), "utf8");
   const frontmatter = content.match(/^---\n([\s\S]+?)\n---/)?.[1] ?? "";
+  assert.ok(frontmatter.length > 0, "frontmatter absent");
+  assert.ok(frontmatter.includes("Use when"), "description doit commencer par 'Use when' (CSO)");
   assert.ok(
-    frontmatter.includes("pool") || frontmatter.includes("Routes"),
-    "description doit mentionner les modes de débat"
+    frontmatter.includes("multi-agent") || frontmatter.includes("debate") || frontmatter.includes("pressure-test"),
+    "description doit distinguer du brainstorming simple"
   );
 });

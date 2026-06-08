@@ -1,6 +1,6 @@
 ---
 name: brainstorming-advanced
-description: Use when a decision has real trade-offs that a single perspective won't resolve — competing approaches both seem valid, significant architectural or product stakes, or you need to pressure-test a design before committing. Routes between a light pool (2-3 chosen from 6 named entities, 3 rounds max) and a dynamic pool (free entity selection, convergence-based limit, 10 rounds max) based on complexity and user preference.
+description: Use when a decision has real trade-offs that a single perspective won't resolve — competing approaches both seem valid, significant architectural or product stakes, or you need to pressure-test a design. More powerful than brainstorming — triggers a structured multi-agent debate with entity selection tailored to the problem type.
 user-invocable: true
 ---
 
@@ -63,6 +63,7 @@ Guide de sélection pour le pool léger :
 ## Mode 1 — Pool léger
 
 - Sélection : 2-3 entités du catalogue selon le type de problème (guide ci-dessus).
+- **Si tu te retrouves à vouloir 4+ entités → bascule en pool dynamique.**
 - **Limite : 3 tours max fixes.** Si trop complexe pour 3 tours → décomposer en sous-décisions.
 - Expert élevable : un expert ponctuel peut être promu participant persistant sur 2-3 tours.
 
@@ -92,7 +93,7 @@ Le **Modérateur** est l'agent qui exécute ce skill — il orchestre, ne prend 
 **a) Formuler la tension du tour** — question ouverte et équilibrée, ne préjuge pas de la réponse.
 ❌ "Pourquoi PostgreSQL est la bonne décision ?" ✅ "La complexité de PostgreSQL est-elle justifiée ici ?"
 
-**b) Dispatcher chaque entité séquentiellement** — chaque entité reçoit la réponse de la précédente :
+**b) Dispatcher chaque entité séquentiellement** — même au Tour 1. Chaque entité reçoit la réponse de la précédente, y compris dès le premier tour : la 2ᵉ entité adapte son angle si elle a lu la 1ère, ce qui rend le débat plus dense immédiatement. Parallèle = positions identiques au Tour 1, gaspillage.
 
 ```
 Agent(
@@ -196,7 +197,7 @@ Après le choix de l'utilisateur :
 | Simuler les personas en texte | Chambre d'écho — aucune indépendance réelle | Appeler `Agent` pour chaque entité, sans exception |
 | Sauter le test d'éligibilité | Usage abusif sur des décisions triviales | Appliquer les 3 questions en silence avant tout |
 | Garder Enthousiaste+Sage par défaut sans consulter le guide | Pool léger mal sélectionné | Choisir les entités selon le guide de sélection |
-| Dispatcher les entités en parallèle | Chaque entité perd la réponse des précédentes | Séquentiel obligatoire |
+| Dispatcher les entités en parallèle "car Tour 1 = positions indépendantes" | Même Tour 1 : la 2ᵉ entité adapte son angle si elle a lu la 1ère — débat plus dense dès le départ | Séquentiel obligatoire, sans exception de tour |
 | Pool dynamique : dépasser 10 tours | Boucle sans fin | 10 tours = clôture absolue |
 | Garder un expert non-élevé pour les tours suivants | Contexte pollué, prompts gonflés | Libérer immédiatement sauf si élevé explicitement |
 | Invoquer sans attendre la confirmation | L'utilisateur n'a pas consenti | Attendre "oui" explicite |
