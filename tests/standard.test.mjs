@@ -472,3 +472,45 @@ test("brainstorming-advanced section Suite route vers writing-skills pour les li
     "section Suite doit nommer le cas livrable skill ou plugin"
   );
 });
+
+test("project-reference skill existe et a un frontmatter valide", () => {
+  const skillPath = join(root, "skills/project-reference/SKILL.md");
+  const content = readFileSync(skillPath, "utf8");
+  assert.ok(content.startsWith("---"), "SKILL.md doit commencer par frontmatter YAML");
+  assert.ok(content.includes("name: project-reference"), "name requis");
+  assert.ok(content.includes("description:"), "description requise");
+  assert.ok(content.includes("user-invocable: true"), "user-invocable requis");
+});
+
+test("project-reference description commence par 'Use when' (CSO)", () => {
+  const content = readFileSync(join(root, "skills/project-reference/SKILL.md"), "utf8");
+  const frontmatter = content.match(/^---\n([\s\S]+?)\n---/)?.[1] ?? "";
+  assert.ok(frontmatter.length > 0, "frontmatter absent");
+  assert.ok(frontmatter.includes("Use when"), "description doit commencer par 'Use when' (CSO)");
+});
+
+test("project-reference skill cible docs/project-reference.md", () => {
+  const content = readFileSync(join(root, "skills/project-reference/SKILL.md"), "utf8");
+  assert.ok(content.includes("docs/project-reference.md"), "doit cibler docs/project-reference.md");
+});
+
+test("project-reference skill décrit les 6 sections du document", () => {
+  const content = readFileSync(join(root, "skills/project-reference/SKILL.md"), "utf8");
+  assert.ok(content.includes("Pourquoi"), "section 1 requise : pourquoi/problème");
+  assert.ok(content.includes("Décisions"), "section 2 requise : décisions non-évidentes");
+  assert.ok(content.includes("Structure"), "section 3 requise : structure du projet");
+  assert.ok(content.includes("Contraintes"), "section 4 requise : contraintes et invariants");
+  assert.ok(content.includes("Flux"), "section 5 requise : flux de travail");
+  assert.ok(
+    content.includes("actives") || content.includes("fragiles"),
+    "section 6 requise : zones actives/fragiles"
+  );
+});
+
+test("project-reference skill pose une question unique à l'utilisateur avant de rédiger", () => {
+  const content = readFileSync(join(root, "skills/project-reference/SKILL.md"), "utf8");
+  assert.ok(
+    content.includes("non documentées") || content.includes("non-documentées"),
+    "question unique sur les décisions non documentées requise"
+  );
+});
