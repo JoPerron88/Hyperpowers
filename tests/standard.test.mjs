@@ -422,3 +422,33 @@ test("brainstorming-advanced SKILL.md frontmatter description commence par 'Use 
     "description doit distinguer du brainstorming simple"
   );
 });
+
+test("cahier-maitre skill existe et a un frontmatter valide", () => {
+  const skillPath = join(root, "skills/cahier-maitre/SKILL.md");
+  const content = readFileSync(skillPath, "utf8");
+  assert.ok(content.startsWith("---"), "SKILL.md doit commencer par frontmatter YAML");
+  assert.ok(content.includes("name: cahier-maitre"), "name requis");
+  assert.ok(content.includes("description:"), "description requise");
+  assert.ok(content.includes("user-invocable: true"), "user-invocable requis");
+});
+
+test("cahier-maitre description commence par 'Use when' (CSO)", () => {
+  const content = readFileSync(join(root, "skills/cahier-maitre/SKILL.md"), "utf8");
+  const frontmatter = content.match(/^---\n([\s\S]+?)\n---/)?.[1] ?? "";
+  assert.ok(frontmatter.length > 0, "frontmatter absent");
+  assert.ok(frontmatter.includes("Use when"), "description doit commencer par 'Use when' (CSO)");
+});
+
+test("cahier-maitre skill cible CAHIER.md avec insertion en haut du fichier", () => {
+  const content = readFileSync(join(root, "skills/cahier-maitre/SKILL.md"), "utf8");
+  assert.ok(content.includes("CAHIER.md"), "doit cibler CAHIER.md");
+  assert.ok(
+    content.includes("prepend") || content.includes("haut du fichier"),
+    "insertion en tête du fichier requise"
+  );
+});
+
+test("cahier-maitre skill dérive l'auteur via git config user.name", () => {
+  const content = readFileSync(join(root, "skills/cahier-maitre/SKILL.md"), "utf8");
+  assert.ok(content.includes("git config user.name"), "auteur via git config requis");
+});
