@@ -766,6 +766,12 @@ Ajoute une entrée au journal (`.claude/JOURNAL.md` selon la pratique du projet)
 été fait, état, prochaine étape. Le journal est l'**historique** ; `session-handoff/` est
 l'**instantané courant**.
 
+### 6bis. Entrée optionnelle dans CAHIER.md
+
+Si `CAHIER.md` existe à la racine du projet : prepend une ligne de résumé de session avec la
+même structure que le skill `hyperpowers:cahier-maitre`. Étape silencieusement sautée si
+`CAHIER.md` est absent — `session-handoff` fonctionne sans lui.
+
 ### 7. Pointeur mémoire IA
 Laisse une note mémoire d'**une ligne** : « Projet <nom> : pour reprendre, lis le dossier
 `session-handoff/`. » Ne duplique pas le contenu (la mémoire ne voyage pas). Si ton environnement

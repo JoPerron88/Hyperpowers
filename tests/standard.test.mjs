@@ -452,3 +452,11 @@ test("cahier-maitre skill dérive l'auteur via git config user.name", () => {
   const content = readFileSync(join(root, "skills/cahier-maitre/SKILL.md"), "utf8");
   assert.ok(content.includes("git config user.name"), "auteur via git config requis");
 });
+
+test("session-handoff mentionne CAHIER.md comme étape optionnelle", () => {
+  const content = readFileSync(join(root, "skills/session-handoff/SKILL.md"), "utf8");
+  assert.ok(
+    content.includes("CAHIER.md"),
+    "session-handoff doit mentionner CAHIER.md (intégration optionnelle cahier-maitre)"
+  );
+});
