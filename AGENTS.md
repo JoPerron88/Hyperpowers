@@ -259,7 +259,9 @@ Après le choix de l'utilisateur :
 - [ ] Documenter le choix (dans `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` si le projet suit les conventions superpowers, sinon dans le format du projet)
 - [ ] Auto-review de la spec (placeholders, cohérence, scope, ambiguïté)
 - [ ] Demander la review utilisateur
-- [ ] Invoquer `superpowers:writing-plans`
+- [ ] Si le livrable est un **skill ou plugin** → invoquer `superpowers:writing-skills` en premier
+  (puis `superpowers:writing-plans` si des tests ou scripts sont à implémenter)
+- [ ] Sinon → invoquer `superpowers:writing-plans` directement
 
 ## Règles absolues
 

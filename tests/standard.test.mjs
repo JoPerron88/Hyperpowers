@@ -460,3 +460,15 @@ test("session-handoff mentionne CAHIER.md comme étape optionnelle", () => {
     "session-handoff doit mentionner CAHIER.md (intégration optionnelle cahier-maitre)"
   );
 });
+
+test("brainstorming-advanced section Suite route vers writing-skills pour les livrables skill/plugin", () => {
+  const content = readFileSync(join(root, "skills/brainstorming-advanced/SKILL.md"), "utf8");
+  assert.ok(
+    content.includes("superpowers:writing-skills"),
+    "section Suite doit mentionner superpowers:writing-skills"
+  );
+  assert.ok(
+    content.includes("skill ou plugin"),
+    "section Suite doit nommer le cas livrable skill ou plugin"
+  );
+});
