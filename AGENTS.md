@@ -653,7 +653,7 @@ Puis handoff explicite :
 
 ---
 name: project-reference
-description: Use when the user wants to generate or refresh a comprehensive project reference document covering structure, code, technologies, and key decisions — so any reader can understand the project in depth ("génère la référence projet", "documente le projet", "crée project-reference", or any request for exhaustive project documentation).
+description: Use when the user wants to generate or refresh an exhaustive project reference document ("génère la référence projet", "documente le projet", "crée project-reference", or any request for comprehensive project documentation).
 user-invocable: true
 ---
 
@@ -664,6 +664,12 @@ user-invocable: true
 Génère `docs/project-reference.md` : document de référence exhaustif du projet courant,
 destiné à tout lecteur qui veut comprendre le projet en profondeur sans explorer le code.
 Invocable à la demande — pas automatique. Refresh = réécriture complète.
+
+Distinct de :
+- `CLAUDE.md` — prescriptif pour agents (comportements, commandes)
+- `session-handoff/HANDOFF.md` — snapshot d'état courant (éphémère)
+- `CAHIER.md` — log séquentiel narratif (journal)
+- `README.md` — présentation publique externe
 
 ## Procédure
 
