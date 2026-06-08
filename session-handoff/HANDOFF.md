@@ -1,5 +1,5 @@
 # Handoff — Hyperpowers
-> Dernière mise à jour : 2026-06-08. Reprise à froid : si tu n'as pas l'outillage de ce projet, lis
+> Dernière mise à jour : 2026-06-08 (session 2). Reprise à froid : si tu n'as pas l'outillage de ce projet, lis
 > d'abord `OUTILLAGE.md` (à côté), puis ce fichier.
 
 ## Le but (FinalGoal)
@@ -12,9 +12,9 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
 
 ## Où on en est
 - Branche : **`main`** (branche unique), **arbre propre**, tout poussé sur GitHub.
-- **42 tests verts** (43 au total — 1 rouge pré-existant toléré : `planning-with-files` non
+- **53 tests verts** (54 au total — 1 rouge pré-existant toléré : `planning-with-files` non
   installé sur cette machine).
-- **Plugin v0.2.0** — version bumpée et mise à jour via `/plugin update hyperpowers@hyperpowers`
+- **Plugin v0.3.0** — version bumpée et mise à jour via `/plugin update hyperpowers@hyperpowers`
   (cache mis à jour, actif après `/reload-plugins` ou redémarrage de session).
 - **v1→v4 livrées** + skills et features post-v4 livrés :
   - **`brainstorming-advanced`** ✅ v2 — méta-routage pool léger / pool dynamique, catalogue 6
@@ -22,6 +22,10 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
     Code review (2026-06-08) : **consent gate restaurée** sur le chemin procédural (Triage step 3),
     **exit interruption mid-débat** ajouté (step 2d).
   - **`newproject`** ✅ — skill d'amorçage projet en 5 phases.
+  - **`cahier-maitre`** ✅ — skill de journal/registre maître transverse (entrées datées, résumé
+    de session, décisions clés).
+  - **`project-reference`** ✅ — skill de document de référence durable d'un projet (vue
+    exhaustive à la demande : stack, architecture, décisions, conventions).
   - **`install.mjs`** ✅ — `npm run install-configs` ; **OpenCode corrigé** : génère désormais des
     chemins absolus dans le JSON copié (les chemins relatifs ne résolvaient pas depuis `~/.config/`).
   - **AGENTS.md staleness test** ✅ — test automatique qui détecte si `AGENTS.md` est en retard
@@ -31,12 +35,8 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
     `.codex-plugin/`, `.cursor-plugin/`, `references/`.
 
 ## Ce qui était prévu ensuite
-**Skills à concevoir** (périmètre non cadré — passer par brainstorming avant) :
-- **« bible de projet »** — document de référence durable d'un projet (à définir).
-- **« cahier maître »** — journal/registre maître transverse (à définir).
-
-**Gate runtime** — vérifier que l'injection v2/v3/v4 fonctionne en runtime après réinstall
-du plugin sur une machine fraîche (à faire une fois avec Claude Code ouvert).
+**~~Gate runtime~~** ✅ — vérifié 2026-06-08 : standard injecté (4131 chars, 7 principes),
+FinalGoal absent sans `goal.md` / injecté avec, 5/5 skills disponibles en session.
 
 **v5 — marketplace curé** — `marketplace.json` qui tire superpowers + planning-with-files
 automatiquement (modèle C complet). Pas encore implémenté.
