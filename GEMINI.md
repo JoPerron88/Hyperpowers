@@ -12,3 +12,5 @@
 @skills/newproject/SKILL.md
 
 @skills/session-handoff/SKILL.md
+
+@references/gemini-tools.md
