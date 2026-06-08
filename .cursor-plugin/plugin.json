@@ -1,0 +1,13 @@
+{
+  "name": "hyperpowers",
+  "displayName": "Hyperpowers",
+  "description": "Standard de qualité + skills de process — distro curée superpowers",
+  "version": "0.1.0",
+  "author": {
+    "name": "Jonathan Perron"
+  },
+  "homepage": "https://github.com/JoPerron88/Hyperpowers",
+  "repository": "https://github.com/JoPerron88/Hyperpowers",
+  "license": "MIT",
+  "skills": "./skills/"
+}
