@@ -1,6 +1,6 @@
 # Handoff — Hyperpowers
-> Dernière mise à jour : 2026-06-07 (fin de soirée). Reprise à froid : si tu n'as pas l'outillage de ce projet,
-> lis d'abord `OUTILLAGE.md` (à côté), puis ce fichier.
+> Dernière mise à jour : 2026-06-08. Reprise à froid : si tu n'as pas l'outillage de ce projet, lis
+> d'abord `OUTILLAGE.md` (à côté), puis ce fichier.
 
 ## Le but (FinalGoal)
 Hyperpowers = un **plugin Claude Code qui fusionne plusieurs skills/plugins existants en un
@@ -12,24 +12,21 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
 
 ## Où on en est
 - Branche : **`main`** (branche unique), **arbre propre**, tout poussé sur GitHub.
-- **41 tests verts** (42 au total — 1 rouge pré-existant toléré : `planning-with-files` non
+- **42 tests verts** (43 au total — 1 rouge pré-existant toléré : `planning-with-files` non
   installé sur cette machine).
 - **v1→v4 livrées** + skills et features post-v4 livrés :
-  - **`brainstorming-advanced`** ✅ v2 — méta-routage pool léger (2-3 entités du catalogue,
-    3 tours max) / pool dynamique (sélection libre, convergence, 10 tours max). Catalogue de
-    6 entités nommées (Enthousiaste, Sage, Utilisateur Final, Estimateur, Sécuritaire,
-    Intégrateur). Test d'éligibilité en 3 questions. Durci via cycle `writing-skills`
-    (RED-GREEN-REFACTOR — 3 loopholes identifiés et fermés).
-  - **`newproject`** ✅ — skill d'amorçage projet en 5 phases (Verbalisation → Tech →
-    Scope/Risques → 3 artefacts → Roadmap).
-  - **`install.mjs`** ✅ — `npm run install-configs` copie les configs dans `~/` (fallback
-    multi-plateforme).
-  - **Extensions natives multi-plateforme** ✅ — même approche que superpowers :
-    - `gemini-extension.json` → `gemini extensions install .`
-    - `.opencode/plugins/hyperpowers.js` → injection `standard.md` via message transform
-    - `.codex-plugin/plugin.json` → plugin natif Codex
-    - `.cursor-plugin/plugin.json` → plugin natif Cursor
-    - `references/gemini-tools.md` + `references/codex-tools.md` → mappings d'outils
+  - **`brainstorming-advanced`** ✅ v2 — méta-routage pool léger / pool dynamique, catalogue 6
+    entités, test d'éligibilité 3 questions. Durci via cycle `writing-skills` (3 loopholes fermés).
+    Code review (2026-06-08) : **consent gate restaurée** sur le chemin procédural (Triage step 3),
+    **exit interruption mid-débat** ajouté (step 2d).
+  - **`newproject`** ✅ — skill d'amorçage projet en 5 phases.
+  - **`install.mjs`** ✅ — `npm run install-configs` ; **OpenCode corrigé** : génère désormais des
+    chemins absolus dans le JSON copié (les chemins relatifs ne résolvaient pas depuis `~/.config/`).
+  - **AGENTS.md staleness test** ✅ — test automatique qui détecte si `AGENTS.md` est en retard
+    sur les sources (`standard.md` + `skills/*/SKILL.md`). Reproduit la logique de `build-agents.mjs`
+    sans side-effects.
+  - **Extensions natives multi-plateforme** ✅ — `gemini-extension.json`, `.opencode/plugins/`,
+    `.codex-plugin/`, `.cursor-plugin/`, `references/`.
 
 ## Ce qui était prévu ensuite
 **Skills à concevoir** (périmètre non cadré — passer par brainstorming avant) :
@@ -39,18 +36,19 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
 **Gate runtime** — vérifier que l'injection v2/v3/v4 fonctionne en runtime après réinstall
 du plugin sur une machine fraîche (à faire une fois avec Claude Code ouvert).
 
-**⚠️ Réinstall brainstorming-advanced v2** — `/plugin install hyperpowers@hyperpowers` a retourné
-"already installed" sans mettre à jour le cache. Le brainstorming-advanced v2 (méta-routage,
-6 entités) n'est pas encore actif en runtime. Trouver la commande `/plugin update` ou
-désinstaller + réinstaller pour forcer la mise à jour du cache.
+**⚠️ Plugin cache très en retard** — le plugin installé est au commit `8e7bf01` (install
+initial), mais le dépôt est maintenant à `2269b3e` (de nombreux commits d'écart). `/plugin install
+hyperpowers@hyperpowers` retourne "already installed" sans mettre à jour. Utiliser `/plugin update`
+ou désinstaller + réinstaller pour activer brainstorming-advanced v2, la consent gate, les
+corrections code review, etc.
 
 **v5 — marketplace curé** — `marketplace.json` qui tire superpowers + planning-with-files
 automatiquement (modèle C complet). Pas encore implémenté.
 
 ## Reprendre sur une machine neuve (le projet)
 - `git clone https://github.com/JoPerron88/Hyperpowers.git`
-- **Node ≥ v22**. Tests : `npm test` → doit afficher **41 verts** (42 total, 1 rouge toléré).
-- `npm run build:agents` pour régénérer `AGENTS.md` si besoin.
+- **Node ≥ v22**. Tests : `npm test` → doit afficher **42 verts** (43 total, 1 rouge toléré).
+- `npm run build:agents` pour régénérer `AGENTS.md` si besoin (le test de staleness le détecte).
 - Outillage Claude Code à installer : **voir `OUTILLAGE.md`**.
 - Ce qui NE voyage PAS au clone : la mémoire privée de Claude (`~/.claude/projects/...`).
   `HANDOFF.md` + `CLAUDE.md` + `docs/` re-sèment le contexte.
@@ -66,7 +64,7 @@ automatiquement (modèle C complet). Pas encore implémenté.
 - Tests **scopés à `tests/`** (le dépôt a aussi des `*.test.mjs` dans `spike/` à ne pas lancer).
 - `.claude/` est **gitignoré** (journal privé) — ne pas le committer.
 - **`AGENTS.md` à régénérer** après toute modif de `standard.md` ou des skills :
-  `npm run build:agents`.
+  `npm run build:agents`. Le test de staleness le détectera si oublié.
 - **Extensions natives vs install.mjs** : les deux coexistent. `install.mjs` copie des fichiers
   dans `~/` (fallback). Les dossiers `.opencode/`, `.codex-plugin/`, `.cursor-plugin/` et
   `gemini-extension.json` permettent l'installation via les gestionnaires natifs de chaque
@@ -84,6 +82,8 @@ automatiquement (modèle C complet). Pas encore implémenté.
 - **brainstorming-advanced v2 = pool léger + pool dynamique** — méta-routage par le Modérateur
   selon complexité/demande. Catalogue fixe de 6 entités nommées. Test d'éligibilité en 3 questions
   obligatoire avant tout débat. Décidé 2026-06-07 via brainstorming-advanced lui-même (meta).
+- **hooks.json `matcher: "startup|clear|compact"` = convention établie** — confirmé 2026-06-08 :
+  superpowers upstream utilise exactement le même pattern. Ce n'est pas un bug.
 
 ## Où trouver le détail
 - Specs/plans : `docs/superpowers/specs/` et `docs/superpowers/plans/`.
