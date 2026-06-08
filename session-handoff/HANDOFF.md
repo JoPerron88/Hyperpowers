@@ -1,5 +1,5 @@
 # Handoff — Hyperpowers
-> Dernière mise à jour : 2026-06-08 (session 3). Reprise à froid : si tu n'as pas l'outillage de ce projet, lis
+> Dernière mise à jour : 2026-06-08 (session 4). Reprise à froid : si tu n'as pas l'outillage de ce projet, lis
 > d'abord `OUTILLAGE.md` (à côté), puis ce fichier.
 
 ## Le but (FinalGoal)
@@ -12,8 +12,7 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
 
 ## Où on en est
 - Branche : **`main`** · arbre propre · tout poussé sur GitHub (`a1bc93d`).
-- **53 tests verts** (54 au total — 1 rouge pré-existant toléré : `planning-with-files` non
-  installé sur cette machine).
+- **54 tests verts** (54/54 — plus aucun rouge : `planning-with-files` installé).
 - **Plugin v0.3.0** actif.
 - **v1→v4 livrées** + skills et features post-v4 :
   - **`brainstorming-advanced`** ✅ v2 — méta-routage pool léger / pool dynamique, catalogue 6

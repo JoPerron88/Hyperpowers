@@ -11,11 +11,11 @@ Détectés via `~/.claude/plugins/installed_plugins.json` + la structure du dép
   Installer : `/plugin install superpowers@claude-plugins-official` (ajouter le marketplace officiel
   d'abord s'il n'est pas présent).
 
-- **planning-with-files** (pwf — dépôt **github.com/OthmanAdi**, à confirmer l'URL exacte) — fichiers
+- **planning-with-files** (pwf — dépôt **github.com/OthmanAdi/planning-with-files**) — fichiers
   persistants `task_plan.md`/`findings.md`/`progress.md`, reprise après `/clear`. Référencé par les
-  principes 5/6 du standard. Installer : *à confirmer* — soit `/plugin marketplace add <URL/chemin>`
-  puis install, soit le skill via `npx skills add planning-with-files`. (Sur la machine d'origine il
-  était installé en **skill-only** dans `~/.claude/skills/planning-with-files`.)
+  principes 5/6 du standard. Installer :
+  `/plugin marketplace add OthmanAdi/planning-with-files` puis
+  `/plugin install planning-with-files@planning-with-files`.
 
 - **hyperpowers** (CE projet) — la **glue** : standard de qualité injecté au SessionStart + routage
   des plans (principe 5) + FinalGoal (principe 6 + hook) + skills `session-handoff`, `newproject`,
@@ -60,7 +60,7 @@ Emplacements copiés par le fallback :
 Note : Mistral Vibe hors scope (config TOML uniquement, pas de markdown/plugin global).
 
 ## Repli — si tu n'installes pas l'outillage
-Tu peux quand même continuer : c'est un dépôt **Node standard** (`npm test` marche tel quel, 42 verts — 43 au total, 1 rouge toléré : planning-with-files non installé).
+Tu peux quand même continuer : c'est un dépôt **Node standard** (`npm test` marche tel quel, 54 verts — 54 au total, 0 rouge si planning-with-files installé, 1 rouge sinon).
 - **Sans superpowers** : skills de process non déclenchés automatiquement. Reproduis à la main :
   brainstorm → spec dans `docs/superpowers/specs/` → plan → TDD → revue.
 - **Sans hyperpowers** : le standard n'est pas injecté au SessionStart — applique-le consciemment
