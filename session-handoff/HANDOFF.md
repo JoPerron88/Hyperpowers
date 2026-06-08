@@ -14,6 +14,8 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
 - Branche : **`main`** (branche unique), **arbre propre**, tout poussé sur GitHub.
 - **42 tests verts** (43 au total — 1 rouge pré-existant toléré : `planning-with-files` non
   installé sur cette machine).
+- **Plugin v0.2.0** — version bumpée et mise à jour via `/plugin update hyperpowers@hyperpowers`
+  (cache mis à jour, actif après `/reload-plugins` ou redémarrage de session).
 - **v1→v4 livrées** + skills et features post-v4 livrés :
   - **`brainstorming-advanced`** ✅ v2 — méta-routage pool léger / pool dynamique, catalogue 6
     entités, test d'éligibilité 3 questions. Durci via cycle `writing-skills` (3 loopholes fermés).
@@ -36,12 +38,6 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
 **Gate runtime** — vérifier que l'injection v2/v3/v4 fonctionne en runtime après réinstall
 du plugin sur une machine fraîche (à faire une fois avec Claude Code ouvert).
 
-**⚠️ Plugin cache très en retard** — le plugin installé est au commit `8e7bf01` (install
-initial), mais le dépôt est maintenant à `2269b3e` (de nombreux commits d'écart). `/plugin install
-hyperpowers@hyperpowers` retourne "already installed" sans mettre à jour. Utiliser `/plugin update`
-ou désinstaller + réinstaller pour activer brainstorming-advanced v2, la consent gate, les
-corrections code review, etc.
-
 **v5 — marketplace curé** — `marketplace.json` qui tire superpowers + planning-with-files
 automatiquement (modèle C complet). Pas encore implémenté.
 
@@ -55,10 +51,11 @@ automatiquement (modèle C complet). Pas encore implémenté.
 
 ## Pièges à connaître
 - **Plugin copié dans le cache à l'install** : toute édition de `standard.md` / hook / skill n'a
-  **aucun effet runtime** tant que le plugin n'est pas **réinstallé + redémarré**.
-- **Réinstall via `/plugin install` ne met pas forcément à jour** : si le plugin est déjà installé,
-  la commande retourne "already installed" sans toucher le cache. Utiliser `/plugin update` ou
-  désinstaller + réinstaller pour forcer.
+  **aucun effet runtime** tant que le plugin n'est pas **mis à jour + rechargé**.
+- **Procédure de mise à jour du cache** : (1) bumper la version dans `plugin.json` et
+  `marketplace.json`, (2) committer + pousser, (3) `/plugin update hyperpowers@hyperpowers`,
+  (4) `/reload-plugins` ou redémarrer la session. `/plugin install` retourne "already installed"
+  sans toucher le cache si la version est identique.
 - **Double injection (réglée)** : l'entrée manuelle dans `~/.claude/settings.json` a été retirée
   le 2026-06-07 — le plugin seul enregistre le hook désormais.
 - Tests **scopés à `tests/`** (le dépôt a aussi des `*.test.mjs` dans `spike/` à ne pas lancer).
