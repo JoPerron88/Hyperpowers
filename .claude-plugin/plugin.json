@@ -1,7 +1,7 @@
 {
   "name": "hyperpowers",
   "description": "Le standard de qualité de code (penser avant, simplicité, chirurgical, piloté par objectif) injecté au SessionStart, qui délègue le process aux skills superpowers. Absorbe les garde-fous karpathy dans une seule voix.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "author": {
     "name": "Jonathan Perron"
   },
