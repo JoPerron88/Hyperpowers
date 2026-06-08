@@ -35,7 +35,7 @@ quand ce skill s'applique. Invoque les 3 entités.
 | "J'ai un doute, explique-moi" | Guide |
 | Demande mixte ou ambiguë | Stratège |
 
-Les deux entités secondaires font une **passe courte** (1-2 lignes chacune).
+Les deux entités secondaires **réagissent** à la précédente (accord, désaccord, angle mort).
 
 ## Protocole d'exécution
 
@@ -72,8 +72,17 @@ Contexte du projet : [résumé du HANDOFF.md]
 
 Demande de l'utilisateur : [demande]
 
-[Entité principale : répondre en 200-300 mots]
-[Entité secondaire : répondre en 50-80 mots, passe courte]"
+[Si entité principale] Structure ta réponse en 3 sections obligatoires :
+- **Verdict** (1 phrase tranchée : \"ça tient\" / \"ça dérive\" / \"mauvais cap\" — pas de nuance)
+- **Signal** (1-3 constats factuels ancrés dans le contexte lu — cite une section spécifique)
+- **Contrainte** (la chose la plus bloquante que tu vois — une seule)
+Si ta Contrainte révèle un blocage structurel ou récurrent propre à CE projet (pas une généralité),
+OU si la demande contient \"analyse en profondeur\" : ajoute une section **Racine** — une phrase
+qui relie la Contrainte à la dynamique propre de ce projet. Quelque chose qu'on ne pourrait pas
+écrire pour un autre projet.
+
+[Si entité secondaire] Réagis uniquement à ce que [entité précédente] vient de dire : accord,
+désaccord, ou angle mort. 1-3 phrases, ancré dans le contexte. Pas de nouvelle analyse depuis zéro."
 )
 ```
 
@@ -91,13 +100,16 @@ Créer `firm/sessions/YYYY-MM-DD-<slug>.md` :
 Date : YYYY-MM-DD | Entité principale : [Stratège / Guide / Relecteur]
 
 ## [Entité principale] — voix principale
-[3-4 lignes]
+**Verdict :** [1 phrase tranchée]
+**Signal :** [1-3 constats ancrés dans le contexte]
+**Contrainte :** [la plus bloquante — une seule]
+**Racine :** [si déclenchée — 1 phrase ancrée dans CE projet spécifiquement]
 
-## [Entité 2] — passe courte
-[1-2 lignes]
+## [Entité 2] — réaction
+[1-3 phrases : accord / désaccord / angle mort sur la voix principale]
 
-## [Entité 3] — passe courte
-[1-2 lignes]
+## [Entité 3] — réaction
+[1-3 phrases : accord / désaccord / angle mort]
 
 ## Décision / cap retenu
 [1-2 lignes — omis si consultation sans décision]
