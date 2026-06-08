@@ -78,6 +78,8 @@ Guide de sélection pour le pool léger :
 
 ### 1. Triage
 
+Le **Modérateur** est l'agent qui exécute ce skill — il orchestre, ne prend jamais position dans les tours, et communique seul avec l'utilisateur.
+
 1. Appliquer le test d'éligibilité (3 questions). Si non éligible → `superpowers:brainstorming`.
 2. Choisir le mode (pool léger vs dynamique) selon la complexité et la demande.
 3. Annoncer à l'utilisateur :
@@ -170,7 +172,7 @@ Note : tu peux avoir des préférences que je n'ai pas. Quel est ton choix ?
 
 Après le choix de l'utilisateur :
 - [ ] Poser les questions de raffinement restantes (une à la fois)
-- [ ] Écrire la spec dans `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`
+- [ ] Documenter le choix (dans `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` si le projet suit les conventions superpowers, sinon dans le format du projet)
 - [ ] Auto-review de la spec (placeholders, cohérence, scope, ambiguïté)
 - [ ] Demander la review utilisateur
 - [ ] Invoquer `superpowers:writing-plans`
