@@ -8,7 +8,7 @@ Hyperpowers ne réécrit pas les bons plugins qui existent déjà : il les **ass
 couche de **glue cohérente** pour qu'ils se composent mieux. Moins de doublons, des déclenchements
 plus clairs, un seul cap : **la qualité du code**.
 
-`Node.js` · `zéro-dépendance` · `16 tests verts` · outil **personnel**
+`Node.js` · `zéro-dépendance` · `36 tests verts` · outil **personnel**
 
 </div>
 
@@ -94,23 +94,35 @@ Hyperpowers dépend de deux plugins amont. Sur une machine fraîche :
 
 ## Utiliser sur d'autres plateformes
 
-Le standard de qualité et les skills sont disponibles sur d'autres plateformes via les
-fichiers d'entrée présents à la racine :
+Hyperpowers supporte 4 plateformes via des extensions natives (approche recommandée) et un
+script de copie de fichiers comme fallback.
 
-| Plateforme | Fichier | Mécanisme |
-|---|---|---|
-| **Gemini CLI** | `GEMINI.md` | `@-include` natif — automatique |
-| **OpenCode** | `opencode.json` | `instructions` array natif — automatique |
-| **Codex (OpenAI)** | `AGENTS.md` | Contenu embarqué — régénérer après modifs |
-| **Mistral Vibe** | `AGENTS.md` | Idem — remplace le prompt système |
+### Installation native
+
+| Plateforme | Commande |
+|---|---|
+| **Gemini CLI** | `gemini extensions install /chemin/vers/hyperpowers` |
+| **OpenCode** | Ajouter `{ "plugin": ["/chemin/vers/hyperpowers"] }` dans `~/.config/opencode/opencode.json` |
+| **Codex CLI** | Via le gestionnaire de plugins Codex (path local) |
+| **Cursor** | `/add-plugin /chemin/vers/hyperpowers` |
+
+Fichiers natifs inclus dans le dépôt : `gemini-extension.json`, `.opencode/plugins/hyperpowers.js`,
+`.codex-plugin/plugin.json`, `.cursor-plugin/plugin.json`.
+
+OpenCode utilise une injection via `experimental.chat.messages.transform` — le standard est
+injecté dans le premier message de chaque session, comme dans superpowers.
+
+### Fallback (copie de fichiers)
+
+```bash
+npm run build:agents      # régénère AGENTS.md si nécessaire
+npm run install-configs   # copie GEMINI.md → ~/.gemini/, AGENTS.md → ~/.codex/, etc.
+```
 
 **Limitation :** le hook dynamique FinalGoal (`.hyperpowers/goal.md`) est Claude Code-only.
-Sur les autres plateformes, le standard est injecté statiquement.
 
-**Régénérer `AGENTS.md`** après toute modification de `standard.md` ou des skills :
-```bash
-npm run build:agents
-```
+**Mappings d'outils** (Claude Code → plateforme cible) : `references/gemini-tools.md`,
+`references/codex-tools.md`.
 
 ## Utilisation
 
@@ -135,7 +147,7 @@ Le **dépôt EST le plugin**. Tout est additif et minimal :
 ## Développement
 
 - **Langage** : Node.js (ESM, `node:test`, **zéro dépendance**).
-- **Tests** : `npm test` (= `node --test 'tests/**/*.test.mjs'`). **16 verts.**
+- **Tests** : `npm test` (= `node --test 'tests/**/*.test.mjs'`). **36 verts.**
 - **Méthode** : le projet se construit lui-même avec superpowers — `brainstorming` → `writing-plans`
   → `subagent-driven-development`, et les skills sont durcis via `writing-skills` (RED-GREEN-REFACTOR
   avec des subagents). Les specs et plans vivent dans `docs/superpowers/`.
@@ -145,10 +157,18 @@ Le **dépôt EST le plugin**. Tout est additif et minimal :
 ```
 Hyperpowers/
 ├── standard.md                  # Les 6 principes injectés au SessionStart
-├── hooks/session-start.mjs      # Injection (Standard + FinalGoal)
-├── skills/session-handoff/      # 1er skill embarqué
-├── tests/                       # node:test (16 verts)
-├── .claude-plugin/              # plugin.json + marketplace.json
+├── GEMINI.md                    # Point d'entrée Gemini CLI (@-includes)
+├── AGENTS.md                    # Contenu embarqué pour Codex (généré)
+├── gemini-extension.json        # Extension native Gemini CLI
+├── hooks/session-start.mjs      # Injection Claude Code (Standard + FinalGoal)
+├── skills/                      # brainstorming-advanced · newproject · session-handoff
+├── .claude-plugin/              # plugin.json + marketplace.json (Claude Code)
+├── .opencode/plugins/           # Plugin natif OpenCode (injection message transform)
+├── .codex-plugin/               # Plugin natif Codex
+├── .cursor-plugin/              # Plugin natif Cursor
+├── references/                  # Mappings d'outils par plateforme
+├── scripts/                     # build-agents.mjs · install.mjs
+├── tests/                       # node:test (36 verts)
 ├── docs/superpowers/            # specs + plans (cycle brainstorm→plan)
 ├── session-handoff/             # handoff de reprise (HANDOFF.md + OUTILLAGE.md)
 └── spike/                       # recherche close (spike mémoire → verdict rouge)
@@ -160,10 +180,11 @@ Hyperpowers/
 - ✅ **v2** — routage des plans (principe 5).
 - ✅ **v3** — FinalGoal (principe 6 + hook).
 - ✅ **v4** — skill `session-handoff` (durci via `writing-skills`).
+- ✅ **Post-v4** — `brainstorming-advanced` (débat multi-agents), `newproject` (amorçage projet).
+- ✅ **Multi-plateforme** — extensions natives Gemini CLI, OpenCode, Codex, Cursor + `install.mjs` fallback.
 - ⏳ **Gate runtime** (v2/v3/v4) — injection à re-constater après réinstall.
 - 🔭 **v5** — implémenter le modèle C (marketplace curé).
-- 💡 **Idées** — un skill d'idéation avancé `brainstorming-advanced`, une « bible de projet », un
-  « cahier maître » (à cadrer par brainstorming).
+- 💡 **Idées** — « bible de projet », « cahier maître » (à cadrer par brainstorming).
 
 > Pour l'état détaillé et la reprise, voir le dossier [`session-handoff/`](session-handoff/).
 
