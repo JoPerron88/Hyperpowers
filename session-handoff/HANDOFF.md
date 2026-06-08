@@ -1,5 +1,5 @@
 # Handoff — Hyperpowers
-> Dernière mise à jour : 2026-06-08 (session 4). Reprise à froid : si tu n'as pas l'outillage de ce projet, lis
+> Dernière mise à jour : 2026-06-08 (session 5). Reprise à froid : si tu n'as pas l'outillage de ce projet, lis
 > d'abord `OUTILLAGE.md` (à côté), puis ce fichier.
 
 ## Le but (FinalGoal)
@@ -11,36 +11,37 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
 (non commercial).
 
 ## Où on en est
-- Branche : **`main`** · arbre propre · tout poussé sur GitHub (`a1bc93d`).
-- **54 tests verts** (54/54 — plus aucun rouge : `planning-with-files` installé).
-- **Plugin v0.3.0** actif.
+- Branche : **`main`** · arbre propre · tout poussé sur GitHub.
+- **54 tests verts** (54/54 — `planning-with-files` installé).
+- **Plugin v0.5.0** actif.
 - **v1→v4 livrées** + skills et features post-v4 :
   - **`brainstorming-advanced`** ✅ v2 — méta-routage pool léger / pool dynamique, catalogue 6
-    entités, test d'éligibilité 3 questions. Durci via cycle `writing-skills` (3 loopholes fermés).
-    Code review (2026-06-08) : consent gate restaurée (Triage step 3), exit interruption mid-débat
-    ajouté (step 2d).
+    entités, test d'éligibilité 3 questions.
   - **`newproject`** ✅ — skill d'amorçage projet en 5 phases.
   - **`cahier-maitre`** ✅ — skill de journal/registre maître transverse.
   - **`project-reference`** ✅ — skill de document de référence durable d'un projet.
-  - **`install.mjs`** ✅ — `npm run install-configs` ; OpenCode corrigé (chemins absolus).
+  - **`session-handoff`** ✅ — résumé de session avec état et prochaines étapes.
+  - **`conseil`** ✅ v2 — mini firm conseil (Stratège / Guide / Relecteur). Structure imposée :
+    Verdict / Signal / Contrainte / Racine (conditionnelle). Livrables dans `firm/sessions/` +
+    `firm/index.md`. Distinct de brainstorming-advanced (lit l'existant vs explore les options).
+  - **`install.mjs`** ✅ — `npm run install-configs`.
   - **AGENTS.md staleness test** ✅.
   - **Extensions natives multi-plateforme** ✅.
-  - **Gate runtime** ✅ — vérifié 2026-06-08 : standard injecté (4131 chars, 7 principes),
-    FinalGoal absent sans `goal.md` / injecté avec, 5/5 skills disponibles en session.
+  - **Gate runtime** ✅ — vérifié 2026-06-08.
 
 ## Ce qui était prévu ensuite
-- **Mini firm conseil** — prochain truc à faire (périmètre non encore défini — passer par
-  brainstorming).
-- **v5 — marketplace curé** — brainstorming interrompu à mi-chemin (session 3). Le format
-  `git-subdir`/`url` est confirmé faisable (l'official marketplace l'utilise pour 200+ plugins).
-  La question de design posée mais sans réponse : catalogue unifié vs source de secours vs
-  catalogue + doc install. **Reprendre par brainstorming.**
-- **v5 — marketplace curé** (technique) : `marketplace.json` qui tire superpowers +
-  planning-with-files automatiquement (modèle C complet).
+- **v5 — marketplace curé** — **dépendance bloquante identifiée** (firm 2026-06-08) : la symbiose
+  inter-skills ne peut pas être testée tant que le marketplace v5 n'existe pas. C'est le chantier
+  prioritaire. Le brainstorming v5 avait été interrompu à mi-session ; le format `git-subdir`/`url`
+  est confirmé faisable. **Reprendre par brainstorming.**
+- **Glue inter-skills** — après le marketplace : implémenter la composition réelle entre skills
+  (le cœur de la promesse du projet, jamais encore touché).
+- **Cycle gouvernance/construction** (signal firm) : chaque session produit une décision de
+  gouvernance mais la suivante reprend la construction. À surveiller activement.
 
 ## Reprendre sur une machine neuve (le projet)
 - `git clone https://github.com/JoPerron88/Hyperpowers.git`
-- **Node ≥ v22**. Tests : `npm test` → doit afficher **53 verts** (54 total, 1 rouge toléré).
+- **Node ≥ v22**. Tests : `npm test` → doit afficher **54 verts** (54/54, 0 rouge si planning-with-files installé).
 - `npm run build:agents` pour régénérer `AGENTS.md` si besoin (le test de staleness le détecte).
 - Outillage Claude Code à installer : **voir `OUTILLAGE.md`**.
 - Ce qui NE voyage PAS au clone : la mémoire privée de Claude (`~/.claude/projects/...`).
@@ -75,11 +76,17 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
   Catalogue fixe de 6 entités nommées. Test d'éligibilité en 3 questions obligatoire.
 - **hooks.json `matcher: "startup|clear|compact"` = convention établie** — confirmé 2026-06-08 :
   superpowers upstream utilise exactement le même pattern.
+- **`conseil` = structure en couches** (tranché 2026-06-08) : Verdict/Signal/Contrainte imposés,
+  Racine conditionnelle (auto si blocage structurel propre au projet, ou forcée par "analyse en
+  profondeur"). Entités secondaires réagissent à la précédente, pas de re-analyse depuis zéro.
+- **`firm/` = dossier dédié à la racine du projet** — consultations dans `sessions/`, index dans
+  `index.md`. Ne pas confondre avec les plans d'exécution (writing-plans) ni les caps (FinalGoal).
 
 ## Où trouver le détail
 - Specs/plans : `docs/superpowers/specs/` et `docs/superpowers/plans/`.
 - Skills livrés : `skills/brainstorming-advanced/`, `skills/newproject/`, `skills/session-handoff/`,
-  `skills/cahier-maitre/`, `skills/project-reference/`.
+  `skills/cahier-maitre/`, `skills/project-reference/`, `skills/conseil/`.
+- Consultations firm : `firm/sessions/` + `firm/index.md` (2 consultations 2026-06-08).
 - Extensions natives : `gemini-extension.json`, `.opencode/`, `.codex-plugin/`, `.cursor-plugin/`.
 - Références multi-plateforme : `references/`.
 - Journal détaillé (privé, gitignoré) : `.claude/JOURNAL.md`.
