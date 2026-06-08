@@ -6,14 +6,14 @@
   },
   "metadata": {
     "description": "Le standard de qualité de code (karpathy) fusionné avec le process superpowers, en une seule voix.",
-    "version": "0.1.0"
+    "version": "0.2.0"
   },
   "plugins": [
     {
       "name": "hyperpowers",
       "source": "./",
       "description": "Standard de qualité (penser avant · simplicité · chirurgical · piloté par objectif) injecté au SessionStart, déléguant le process aux skills superpowers.",
-      "version": "0.1.0",
+      "version": "0.2.0",
       "author": {
         "name": "Jonathan Perron"
       },
