@@ -311,6 +311,26 @@ test("AGENTS.md existe et contient le standard (généré)", () => {
   assert.ok(content.includes("Réfléchir avant de coder"), "contenu standard requis");
 });
 
+test("AGENTS.md est synchronisé avec les sources (pas de staleness)", () => {
+  const standard = readFileSync(join(root, "standard.md"), "utf8");
+  const skillsDir = join(root, "skills");
+  const skills = readdirSync(skillsDir)
+    .filter((name) => existsSync(join(skillsDir, name, "SKILL.md")))
+    .sort()
+    .map((name) => {
+      const content = readFileSync(join(skillsDir, name, "SKILL.md"), "utf8");
+      return `### ${name}\n\n${content}`;
+    })
+    .join("\n\n---\n\n");
+  const expected =
+    `<!-- AUTO-GÉNÉRÉ — ne pas éditer directement -->\n` +
+    `<!-- Source : standard.md + skills/*/SKILL.md -->\n` +
+    `<!-- Régénérer : npm run build:agents -->\n\n` +
+    `${standard}\n\n---\n\n## Skills disponibles\n\n${skills}\n`;
+  const actual = readFileSync(join(root, "AGENTS.md"), "utf8");
+  assert.equal(actual, expected, "AGENTS.md obsolète — régénérer avec : npm run build:agents");
+});
+
 test("scripts/install.mjs existe et déclare les 3 plateformes et --force", () => {
   const path = join(root, "scripts", "install.mjs");
   assert.ok(existsSync(path), "scripts/install.mjs doit exister");

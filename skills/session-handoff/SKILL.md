@@ -133,9 +133,12 @@ Laisse une note mémoire d'**une ligne** : « Projet <nom> : pour reprendre, lis
 n'a **pas** de système mémoire accessible pour ce projet, **saute cette étape** — n'invente pas.
 
 ### 8. Committer
-`git add session-handoff/` (+ `CLAUDE.md` s'il a été aminci), puis un commit clair (ex. « Mettre à
-jour le handoff de session »). Le dossier `session-handoff/` est **versionné** et suit le projet.
-Le journal reste gitignoré/local.
+Si le projet utilise Hyperpowers et que tu as modifié un skill (`skills/*/SKILL.md`), régénère d'abord
+`AGENTS.md` : `npm run build:agents`.
+
+`git add session-handoff/` (+ `CLAUDE.md` s'il a été aminci, + `AGENTS.md` si régénéré), puis un
+commit clair (ex. « Mettre à jour le handoff de session »). Le dossier `session-handoff/` est
+**versionné** et suit le projet. Le journal reste gitignoré/local.
 
 ## Cas limites
 - **Pas un dépôt git** : saute les étapes git (1) et le commit (8) ; produis quand même le dossier

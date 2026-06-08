@@ -27,6 +27,13 @@ const platforms = [
     cmd: "opencode",
     src: join(root, "opencode.json"),
     dest: join(home, ".config", "opencode", "opencode.json"),
+    // opencode.json uses relative paths — rewrite them as absolute so the file
+    // works from ~/.config/opencode/ (not from the project root).
+    transform: (buf) => {
+      const cfg = JSON.parse(buf.toString());
+      cfg.instructions = cfg.instructions.map((p) => join(root, p));
+      return Buffer.from(JSON.stringify(cfg, null, 2));
+    },
   },
 ];
 
@@ -39,16 +46,18 @@ function isInstalled(cmd) {
   }
 }
 
-for (const { name, cmd, src, dest } of platforms) {
+for (const { name, cmd, src, dest, transform } of platforms) {
   const detected = isInstalled(cmd);
   const label = (detected ? `✓ ${name} détecté` : `○ ${name} non détecté`).padEnd(30);
 
+  const raw = readFileSync(src);
+  const srcContent = transform ? transform(raw) : raw;
+
   if (!existsSync(dest)) {
     mkdirSync(dirname(dest), { recursive: true });
-    writeFileSync(dest, readFileSync(src));
+    writeFileSync(dest, srcContent);
     console.log(`${label} ${dest} → installé`);
   } else {
-    const srcContent = readFileSync(src);
     const destContent = readFileSync(dest);
     if (srcContent.equals(destContent)) {
       // identique — skip silencieux
