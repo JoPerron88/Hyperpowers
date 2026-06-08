@@ -8,7 +8,7 @@ Hyperpowers ne réécrit pas les bons plugins qui existent déjà : il les **ass
 couche de **glue cohérente** pour qu'ils se composent mieux. Moins de doublons, des déclenchements
 plus clairs, un seul cap : **la qualité du code**.
 
-`Node.js` · `zéro-dépendance` · `36 tests verts` · outil **personnel**
+`Node.js` · `zéro-dépendance` · `41 tests verts` · outil **personnel**
 
 </div>
 
@@ -147,7 +147,7 @@ Le **dépôt EST le plugin**. Tout est additif et minimal :
 ## Développement
 
 - **Langage** : Node.js (ESM, `node:test`, **zéro dépendance**).
-- **Tests** : `npm test` (= `node --test 'tests/**/*.test.mjs'`). **36 verts.**
+- **Tests** : `npm test` (= `node --test 'tests/**/*.test.mjs'`). **41 verts.**
 - **Méthode** : le projet se construit lui-même avec superpowers — `brainstorming` → `writing-plans`
   → `subagent-driven-development`, et les skills sont durcis via `writing-skills` (RED-GREEN-REFACTOR
   avec des subagents). Les specs et plans vivent dans `docs/superpowers/`.
@@ -168,7 +168,7 @@ Hyperpowers/
 ├── .cursor-plugin/              # Plugin natif Cursor
 ├── references/                  # Mappings d'outils par plateforme
 ├── scripts/                     # build-agents.mjs · install.mjs
-├── tests/                       # node:test (36 verts)
+├── tests/                       # node:test (41 verts)
 ├── docs/superpowers/            # specs + plans (cycle brainstorm→plan)
 ├── session-handoff/             # handoff de reprise (HANDOFF.md + OUTILLAGE.md)
 └── spike/                       # recherche close (spike mémoire → verdict rouge)
@@ -180,7 +180,8 @@ Hyperpowers/
 - ✅ **v2** — routage des plans (principe 5).
 - ✅ **v3** — FinalGoal (principe 6 + hook).
 - ✅ **v4** — skill `session-handoff` (durci via `writing-skills`).
-- ✅ **Post-v4** — `brainstorming-advanced` (débat multi-agents), `newproject` (amorçage projet).
+- ✅ **Post-v4** — `brainstorming-advanced` v1 (débat multi-agents), `newproject` (amorçage projet).
+- ✅ **brainstorming-advanced v2** — méta-routage pool léger/dynamique, catalogue 6 entités, test d'éligibilité, durci via `writing-skills`.
 - ✅ **Multi-plateforme** — extensions natives Gemini CLI, OpenCode, Codex, Cursor + `install.mjs` fallback.
 - ⏳ **Gate runtime** (v2/v3/v4) — injection à re-constater après réinstall.
 - 🔭 **v5** — implémenter le modèle C (marketplace curé).

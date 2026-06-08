@@ -12,11 +12,14 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
 
 ## Où on en est
 - Branche : **`main`** (branche unique), **arbre propre**, tout poussé sur GitHub.
-- **36 tests verts** (37 au total — 1 rouge pré-existant toléré : `planning-with-files` non
+- **41 tests verts** (42 au total — 1 rouge pré-existant toléré : `planning-with-files` non
   installé sur cette machine).
 - **v1→v4 livrées** + skills et features post-v4 livrés :
-  - **`brainstorming-advanced`** ✅ — débat multi-agents (Enthousiaste + Sage + Modérateur via
-    vrais sous-agents `Agent`), 2 modes experts, clôture avec recommandation.
+  - **`brainstorming-advanced`** ✅ v2 — méta-routage pool léger (2-3 entités du catalogue,
+    3 tours max) / pool dynamique (sélection libre, convergence, 10 tours max). Catalogue de
+    6 entités nommées (Enthousiaste, Sage, Utilisateur Final, Estimateur, Sécuritaire,
+    Intégrateur). Test d'éligibilité en 3 questions. Durci via cycle `writing-skills`
+    (RED-GREEN-REFACTOR — 3 loopholes identifiés et fermés).
   - **`newproject`** ✅ — skill d'amorçage projet en 5 phases (Verbalisation → Tech →
     Scope/Risques → 3 artefacts → Roadmap).
   - **`install.mjs`** ✅ — `npm run install-configs` copie les configs dans `~/` (fallback
