@@ -39,12 +39,17 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
 **Gate runtime** — vérifier que l'injection v2/v3/v4 fonctionne en runtime après réinstall
 du plugin sur une machine fraîche (à faire une fois avec Claude Code ouvert).
 
+**⚠️ Réinstall brainstorming-advanced v2** — `/plugin install hyperpowers@hyperpowers` a retourné
+"already installed" sans mettre à jour le cache. Le brainstorming-advanced v2 (méta-routage,
+6 entités) n'est pas encore actif en runtime. Trouver la commande `/plugin update` ou
+désinstaller + réinstaller pour forcer la mise à jour du cache.
+
 **v5 — marketplace curé** — `marketplace.json` qui tire superpowers + planning-with-files
 automatiquement (modèle C complet). Pas encore implémenté.
 
 ## Reprendre sur une machine neuve (le projet)
 - `git clone https://github.com/JoPerron88/Hyperpowers.git`
-- **Node ≥ v22**. Tests : `npm test` → doit afficher **36 verts** (37 total, 1 rouge toléré).
+- **Node ≥ v22**. Tests : `npm test` → doit afficher **41 verts** (42 total, 1 rouge toléré).
 - `npm run build:agents` pour régénérer `AGENTS.md` si besoin.
 - Outillage Claude Code à installer : **voir `OUTILLAGE.md`**.
 - Ce qui NE voyage PAS au clone : la mémoire privée de Claude (`~/.claude/projects/...`).
@@ -53,6 +58,9 @@ automatiquement (modèle C complet). Pas encore implémenté.
 ## Pièges à connaître
 - **Plugin copié dans le cache à l'install** : toute édition de `standard.md` / hook / skill n'a
   **aucun effet runtime** tant que le plugin n'est pas **réinstallé + redémarré**.
+- **Réinstall via `/plugin install` ne met pas forcément à jour** : si le plugin est déjà installé,
+  la commande retourne "already installed" sans toucher le cache. Utiliser `/plugin update` ou
+  désinstaller + réinstaller pour forcer.
 - **Double injection (réglée)** : l'entrée manuelle dans `~/.claude/settings.json` a été retirée
   le 2026-06-07 — le plugin seul enregistre le hook désormais.
 - Tests **scopés à `tests/`** (le dépôt a aussi des `*.test.mjs` dans `spike/` à ne pas lancer).
@@ -73,6 +81,9 @@ automatiquement (modèle C complet). Pas encore implémenté.
   comme fallback. Décidé 2026-06-07 après analyse du repo superpowers.
 - **OpenCode = injection message transform** (pas `instructions` array) — même pattern que
   superpowers.js, injecte `standard.md` dans le premier message utilisateur.
+- **brainstorming-advanced v2 = pool léger + pool dynamique** — méta-routage par le Modérateur
+  selon complexité/demande. Catalogue fixe de 6 entités nommées. Test d'éligibilité en 3 questions
+  obligatoire avant tout débat. Décidé 2026-06-07 via brainstorming-advanced lui-même (meta).
 
 ## Où trouver le détail
 - Specs/plans : `docs/superpowers/specs/` et `docs/superpowers/plans/`.
