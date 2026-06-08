@@ -83,10 +83,13 @@ Le **Modérateur** est l'agent qui exécute ce skill — il orchestre, ne prend 
 
 1. Appliquer le test d'éligibilité (3 questions). Si non éligible → `superpowers:brainstorming`.
 2. Choisir le mode (pool léger vs dynamique) selon la complexité et la demande.
-3. Annoncer à l'utilisateur :
-   > "J'utilise `hyperpowers:brainstorming-advanced` en mode **[pool léger / pool dynamique]**.
-   > Entités : [liste]. Sujet : [reformulation claire]."
-4. Si l'utilisateur préfère l'autre mode ou une autre combinaison d'entités : ajuster.
+3. Annoncer à l'utilisateur et **attendre confirmation explicite** :
+   > "Je propose `hyperpowers:brainstorming-advanced` en mode **[pool léger / pool dynamique]**.
+   > Entités : [liste]. Sujet : [reformulation claire]. On lance ?"
+4. Selon la réponse :
+   - Confirmation → continuer.
+   - Refus → invoquer `superpowers:brainstorming` à la place.
+   - Autre mode ou autres entités → ajuster, re-annoncer, attendre confirmation.
 
 ### 2. Tour de débat
 
@@ -116,6 +119,7 @@ Réponds en 150-250 mots (100-150 mots pour les contre-arguments)."
 **d) Évaluer :**
 - Pool léger : consensus ou 3 tours atteints → aller à 4 (clôture).
 - Pool dynamique : convergence ou 10 tours atteints → aller à 4.
+- Si l'utilisateur interrompt à tout moment → aller directement à 4 avec les positions actuelles.
 
 ### 3. Invocation d'experts
 
