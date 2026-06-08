@@ -325,3 +325,78 @@ test("package.json contient le script install-configs", () => {
   const pkg = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
   assert.ok(pkg.scripts?.["install-configs"], "script install-configs requis");
 });
+
+test("gemini-extension.json existe et déclare name=hyperpowers et contextFileName=GEMINI.md", () => {
+  const ext = JSON.parse(readFileSync(join(root, "gemini-extension.json"), "utf8"));
+  assert.equal(ext.name, "hyperpowers");
+  assert.equal(ext.contextFileName, "GEMINI.md");
+});
+
+test(".opencode/plugins/hyperpowers.js existe et référence standard.md et HYPERPOWERS_STANDARD", () => {
+  const content = readFileSync(join(root, ".opencode/plugins/hyperpowers.js"), "utf8");
+  assert.ok(content.includes("standard.md"), "doit lire standard.md");
+  assert.ok(content.includes("HYPERPOWERS_STANDARD"), "guard d'injection requis");
+  assert.ok(content.includes("experimental.chat.messages.transform"), "hook requis");
+});
+
+test(".codex-plugin/plugin.json est valide et déclare name=hyperpowers", () => {
+  const p = JSON.parse(readFileSync(join(root, ".codex-plugin/plugin.json"), "utf8"));
+  assert.equal(p.name, "hyperpowers");
+  assert.ok(p.skills, "skills path requis");
+});
+
+test(".cursor-plugin/plugin.json est valide et déclare name=hyperpowers", () => {
+  const p = JSON.parse(readFileSync(join(root, ".cursor-plugin/plugin.json"), "utf8"));
+  assert.equal(p.name, "hyperpowers");
+});
+
+test("references/gemini-tools.md existe et contient un tableau de mapping", () => {
+  const content = readFileSync(join(root, "references/gemini-tools.md"), "utf8");
+  assert.ok(content.includes("read_file"), "mapping Read → read_file requis");
+  assert.ok(content.includes("run_shell_command"), "mapping Bash requis");
+});
+
+test("references/codex-tools.md existe et contient un tableau de mapping", () => {
+  const content = readFileSync(join(root, "references/codex-tools.md"), "utf8");
+  assert.ok(content.includes("spawn_agent"), "mapping Task → spawn_agent requis");
+  assert.ok(content.includes("multi_agent"), "note multi_agent requise");
+});
+
+test("GEMINI.md inclut references/gemini-tools.md", () => {
+  const content = readFileSync(join(root, "GEMINI.md"), "utf8");
+  assert.ok(content.includes("@references/gemini-tools.md"), "@-include references requis");
+});
+
+test("brainstorming-advanced SKILL.md contient le test d'éligibilité et les deux modes", () => {
+  const content = readFileSync(join(root, "skills/brainstorming-advanced/SKILL.md"), "utf8");
+  assert.ok(content.includes("information factuelle"), "question zéro requise");
+  assert.ok(content.includes("pool léger"), "mode pool léger requis");
+  assert.ok(content.includes("pool dynamique"), "mode pool dynamique requis");
+});
+
+test("brainstorming-advanced SKILL.md contient les 6 entités du catalogue", () => {
+  const content = readFileSync(join(root, "skills/brainstorming-advanced/SKILL.md"), "utf8");
+  for (const entity of ["Enthousiaste", "Sage", "Utilisateur Final", "Estimateur", "Sécuritaire", "Intégrateur"]) {
+    assert.ok(content.includes(entity), `entité manquante : ${entity}`);
+  }
+});
+
+test("brainstorming-advanced SKILL.md limite pool léger à 3 tours et pool dynamique à 10 tours", () => {
+  const content = readFileSync(join(root, "skills/brainstorming-advanced/SKILL.md"), "utf8");
+  assert.ok(content.includes("3 tours"), "limite 3 tours pool léger requise");
+  assert.ok(content.includes("10 tours"), "limite 10 tours pool dynamique requise");
+});
+
+test("brainstorming-advanced SKILL.md contient le mécanisme d'élévation d'expert", () => {
+  const content = readFileSync(join(root, "skills/brainstorming-advanced/SKILL.md"), "utf8");
+  assert.ok(content.includes("élév"), "mécanisme d'élévation requis (élevé/élévation/élevable)");
+});
+
+test("brainstorming-advanced SKILL.md frontmatter description mentionne le méta-routage", () => {
+  const content = readFileSync(join(root, "skills/brainstorming-advanced/SKILL.md"), "utf8");
+  const frontmatter = content.match(/^---\n([\s\S]+?)\n---/)?.[1] ?? "";
+  assert.ok(
+    frontmatter.includes("pool") || frontmatter.includes("Routes"),
+    "description doit mentionner les modes de débat"
+  );
+});
