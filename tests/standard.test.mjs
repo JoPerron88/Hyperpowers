@@ -310,3 +310,18 @@ test("AGENTS.md existe et contient le standard (généré)", () => {
   assert.ok(content.includes("AUTO-GÉNÉRÉ"), "en-tête AUTO-GÉNÉRÉ requis");
   assert.ok(content.includes("Réfléchir avant de coder"), "contenu standard requis");
 });
+
+test("scripts/install.mjs existe et déclare les 3 plateformes et --force", () => {
+  const path = join(root, "scripts", "install.mjs");
+  assert.ok(existsSync(path), "scripts/install.mjs doit exister");
+  const content = readFileSync(path, "utf8");
+  assert.ok(content.includes("--force"), "flag --force requis");
+  assert.ok(content.includes("GEMINI.md"), "Gemini CLI requis");
+  assert.ok(content.includes("AGENTS.md"), "Codex requis");
+  assert.ok(content.includes("opencode.json"), "OpenCode requis");
+});
+
+test("package.json contient le script install-configs", () => {
+  const pkg = JSON.parse(readFileSync(join(root, "package.json"), "utf8"));
+  assert.ok(pkg.scripts?.["install-configs"], "script install-configs requis");
+});

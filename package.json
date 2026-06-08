@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "node --test 'tests/**/*.test.mjs'",
-    "build:agents": "node scripts/build-agents.mjs"
+    "build:agents": "node scripts/build-agents.mjs",
+    "install-configs": "node scripts/install.mjs"
   }
 }

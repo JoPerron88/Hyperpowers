@@ -27,6 +27,24 @@ Détectés via `~/.claude/plugins/installed_plugins.json` + la structure du dép
   Code : notifications natives et extras. Confort de workflow, non requis pour le projet.
   Installer : `/plugin install warp@claude-code-warp`.
 
+## Installer les configs globales (Gemini CLI, Codex, OpenCode)
+
+Après clone (une fois) :
+
+    npm run build:agents     # si AGENTS.md n'est pas à jour
+    npm run install-configs
+
+Relancer après mise à jour des configs sources :
+
+    npm run install-configs --force   # si les fichiers ont changé
+
+Emplacements installés :
+- `~/.gemini/GEMINI.md`
+- `~/.codex/AGENTS.md`
+- `~/.config/opencode/opencode.json`
+
+Note : Mistral Vibe hors scope (config TOML uniquement, pas de markdown global).
+
 ## Repli — si tu n'installes pas l'outillage
 Tu peux quand même continuer : c'est un dépôt **Node standard** (`npm test` marche tel quel, 27 verts).
 - **Sans superpowers** : skills de process non déclenchés automatiquement. Reproduis à la main :
