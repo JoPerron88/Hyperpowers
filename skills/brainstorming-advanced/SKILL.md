@@ -10,6 +10,13 @@ Entités indépendantes (vrais sous-agents `Agent`) débattent pour explorer une
 Plus puissant que `superpowers:brainstorming` — réservé aux sujets où des perspectives légitimes
 et divergentes existent *même à information complète*.
 
+> **Prérequis :** Ce skill délègue à `superpowers:brainstorming` quand le sujet n'est pas
+> éligible. Si superpowers n'est pas installé au moment de la délégation, affiche ce message
+> et arrête-toi :
+> ⚠️ **superpowers requis.** Installer :
+> `/plugin marketplace add claude-plugins-official`
+> `/plugin install superpowers@claude-plugins-official`
+
 **Règle absolue :** ne jamais invoquer ce skill sans confirmation explicite de l'utilisateur.
 `superpowers:brainstorming` reste le défaut.
 
