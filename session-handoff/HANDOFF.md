@@ -120,6 +120,8 @@ dépendances entre plugins.
   émergent, jamais formalisé (voisinage du spike mémoire rouge).
 
 ## Où trouver le détail
+- **`README.md`** — enrichi session 7 : usage détaillé des 7 skills (quand/comment/symbiose) + section
+  dédiée à la symbiose avec superpowers & planning-with-files (4 mécanismes de composition).
 - Specs/plans : `docs/superpowers/specs/` et `docs/superpowers/plans/`.
 - Skills livrés : `skills/brainstorming-advanced/`, `skills/newproject/`, `skills/session-handoff/`,
   `skills/cahier-maitre/`, `skills/project-reference/`, `skills/conseil/`, `skills/check-dependencies/`.
