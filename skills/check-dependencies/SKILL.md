@@ -12,14 +12,11 @@ si l'une d'elles manque.
 
 ## Procédure
 
-1. Lis `~/.claude/plugins/installed_plugins.json` :
-
-   ```bash
-   cat ~/.claude/plugins/installed_plugins.json
-   ```
+1. Lis `~/.claude/plugins/installed_plugins.json` avec l'outil `Read`.
 
 2. Dans le JSON retourné, cherche les clés commençant par `superpowers@` et
-   `planning-with-files@` dans l'objet `plugins`.
+   `planning-with-files@` dans l'objet `plugins`. Pour chaque clé trouvée, extrais
+   `[0].version` pour obtenir la version installée.
 
 3. Affiche le rapport avec ce format :
 
@@ -32,21 +29,19 @@ si l'une d'elles manque.
    | planning-with-files | ❌ manquant  | —       |
    ```
 
-4. Pour chaque dépendance manquante, affiche la commande d'installation :
+4. Pour chaque dépendance manquante, affiche la commande d'installation correspondante :
 
-### superpowers manquant
+   - **superpowers manquant :**
+     ```
+     /plugin marketplace add claude-plugins-official
+     /plugin install superpowers@claude-plugins-official
+     ```
 
-```
-/plugin marketplace add claude-plugins-official
-/plugin install superpowers@claude-plugins-official
-```
-
-### planning-with-files manquant
-
-```
-/plugin marketplace add OthmanAdi/planning-with-files
-/plugin install planning-with-files@planning-with-files
-```
+   - **planning-with-files manquant :**
+     ```
+     /plugin marketplace add OthmanAdi/planning-with-files
+     /plugin install planning-with-files@planning-with-files
+     ```
 
 5. Si les deux sont présents, conclure :
 
