@@ -8,7 +8,7 @@ Hyperpowers ne réécrit pas les bons plugins qui existent déjà : il les **ass
 couche de **glue cohérente** pour qu'ils se composent mieux. Moins de doublons, des déclenchements
 plus clairs, un seul cap : **la qualité du code**.
 
-`Node.js` · `zéro-dépendance` · `41 tests verts` · outil **personnel**
+`Node.js` · `zéro-dépendance` · `62 tests verts` · outil **personnel**
 
 </div>
 
@@ -21,7 +21,9 @@ plus clairs, un seul cap : **la qualité du code**.
 - [Ce que Hyperpowers apporte](#ce-que-hyperpowers-apporte)
 - [Le Standard — 6 principes](#le-standard--6-principes)
 - [Installation](#installation)
-- [Utilisation](#utilisation)
+- [Les skills — quand et comment les utiliser](#les-skills--quand-et-comment-les-utiliser)
+- [La symbiose avec superpowers & planning-with-files](#la-symbiose-avec-superpowers--planning-with-files)
+- [Utiliser sur d'autres plateformes](#utiliser-sur-dautres-plateformes)
 - [Architecture](#architecture)
 - [Développement](#développement)
 - [Structure du dépôt](#structure-du-dépôt)
@@ -46,8 +48,8 @@ Hyperpowers suit le modèle d'une **distribution curée** (« distro »), pas d'
 
 - **Non-fork.** Les plugins amont ([superpowers](#superpowers), [planning-with-files](#planning-with-files))
   restent à leur source et continuent de s'améliorer tout seuls. Hyperpowers les **référence**.
-- **La valeur ajoutée = la composition.** Le Standard, le routage des plans, le FinalGoal et le skill
-  `session-handoff` sont la *glue* qui fait jouer ces capacités ensemble — c'est ça qui est original.
+- **La valeur ajoutée = la composition.** Le Standard, le routage des plans, le FinalGoal et les
+  skills embarqués sont la *glue* qui fait jouer ces capacités ensemble — c'est ça qui est original.
 - **Architecture « Conductor ».** Une coordination fine au-dessus de l'amont, jamais une réécriture.
 - **Étoile polaire : la qualité du code.**
 
@@ -58,7 +60,8 @@ Hyperpowers suit le modèle d'une **distribution curée** (« distro »), pas d'
 | **Le Standard** | 6 principes de qualité injectés au SessionStart, chacun pointant vers la skill qui le *réalise* | `standard.md` via `hooks/session-start.mjs` |
 | **Routage des plans** | Planifier à la bonne échelle : petite tâche = TDD direct · moyenne = superpowers · grosse/longue = planning-with-files | Principe 5 du Standard |
 | **FinalGoal** | Un cap projet persistant (`.hyperpowers/goal.md`) relu aux checkpoints pour contrer la **dérive du but** sur les longs développements. *Dormant* tant qu'aucun cap n'est posé. | Principe 6 + hook |
-| **`session-handoff`** | « Fini pour aujourd'hui » → produit un dossier `session-handoff/` commité (`HANDOFF.md` + `OUTILLAGE.md`) pour reprendre **à froid**, sur une autre machine, **même sans les plugins installés** | Skill embarqué |
+| **7 skills embarqués** | Conception, cycle de vie projet, maintenance — voir [la section dédiée](#les-skills--quand-et-comment-les-utiliser) | `skills/` |
+| **Filet de cohérence** | Garantit que la glue ne se dégrade pas : aucune référence morte entre skills, frontières disjointes explicites | Tests + `skills/disjoint-pairs.json` |
 
 ## Le Standard — 6 principes
 
@@ -84,13 +87,129 @@ Hyperpowers dépend de deux plugins amont. Sur une machine fraîche :
    /plugin install hyperpowers@hyperpowers
    ```
    Puis **redémarrer** Claude Code : les 6 principes du Standard doivent apparaître au SessionStart,
-   et le skill `session-handoff` dans la liste des skills.
+   et les skills dans la liste.
+
+Une fois installé, le skill **`check-dependencies`** vérifie à tout moment que superpowers et
+planning-with-files sont bien présents et donne les commandes d'installation manquantes.
 
 > ⚠️ Le plugin est **copié dans le cache à l'install** : après toute édition de `standard.md`, d'un
 > hook ou d'un skill, il faut **réinstaller + redémarrer** pour que ça prenne effet en runtime.
 
-> 🔭 *À venir (modèle C)* : un marketplace curé qui tirera superpowers + planning-with-files
-> automatiquement — « ajouter le marketplace Hyperpowers » suffira.
+> ℹ️ Le `marketplace.json` reste **minimal** (une seule entrée `hyperpowers`). Le runtime Claude Code
+> ne résout pas les dépendances entre plugins automatiquement — la distro curée passe par les skills
+> et le Standard, pas par le registre. C'est un choix tranché, pas un manque.
+
+## Les skills — quand et comment les utiliser
+
+Tous les skills se déclenchent de deux façons : **automatiquement** quand leur description (« Use
+when… ») correspond à ton intention, ou **manuellement** quand tu prononces une phrase déclencheuse
+(ou tapes le slash command pour ceux qui l'exposent). Tu n'as jamais à mémoriser une syntaxe : décris
+ce que tu veux, le bon skill s'active.
+
+### 🧠 Concevoir & décider
+
+#### `brainstorming-advanced`
+> **Quand** : une décision a de **vraies tensions** qu'une seule perspective ne tranche pas —
+> approches concurrentes toutes deux valables, enjeux d'architecture/produit, ou besoin de
+> *pressure-tester* un design.
+> **Comment** : « lançons un brainstorming-advanced sur… » (ou `/hyperpowers:brainstorming-advanced`).
+> **Ce qu'il fait** : déclenche un **débat multi-agents** structuré — des entités indépendantes
+> (Enthousiaste, Sage, Intégrateur, Estimateur, Sécuritaire, Utilisateur Final) débattent par tours,
+> puis 2-4 options sont présentées avec une recommandation.
+> **Distinct de** `superpowers:brainstorming` (le défaut, exploration simple) : ce skill est réservé
+> aux sujets où des perspectives divergentes existent *même à information complète*. **Jamais lancé
+> sans ton accord explicite.**
+
+#### `conseil`
+> **Quand** : tu veux **évaluer, réviser, ou prendre du recul long-terme** sur un projet ou une
+> décision **qui existe déjà** — pas explorer des options (ça, c'est brainstorming).
+> **Comment** : « revois mon projet », « analyse mon architecture », « est-ce que ça tient »,
+> « consulte la firm ».
+> **Ce qu'il fait** : une mini **firm de conseil** (Stratège / Guide / Relecteur) lit l'existant et
+> rend un avis structuré — Verdict / Signal / Contrainte / Racine. Les livrables vont dans
+> `firm/sessions/` + `firm/index.md`.
+> **Symbiose** : `conseil` **lit ce qui existe**, `brainstorming-advanced` **explore les possibles**
+> — frontière déclarée et vérifiée par le filet de cohérence.
+
+### 🚀 Cycle de vie du projet
+
+#### `newproject`
+> **Quand** : tu démarres un **projet neuf à partir de zéro** — avant tout code ou structure de
+> dossiers. (Pas pour un projet déjà en cours.)
+> **Comment** : `/NewProject [description]`.
+> **Ce qu'il fait** : amorce le projet en 5 phases (idée → choix techniques → scope/structure/risques
+> → artefacts → suite), et produit 3 artefacts : `CLAUDE.md`, `.hyperpowers/goal.md` (le FinalGoal) et
+> un `git init`.
+> **Symbiose** : invoque `superpowers:brainstorming` en phase 2 (si pesée d'options nécessaire) et
+> oriente vers `superpowers:writing-plans` pour la suite.
+
+#### `session-handoff`
+> **Quand** : tu **arrêtes le travail** — « fini pour aujourd'hui », « on met en pause », surtout si
+> le projet sera repris bien plus tard, sur une autre machine, ou par quelqu'un sans les plugins.
+> **Comment** : « fini pour aujourd'hui » (ou `/hyperpowers:session-handoff`).
+> **Ce qu'il fait** : produit un dossier **`session-handoff/` commité** (`HANDOFF.md` + `OUTILLAGE.md`)
+> qui permet de reprendre **à froid** — état, prochaine étape, outillage à installer — **même sans les
+> plugins installés**. C'est la seule chose qui voyage au `git clone`.
+
+#### `cahier-maitre`
+> **Quand** : tu veux **consigner un événement, une décision ou un progrès** dans le journal maître du
+> projet.
+> **Comment** : « note dans le cahier », « ajoute une entrée au cahier ».
+> **Ce qu'il fait** : prepend une entrée datée et signée (via `git config user.name`) en tête de
+> `CAHIER.md`. C'est l'**historique** suivi par un humain.
+> **Symbiose** : `session-handoff` y ajoute optionnellement une ligne de résumé de session si le
+> `CAHIER.md` existe.
+
+#### `project-reference`
+> **Quand** : tu veux **générer ou rafraîchir un document de référence exhaustif** du projet.
+> **Comment** : « génère la référence projet », « documente le projet ».
+> **Ce qu'il fait** : produit `docs/project-reference.md` en 6 sections (pourquoi · décisions
+> non-évidentes · structure · contraintes/invariants · flux de travail · zones actives/fragiles) —
+> le document **durable** qui survit aux sessions.
+
+### 🔧 Maintenance
+
+#### `check-dependencies`
+> **Quand** : vérifier que les plugins requis par Hyperpowers (superpowers, planning-with-files) sont
+> installés, ou diagnostiquer pourquoi une délégation échoue.
+> **Comment** : « vérifie les dépendances » (ou `/hyperpowers:check-dependencies`).
+> **Ce qu'il fait** : lit `~/.claude/plugins/installed_plugins.json`, affiche un tableau d'état
+> (installé / manquant + version) et donne les commandes d'installation manquantes.
+
+## La symbiose avec superpowers & planning-with-files
+
+C'est le **cœur du projet** : Hyperpowers ne duplique pas l'amont, il le **fait jouer ensemble**.
+Quatre mécanismes concrets de composition :
+
+**1. Le Standard délègue, il ne re-sermonne pas.** Chaque principe injecté au SessionStart nomme la
+skill amont qui le réalise (principe 1 → `superpowers:brainstorming`, principe 2 → `…:test-driven-development`,
+etc.). Une seule voix : Claude ne reçoit pas deux fois la même consigne sous deux formulations.
+
+**2. Le routage des plans (principe 5) répartit selon l'échelle.** Petite tâche → TDD direct ·
+tâche moyenne (mono-session) → `superpowers:writing-plans` + `executing-plans` · grosse tâche qui
+franchit des sessions et accumule des découvertes → **planning-with-files** (`task_plan.md` /
+`findings.md` / `progress.md`, reprise après `/clear`). Le discriminant n'est pas un seuil de tool
+calls mais : « la tâche franchit-elle une compaction et des découvertes vont-elles s'accumuler ? »
+
+**3. Les skills embarqués s'enchaînent avec ceux de l'amont.** Exemples vécus de chaînes :
+- `newproject` → `superpowers:brainstorming` → `superpowers:writing-plans`
+- `brainstorming-advanced` → `superpowers:writing-skills` (si le livrable est un skill) → `superpowers:writing-plans` → `superpowers:subagent-driven-development`
+- Le **contexte voyage** via l'artefact partagé (la spec de design écrite par le débat est relue par
+  `writing-plans` — pas de re-dérivation).
+
+**4. Un filet de test garantit que la glue ne se dégrade pas.** Deux invariants vérifiés à chaque
+`npm test` :
+- **Pointeurs morts** — toute référence `superpowers:X` ou `hyperpowers:Y` dans un skill doit
+  pointer vers un skill réellement installé. Renomme une skill amont, le test rougit.
+- **Anti-chevauchement** — les paires de skills déclarées disjointes (`skills/disjoint-pairs.json`,
+  ex. `conseil` vs `brainstorming-advanced`) doivent garder une frontière explicite dans leur
+  description, pour éviter les déclenchements ambigus.
+
+> 💡 **Note de conception.** La symbiose comportementale (passer un artefact, refuser de re-litiger
+> une décision close) **émerge déjà** de Claude + des skills existants — vérifié empiriquement par
+> des *baselines* avec subagents. Hyperpowers ne **décrète** donc pas un orchestrateur central (qui
+> serait une « fausse autorité », puisqu'il ne contrôle pas le déclenchement des skills) : il
+> **protège** une symbiose déjà vivante via le filet de test. Déclaratif + testé, pas impératif.
 
 ## Utiliser sur d'autres plateformes
 
@@ -124,16 +243,6 @@ npm run install-configs   # copie GEMINI.md → ~/.gemini/, AGENTS.md → ~/.cod
 **Mappings d'outils** (Claude Code → plateforme cible) : `references/gemini-tools.md`,
 `references/codex-tools.md`.
 
-## Utilisation
-
-- **Le Standard** s'applique tout seul (injecté au SessionStart). Rien à faire.
-- **Le FinalGoal** : crée `.hyperpowers/goal.md` à la racine de ton projet avec une phrase de cap
-  (ex. « Logiciel de prise de notes assisté par IA »). Il sera injecté et relu aux checkpoints.
-  Pas de fichier = fonctionnalité dormante.
-- **Le handoff** : quand tu t'arrêtes, dis « fini pour aujourd'hui » (ou invoque `session-handoff`) →
-  un dossier `session-handoff/` est créé, commité, lisible à froid plus tard même sur une autre
-  machine.
-
 ## Architecture
 
 Le **dépôt EST le plugin**. Tout est additif et minimal :
@@ -141,13 +250,13 @@ Le **dépôt EST le plugin**. Tout est additif et minimal :
 - `standard.md` — le texte injecté (les 6 principes).
 - `hooks/session-start.mjs` — émet le Standard (+ le FinalGoal s'il existe) au format JSON
   `hookSpecificOutput.additionalContext` attendu par Claude Code.
-- `skills/session-handoff/` — le premier skill embarqué.
+- `skills/` — les 7 skills embarqués + `disjoint-pairs.json` (frontières déclarées).
 - `.claude-plugin/{plugin,marketplace}.json` — manifeste + marketplace.
 
 ## Développement
 
 - **Langage** : Node.js (ESM, `node:test`, **zéro dépendance**).
-- **Tests** : `npm test` (= `node --test 'tests/**/*.test.mjs'`). **41 verts.**
+- **Tests** : `npm test` (= `node --test 'tests/**/*.test.mjs'`). **62 verts.**
 - **Méthode** : le projet se construit lui-même avec superpowers — `brainstorming` → `writing-plans`
   → `subagent-driven-development`, et les skills sont durcis via `writing-skills` (RED-GREEN-REFACTOR
   avec des subagents). Les specs et plans vivent dans `docs/superpowers/`.
@@ -161,15 +270,23 @@ Hyperpowers/
 ├── AGENTS.md                    # Contenu embarqué pour Codex (généré)
 ├── gemini-extension.json        # Extension native Gemini CLI
 ├── hooks/session-start.mjs      # Injection Claude Code (Standard + FinalGoal)
-├── skills/                      # brainstorming-advanced · newproject · session-handoff
+├── skills/                      # 7 skills + disjoint-pairs.json (frontières déclarées)
+│   ├── brainstorming-advanced/  #   débat multi-agents
+│   ├── conseil/                 #   firm d'analyse de l'existant
+│   ├── newproject/              #   amorçage projet
+│   ├── session-handoff/         #   reprise à froid
+│   ├── cahier-maitre/           #   journal d'événements
+│   ├── project-reference/       #   doc de référence durable
+│   └── check-dependencies/      #   diagnostic des dépendances
 ├── .claude-plugin/              # plugin.json + marketplace.json (Claude Code)
 ├── .opencode/plugins/           # Plugin natif OpenCode (injection message transform)
 ├── .codex-plugin/               # Plugin natif Codex
 ├── .cursor-plugin/              # Plugin natif Cursor
 ├── references/                  # Mappings d'outils par plateforme
 ├── scripts/                     # build-agents.mjs · install.mjs
-├── tests/                       # node:test (41 verts)
+├── tests/                       # node:test (62 verts)
 ├── docs/superpowers/            # specs + plans (cycle brainstorm→plan)
+├── firm/                        # consultations conseil (sessions/ + index.md)
 ├── session-handoff/             # handoff de reprise (HANDOFF.md + OUTILLAGE.md)
 └── spike/                       # recherche close (spike mémoire → verdict rouge)
 ```
@@ -180,12 +297,12 @@ Hyperpowers/
 - ✅ **v2** — routage des plans (principe 5).
 - ✅ **v3** — FinalGoal (principe 6 + hook).
 - ✅ **v4** — skill `session-handoff` (durci via `writing-skills`).
-- ✅ **Post-v4** — `brainstorming-advanced` v1 (débat multi-agents), `newproject` (amorçage projet).
-- ✅ **brainstorming-advanced v2** — méta-routage pool léger/dynamique, catalogue 6 entités, test d'éligibilité, durci via `writing-skills`.
+- ✅ **Skills de conception** — `brainstorming-advanced` v2 (débat multi-agents, méta-routage, 6 entités), `conseil` v2 (firm d'analyse).
+- ✅ **Skills de cycle de vie** — `newproject`, `cahier-maitre`, `project-reference`.
 - ✅ **Multi-plateforme** — extensions natives Gemini CLI, OpenCode, Codex, Cursor + `install.mjs` fallback.
-- ⏳ **Gate runtime** (v2/v3/v4) — injection à re-constater après réinstall.
-- 🔭 **v5** — implémenter le modèle C (marketplace curé).
-- 💡 **Idées** — « bible de projet », « cahier maître » (à cadrer par brainstorming).
+- ✅ **v5 — Fondations Symbiose** — `check-dependencies`, notes de prérequis dans les skills qui délèguent à superpowers.
+- ✅ **Glue inter-skills v1** — filet de test de cohérence (pointeurs morts + anti-chevauchement). La symbiose, déjà vivante, est désormais protégée contre la régression.
+- 🔭 **Suite** — étendre les frontières déclarées au fil de l'eau ; durcir une arête de composition seulement si un *baseline* prouve qu'elle ne s'effectue pas déjà d'elle-même.
 
 > Pour l'état détaillé et la reprise, voir le dossier [`session-handoff/`](session-handoff/).
 
