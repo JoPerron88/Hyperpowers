@@ -560,3 +560,11 @@ test("brainstorming-advanced mentionne la commande d'install superpowers si manq
     "doit inclure la commande d'install superpowers pour guider l'utilisateur si la dépendance manque"
   );
 });
+
+test("newproject mentionne la commande d'install superpowers si manquant", () => {
+  const content = readFileSync(join(root, "skills/newproject/SKILL.md"), "utf8");
+  assert.ok(
+    content.includes("/plugin install superpowers@claude-plugins-official"),
+    "doit inclure la commande d'install superpowers pour guider l'utilisateur si la dépendance manque"
+  );
+});
