@@ -568,3 +568,27 @@ test("newproject mentionne la commande d'install superpowers si manquant", () =>
     "doit inclure la commande d'install superpowers pour guider l'utilisateur si la dépendance manque"
   );
 });
+
+test("paires disjointes : chaque paire déclarée a un marqueur de frontière présent dans une description", () => {
+  const pairsPath = join(root, "skills/disjoint-pairs.json");
+  assert.ok(existsSync(pairsPath), "skills/disjoint-pairs.json manquant");
+  const pairs = JSON.parse(readFileSync(pairsPath, "utf8"));
+  assert.ok(Array.isArray(pairs) && pairs.length >= 1, "au moins une paire disjointe déclarée");
+  const skillsDir = join(root, "skills");
+  for (const entry of pairs) {
+    const [a, b] = entry.skills;
+    const marker = entry.boundaryMarker;
+    for (const s of [a, b]) {
+      assert.ok(
+        existsSync(join(skillsDir, s, "SKILL.md")),
+        `paire disjointe pointe vers un skill inexistant : ${s}`,
+      );
+    }
+    const fmA = readFileSync(join(skillsDir, a, "SKILL.md"), "utf8").match(/^---\n([\s\S]+?)\n---/)?.[1] ?? "";
+    const fmB = readFileSync(join(skillsDir, b, "SKILL.md"), "utf8").match(/^---\n([\s\S]+?)\n---/)?.[1] ?? "";
+    assert.ok(
+      fmA.includes(marker) || fmB.includes(marker),
+      `frontière absente : ni ${a} ni ${b} ne contient le marqueur "${marker}" dans sa description`,
+    );
+  }
+});
