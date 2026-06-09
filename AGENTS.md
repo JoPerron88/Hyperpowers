@@ -654,6 +654,13 @@ Questions, **une à la fois**, dans l'ordre :
 4. "Y a-t-il des contraintes extérieures ? (formats de fichiers à lire ou écrire,
    logiciels avec lesquels le projet doit s'interfacer, environnement imposé)"
 
+> **Prérequis Phase 2 :** Ce skill peut invoquer `superpowers:brainstorming` et
+> `superpowers:writing-plans`. Si superpowers n'est pas installé, affiche ce message
+> à la place de l'invocation :
+> ⚠️ **superpowers requis.** Installer :
+> `/plugin marketplace add claude-plugins-official`
+> `/plugin install superpowers@claude-plugins-official`
+
 **Option à proposer à la fin de Phase 2 :**
 > "Veux-tu qu'on explore les choix technologiques plus en profondeur ? Je peux invoquer
 > `superpowers:brainstorming` pour peser les options ensemble avant de continuer."
