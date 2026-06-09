@@ -1,5 +1,5 @@
 # Handoff — Hyperpowers
-> Dernière mise à jour : 2026-06-08 (session 5). Reprise à froid : si tu n'as pas l'outillage de ce projet, lis
+> Dernière mise à jour : 2026-06-08 (session 6). Reprise à froid : si tu n'as pas l'outillage de ce projet, lis
 > d'abord `OUTILLAGE.md` (à côté), puis ce fichier.
 
 ## Le but (FinalGoal)
@@ -12,9 +12,9 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
 
 ## Où on en est
 - Branche : **`main`** · arbre propre · tout poussé sur GitHub.
-- **54 tests verts** (54/54 — `planning-with-files` installé).
-- **Plugin v0.5.0** actif.
-- **v1→v4 livrées** + skills et features post-v4 :
+- **60 tests verts** (60/60 — `planning-with-files` installé).
+- **Plugin v0.6.0** actif.
+- **v1→v5 livrées** + skills et features :
   - **`brainstorming-advanced`** ✅ v2 — méta-routage pool léger / pool dynamique, catalogue 6
     entités, test d'éligibilité 3 questions.
   - **`newproject`** ✅ — skill d'amorçage projet en 5 phases.
@@ -24,24 +24,34 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
   - **`conseil`** ✅ v2 — mini firm conseil (Stratège / Guide / Relecteur). Structure imposée :
     Verdict / Signal / Contrainte / Racine (conditionnelle). Livrables dans `firm/sessions/` +
     `firm/index.md`. Distinct de brainstorming-advanced (lit l'existant vs explore les options).
+  - **`check-dependencies`** ✅ v1 — skill de diagnostic : lit `~/.claude/plugins/installed_plugins.json`,
+    reporte l'état de superpowers + planning-with-files, donne les commandes d'install si manquant.
+  - **Prérequis superpowers** ✅ (Option B) — `brainstorming-advanced` et `newproject` affichent
+    une note d'installation si superpowers manque au moment de la délégation.
   - **`install.mjs`** ✅ — `npm run install-configs`.
   - **AGENTS.md staleness test** ✅.
   - **Extensions natives multi-plateforme** ✅.
   - **Gate runtime** ✅ — vérifié 2026-06-08.
 
 ## Ce qui était prévu ensuite
-- **v5 — marketplace curé** — **dépendance bloquante identifiée** (firm 2026-06-08) : la symbiose
-  inter-skills ne peut pas être testée tant que le marketplace v5 n'existe pas. C'est le chantier
-  prioritaire. Le brainstorming v5 avait été interrompu à mi-session ; le format `git-subdir`/`url`
-  est confirmé faisable. **Reprendre par brainstorming.**
-- **Glue inter-skills** — après le marketplace : implémenter la composition réelle entre skills
-  (le cœur de la promesse du projet, jamais encore touché).
-- **Cycle gouvernance/construction** (signal firm) : chaque session produit une décision de
-  gouvernance mais la suivante reprend la construction. À surveiller activement.
+- **Glue inter-skills** — le cœur de la promesse du projet : implémenter la composition réelle
+  entre skills. Le `check-dependencies` + les notes prérequis posent les fondations (v5). La
+  prochaine étape : identifier les cas concrets de composition (ex. brainstorming-advanced qui
+  appelle writing-plans, conseil qui appelle session-handoff) et les instrumenter.
+- **`conseil` skill** — vérifier si une note prérequis y est pertinente (conseil n'invoque pas
+  superpowers directement, mais brainstorming-advanced oui si utilisé en amont).
+- **Cycle gouvernance/construction** (signal firm) : à surveiller activement — chaque session
+  produit une décision de gouvernance, s'assurer que la suivante reprend la construction.
+
+## Révision conceptuelle clé (session 6)
+« v5 marketplace curé » → **« v5 Fondations Symbiose »**. Le marketplace.json ne change pas
+(registre minimal, une seule entrée hyperpowers). La symbiose se construit dans les skills
+eux-mêmes, pas dans le registre. Le runtime Claude Code n'a pas de résolution automatique de
+dépendances entre plugins.
 
 ## Reprendre sur une machine neuve (le projet)
 - `git clone https://github.com/JoPerron88/Hyperpowers.git`
-- **Node ≥ v22**. Tests : `npm test` → doit afficher **54 verts** (54/54, 0 rouge si planning-with-files installé).
+- **Node ≥ v22**. Tests : `npm test` → doit afficher **60 verts** (60/60, 0 rouge si planning-with-files installé).
 - `npm run build:agents` pour régénérer `AGENTS.md` si besoin (le test de staleness le détecte).
 - Outillage Claude Code à installer : **voir `OUTILLAGE.md`**.
 - Ce qui NE voyage PAS au clone : la mémoire privée de Claude (`~/.claude/projects/...`).
@@ -63,6 +73,9 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
 - **Extensions natives vs install.mjs** : les deux coexistent. `install.mjs` copie des fichiers
   dans `~/` (fallback). Les dossiers `.opencode/`, `.codex-plugin/`, `.cursor-plugin/` et
   `gemini-extension.json` permettent l'installation via les gestionnaires natifs.
+- **marketplace.json reste minimal** (une seule entrée `hyperpowers`) — ne pas ajouter
+  superpowers/pwf : le runtime ne résout pas les dépendances automatiquement, et des sha épinglés
+  deviendraient vite obsolètes. La distro curée passe par les skills, pas le registre.
 
 ## Décisions clés & pourquoi
 - **Modèle C (distro curée, non-fork)** — tranché 2026-06-07.
@@ -77,15 +90,18 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
 - **hooks.json `matcher: "startup|clear|compact"` = convention établie** — confirmé 2026-06-08 :
   superpowers upstream utilise exactement le même pattern.
 - **`conseil` = structure en couches** (tranché 2026-06-08) : Verdict/Signal/Contrainte imposés,
-  Racine conditionnelle (auto si blocage structurel propre au projet, ou forcée par "analyse en
-  profondeur"). Entités secondaires réagissent à la précédente, pas de re-analyse depuis zéro.
+  Racine conditionnelle. Entités secondaires réagissent à la précédente.
 - **`firm/` = dossier dédié à la racine du projet** — consultations dans `sessions/`, index dans
-  `index.md`. Ne pas confondre avec les plans d'exécution (writing-plans) ni les caps (FinalGoal).
+  `index.md`.
+- **v5 = Fondations Symbiose, pas marketplace curé** (tranché 2026-06-08 session 6) : le
+  marketplace.json ne référence pas les dépendances externes — le runtime ne supporte pas la
+  résolution automatique. La symbiose passe par les skills eux-mêmes (`check-dependencies` +
+  notes prérequis dans les skills qui délèguent).
 
 ## Où trouver le détail
 - Specs/plans : `docs/superpowers/specs/` et `docs/superpowers/plans/`.
 - Skills livrés : `skills/brainstorming-advanced/`, `skills/newproject/`, `skills/session-handoff/`,
-  `skills/cahier-maitre/`, `skills/project-reference/`, `skills/conseil/`.
+  `skills/cahier-maitre/`, `skills/project-reference/`, `skills/conseil/`, `skills/check-dependencies/`.
 - Consultations firm : `firm/sessions/` + `firm/index.md` (2 consultations 2026-06-08).
 - Extensions natives : `gemini-extension.json`, `.opencode/`, `.codex-plugin/`, `.cursor-plugin/`.
 - Références multi-plateforme : `references/`.
