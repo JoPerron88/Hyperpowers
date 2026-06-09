@@ -57,6 +57,15 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
 - **Cap exploratoire : skill/plugin « Multivac »** — futur assistant personnel de l'auteur. Pas encore
   spécifié → passera par `superpowers:brainstorming` (ou `brainstorming-advanced` si vraies tensions de
   conception) **avant** tout code. Vérifier l'alignement avec le FinalGoal (qualité du code, outil perso).
+- **Expansion des « rôles » (entités) joués par les sous-agents** — aujourd'hui ces rôles sont des
+  *briefs inline* d'1-3 phrases dans le `SKILL.md` (catalogue de `brainstorming-advanced` : 6 entités ;
+  profils de `conseil` : Stratège/Guide/Relecteur). Piste : les **enrichir** (rôle + capacités +
+  personnalité + exemples) et les **sortir** dans des fichiers dédiés (`skills/<skill>/references/`) ou
+  les **promouvoir en agents définis** (`.claude/agents/<nom>.md`, réutilisables/routables), à appliquer :
+  (a) aux skills actuels `conseil` + `brainstorming-advanced` ; (b) **dès la conception de « Multivac »**
+  (penser ses rôles comme des entités riches dès le départ). ⚠️ C'est un **changement de conception**, pas
+  une retouche : passer par `brainstorming` d'abord, et peser contre YAGNI/simplicité (le brief mince
+  actuel est un choix assumé — l'expansion doit prouver sa valeur, pas être faite par défaut).
 
 **Reporté des sessions précédentes :**
 - **Étendre `disjoint-pairs.json`** — au fil de l'eau, ajouter les frontières disjointes qui
