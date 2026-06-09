@@ -44,9 +44,13 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
 
 ## Ce qui était prévu ensuite
 **Priorités confirmées par l'auteur (session 8) :**
-- **Trancher les 2 recouvrements restants** (suite de `firm/sessions/2026-06-09-arsenal-skills-plugins.md`) :
-  `code-review` (plugin) ↔ `/code-review` built-in, et `security-guidance` (plugin) ↔ `/security-review`
-  built-in. Les 2 autres recouvrements sont déjà réglés (karpathy + ui-ux-pro-max désinstallés).
+- ✅ **Trancher les 2 recouvrements restants** — **FAIT (2026-06-09)** : `code-review` et
+  `security-guidance` → **garder le built-in, désinstaller le plugin** (built-ins indépendants des
+  plugins, vérifié ; geste réversible). Détail + commandes dans
+  `firm/sessions/2026-06-09-arsenal-skills-plugins.md` § « Tranchage final ». Les 4 recouvrements sont
+  désormais tous tranchés. **Reste à exécuter sur la machine Windows** (sur le Mac, ces 2 plugins ne
+  sont pas installés — rien à faire). `/plugin uninstall code-review@claude-plugins-official` +
+  `/plugin uninstall security-guidance@claude-plugins-official`.
 - **Définir « symbiose » en positif dans le Standard** (livrable de
   `firm/sessions/2026-06-09-pwf-symbiose-installation.md`) : une phrase en langage d'impact (« le bon
   outil routé selon la taille de la tâche, deux systèmes étanches »), pour stopper la récidive du doute

@@ -227,3 +227,44 @@ Ces skills ne viennent d'aucun plugin — ils sont fournis par Claude Code lui-m
 | `frontend-design` (🟦) ↔ `ui-ux-pro-max` (🟨) | amont | choisir UN ; resserrer/désactiver l'autre |
 | `karpathy-guidelines` (🟨) ↔ Standard Hyperpowers | amont | désactiver (déjà absorbé) |
 | `planning-with-files` ↔ `writing-plans` (superpowers) | déjà géré | routage par taille de tâche (principe 5) |
+
+---
+
+## Tranchage final des 2 recouvrements restants (2026-06-09)
+
+> Suite à la décision « trancher chacun ». Les 2 autres recouvrements (`karpathy-guidelines`,
+> `frontend-design`/`ui-ux-pro-max`) ont été réglés en session 8 par désinstallation.
+
+**Fait critique vérifié avant de trancher :** `/code-review`, `/review` et `/security-review` sont
+des **built-ins du harness Claude Code**, fournis par Claude Code lui-même (section D ci-dessus). Ils
+**ne dépendent pas** des plugins Anthropic homonymes — les désinstaller ne casse aucun built-in. Le
+geste est donc sûr **et réversible** (un plugin se réinstalle en une commande).
+
+### Recouvrement 1 — `code-review` (plugin 🟦) ↔ `/code-review` + `/review` (built-in ⚙️)
+**Tranché : garder les built-ins, désinstaller le plugin `code-review`.**
+Le built-in `/code-review` est un **sur-ensemble** du plugin : niveaux d'effort `low→ultra`,
+`ultra` = revue multi-agents dans le cloud, `--comment` (poste en PR), `--fix` (applique). `/review`
+couvre la revue d'une PR. Le plugin ne fait que « revue de PR » — entièrement couvert. Bonus :
+`/simplify` (built-in) reste l'outil qualité-seulement aligné sur l'étoile polaire.
+
+### Recouvrement 2 — `security-guidance` (plugin 🟦) ↔ `/security-review` (built-in ⚙️)
+**Tranché : garder le built-in `/security-review`, désinstaller le plugin `security-guidance`.**
+Pour un outil **personnel non-commercial** axé qualité du code, la revue de sécurité ponctuelle de la
+branche (built-in) couvre le besoin. C'est le recouvrement le **moins tranché** des quatre (le plugin
+v2.0.3 offre potentiellement un guidage proactif plus riche) — mais la décision est **réversible** :
+si un projet sensible le justifie, réinstaller `security-guidance` en une commande.
+
+### Exécution
+- **Cette machine (Mac, 4 plugins)** : `code-review` et `security-guidance` **ne sont pas installés** →
+  rien à faire ici (la décision est déjà de facto en place).
+- **Machine principale (Windows, 11 plugins)** : désinstaller via le gestionnaire de plugins —
+  `/plugin` → onglet de désinstallation, ou `/plugin uninstall code-review@claude-plugins-official`
+  et `/plugin uninstall security-guidance@claude-plugins-official` (confirmer les noms exacts via
+  `/plugin` sur la machine concernée).
+
+### Bilan curation
+Les **4 recouvrements** identifiés par la firm sont désormais tranchés :
+`karpathy-guidelines` (désinstallé, absorbé par le Standard) · `ui-ux-pro-max` (désinstallé au profit
+de `frontend-design`) · `code-review` (built-in gardé) · `security-guidance` (built-in gardé). La
+tension structurelle `planning-with-files` ↔ `writing-plans` reste **gérée par routage** (principe 5),
+pas un recouvrement à supprimer.
