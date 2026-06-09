@@ -60,7 +60,7 @@ Emplacements copiés par le fallback :
 Note : Mistral Vibe hors scope (config TOML uniquement, pas de markdown/plugin global).
 
 ## Repli — si tu n'installes pas l'outillage
-Tu peux quand même continuer : c'est un dépôt **Node standard** (`npm test` marche tel quel, 54 verts — 54 au total, 0 rouge si planning-with-files installé, 1 rouge sinon).
+Tu peux quand même continuer : c'est un dépôt **Node standard** (`npm test` marche tel quel, 62 verts — 62 au total, 0 rouge si planning-with-files installé, 1 rouge sinon).
 - **Sans superpowers** : skills de process non déclenchés automatiquement. Reproduis à la main :
   brainstorm → spec dans `docs/superpowers/specs/` → plan → TDD → revue.
 - **Sans hyperpowers** : le standard n'est pas injecté au SessionStart — applique-le consciemment
