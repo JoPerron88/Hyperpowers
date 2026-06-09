@@ -592,3 +592,25 @@ test("paires disjointes : chaque paire déclarée a un marqueur de frontière pr
     );
   }
 });
+
+test("pointeurs inter-skills : toute référence superpowers:/hyperpowers: dans un SKILL.md existe", () => {
+  const skillsDir = join(root, "skills");
+  const skillNames = readdirSync(skillsDir).filter((n) =>
+    existsSync(join(skillsDir, n, "SKILL.md")),
+  );
+  const internalSkills = new Set(skillNames);
+  const spSkills = installedSuperpowersSkills();
+  let refCount = 0;
+  for (const name of skillNames) {
+    const content = readFileSync(join(skillsDir, name, "SKILL.md"), "utf8");
+    for (const [, ns, skill] of content.matchAll(/\b(superpowers|hyperpowers):([a-z][a-z-]*)/g)) {
+      refCount++;
+      if (ns === "superpowers") {
+        assert.ok(spSkills.has(skill), `référence morte dans ${name}/SKILL.md : superpowers:${skill}`);
+      } else {
+        assert.ok(internalSkills.has(skill), `référence morte dans ${name}/SKILL.md : hyperpowers:${skill}`);
+      }
+    }
+  }
+  assert.ok(refCount >= 3, "trop peu de références inter-skills détectées — le scan a-t-il fonctionné ?");
+});
