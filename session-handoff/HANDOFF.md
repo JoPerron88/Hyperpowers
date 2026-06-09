@@ -1,5 +1,5 @@
 # Handoff — Hyperpowers
-> Dernière mise à jour : 2026-06-09 (session 7). Reprise à froid : si tu n'as pas l'outillage de ce projet, lis
+> Dernière mise à jour : 2026-06-09 (session 8). Reprise à froid : si tu n'as pas l'outillage de ce projet, lis
 > d'abord `OUTILLAGE.md` (à côté), puis ce fichier.
 
 ## Le but (FinalGoal)
@@ -11,9 +11,12 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
 (non commercial).
 
 ## Où on en est
-- Branche : **`main`** · arbre propre · tout poussé sur GitHub.
-- **62 tests verts** (62/62 — `planning-with-files` installé).
+- Branche : **`main`** · arbre propre · tout poussé sur GitHub (dernier commit `21b4c8f`, session 8).
+- **62 tests verts** (62/62 dans l'env de dev — ⚠️ 55/62 sur un clone Google Drive, voir piège « CRLF » plus bas).
 - **Plugin v0.6.0** actif.
+- **Session 8 (méta)** : 2 consultations firm livrées (`firm/sessions/2026-06-09-*`), désinstallation
+  de `karpathy-guidelines` + `ui-ux-pro-max` (recouvrements tranchés), fix `OUTILLAGE` (count 54→62),
+  setup git bi-compte (ce repo = `JoPerron88`, défaut global = `jperron-maker`).
 - **v1→v5 + glue inter-skills v1 livrées** + skills et features :
   - **Glue inter-skills v1** ✅ (session 7) — **filet de test de cohérence**, PAS d'orchestrateur.
     `skills/disjoint-pairs.json` + Test A (pointeurs morts : références `superpowers:`/`hyperpowers:`
@@ -40,6 +43,22 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
   - **Gate runtime** ✅ — vérifié 2026-06-08.
 
 ## Ce qui était prévu ensuite
+**Priorités confirmées par l'auteur (session 8) :**
+- **Trancher les 2 recouvrements restants** (suite de `firm/sessions/2026-06-09-arsenal-skills-plugins.md`) :
+  `code-review` (plugin) ↔ `/code-review` built-in, et `security-guidance` (plugin) ↔ `/security-review`
+  built-in. Les 2 autres recouvrements sont déjà réglés (karpathy + ui-ux-pro-max désinstallés).
+- **Définir « symbiose » en positif dans le Standard** (livrable de
+  `firm/sessions/2026-06-09-pwf-symbiose-installation.md`) : une phrase en langage d'impact (« le bon
+  outil routé selon la taille de la tâche, deux systèmes étanches »), pour stopper la récidive du doute
+  « mal installé ». Tension non tranchée : la loger dans `standard.md` (relu au SessionStart, fort mais
+  alourdit l'injection) ou dans README/cahier (léger mais pas relu auto).
+- **Investiguer les 7 tests rouges** du clone Drive (cause probable CRLF) — confirmer, et si avéré
+  ajouter un `.gitattributes`. Voir piège plus bas.
+- **Cap exploratoire : skill/plugin « Multivac »** — futur assistant personnel de l'auteur. Pas encore
+  spécifié → passera par `superpowers:brainstorming` (ou `brainstorming-advanced` si vraies tensions de
+  conception) **avant** tout code. Vérifier l'alignement avec le FinalGoal (qualité du code, outil perso).
+
+**Reporté des sessions précédentes :**
 - **Étendre `disjoint-pairs.json`** — au fil de l'eau, ajouter les frontières disjointes qui
   méritent d'être protégées (chaque nouvelle paire = une ligne + un marqueur de démarcation présent
   dans une description). Léger, pas urgent.
@@ -59,6 +78,13 @@ dépendances entre plugins.
 
 ## Reprendre sur une machine neuve (le projet)
 - `git clone https://github.com/JoPerron88/Hyperpowers.git`
+- **Identité git de CE repo = compte `JoPerron88`** (l'auteur a 2 comptes GitHub ; `jperron-maker` est
+  le défaut global, sans droit d'écriture ici). Sur une machine neuve, pour pouvoir pousser : se
+  connecter `gh auth login` comme `JoPerron88`, puis dans le repo :
+  `git remote set-url origin https://JoPerron88@github.com/JoPerron88/Hyperpowers.git` +
+  `git config --local user.name "Jonathan Perron"` +
+  `git config --local user.email "jonathan.perron.travail@gmail.com"`. Le push est routé par le
+  username dans l'URL du remote (Git Credential Manager), pas par le compte gh « actif ».
 - **Node ≥ v22**. Tests : `npm test` → doit afficher **62 verts** (62/62, 0 rouge si planning-with-files installé).
 - `npm run build:agents` pour régénérer `AGENTS.md` si besoin (le test de staleness le détecte).
 - Outillage Claude Code à installer : **voir `OUTILLAGE.md`**.
@@ -66,6 +92,12 @@ dépendances entre plugins.
   `HANDOFF.md` + `CLAUDE.md` + `docs/` re-sèment le contexte.
 
 ## Pièges à connaître
+- **Clone sur Google Drive (`G:`) = 7 tests rouges trompeurs** : un `git clone` sur un chemin Drive
+  sous Windows donne 55/62 au lieu de 62/62. Les tests qui rougissent comparent des chaînes exactes
+  (frontmatter « Use when », staleness `AGENTS.md`, marqueurs de frontière disjoints). **Ce n'est PAS
+  une régression du code** — vérifié manuellement : les descriptions commencent bien par « Use when ».
+  Cause probable = fins de ligne **CRLF** introduites par le clone Windows/Drive (non confirmée à 100 %,
+  investigation reportée). Tester plutôt hors-Drive, ou ajouter un `.gitattributes` (`* text=auto eol=lf`).
 - **Plugin copié dans le cache à l'install** : toute édition de `standard.md` / hook / skill n'a
   **aucun effet runtime** tant que le plugin n'est pas **mis à jour + rechargé**.
 - **Procédure de mise à jour du cache** : (1) bumper la version dans `plugin.json` et
