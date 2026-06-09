@@ -57,6 +57,8 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
 - **Cap exploratoire : skill/plugin « Multivac »** — futur assistant personnel de l'auteur. Pas encore
   spécifié → passera par `superpowers:brainstorming` (ou `brainstorming-advanced` si vraies tensions de
   conception) **avant** tout code. Vérifier l'alignement avec le FinalGoal (qualité du code, outil perso).
+  📄 **Conversation de conception amorcée → `session-handoff/multivac-notes.md`** (fondations sur le
+  stockage des entités + vocabulaire sous-agent, à relire avant de reprendre Multivac).
 - **Expansion des « rôles » (entités) joués par les sous-agents** — aujourd'hui ces rôles sont des
   *briefs inline* d'1-3 phrases dans le `SKILL.md` (catalogue de `brainstorming-advanced` : 6 entités ;
   profils de `conseil` : Stratège/Guide/Relecteur). Piste : les **enrichir** (rôle + capacités +
