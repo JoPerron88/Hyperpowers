@@ -61,6 +61,11 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
 - **Cap exploratoire : skill/plugin « Multivac »** — futur assistant personnel de l'auteur. Pas encore
   spécifié → passera par `superpowers:brainstorming` (ou `brainstorming-advanced` si vraies tensions de
   conception) **avant** tout code. Vérifier l'alignement avec le FinalGoal (qualité du code, outil perso).
+  📁 **Dossier dédié versionné : `Projet Multivac/`** (à la racine du repo) — contient à ce jour :
+  `roles_equipe_developpement.md` (roster des rôles d'équipe, base pour créer un agent par rôle) et
+  `Index-skills-disponibles.md` (inventaire de tous les skills/built-ins invocables sur cette machine
+  Mac, avec rôle + déclencheur de chacun). Idée directrice : Multivac = des **agents (rôles)** qui
+  **invoquent des skills (capacités)**.
   📄 **Conversation de conception amorcée → `session-handoff/multivac-notes.md`** (fondations sur le
   stockage des entités + vocabulaire sous-agent, à relire avant de reprendre Multivac).
 - **Expansion des « rôles » (entités) joués par les sous-agents** — aujourd'hui ces rôles sont des
@@ -175,6 +180,9 @@ dépendances entre plugins.
 - Filet de cohérence inter-skills : `skills/disjoint-pairs.json` + 2 tests dans `tests/standard.test.mjs`.
   Spec/plan : `docs/superpowers/specs/2026-06-08-glue-inter-skills-design.md` (section « Découverte »
   documente les baselines RED verts) + `docs/superpowers/plans/2026-06-08-glue-inter-skills.md`.
+- **Projet Multivac** (cap exploratoire) : dossier `Projet Multivac/` — `roles_equipe_developpement.md`
+  (roster de rôles) + `Index-skills-disponibles.md` (inventaire des skills/built-ins de la machine).
+  Notes de conception : `session-handoff/multivac-notes.md`.
 - Consultations firm : `firm/sessions/` + `firm/index.md` (2 consultations 2026-06-08).
 - Extensions natives : `gemini-extension.json`, `.opencode/`, `.codex-plugin/`, `.cursor-plugin/`.
 - Références multi-plateforme : `references/`.
