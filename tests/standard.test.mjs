@@ -552,3 +552,11 @@ test("check-dependencies skill décrit le mécanisme de vérification via instal
     "doit référencer installed_plugins.json comme source de vérification"
   );
 });
+
+test("brainstorming-advanced mentionne la commande d'install superpowers si manquant", () => {
+  const content = readFileSync(join(root, "skills/brainstorming-advanced/SKILL.md"), "utf8");
+  assert.ok(
+    content.includes("/plugin install superpowers@claude-plugins-official"),
+    "doit inclure la commande d'install superpowers pour guider l'utilisateur si la dépendance manque"
+  );
+});
