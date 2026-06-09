@@ -1,5 +1,5 @@
 # Handoff — Hyperpowers
-> Dernière mise à jour : 2026-06-08 (session 6). Reprise à froid : si tu n'as pas l'outillage de ce projet, lis
+> Dernière mise à jour : 2026-06-09 (session 7). Reprise à froid : si tu n'as pas l'outillage de ce projet, lis
 > d'abord `OUTILLAGE.md` (à côté), puis ce fichier.
 
 ## Le but (FinalGoal)
@@ -12,9 +12,15 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
 
 ## Où on en est
 - Branche : **`main`** · arbre propre · tout poussé sur GitHub.
-- **60 tests verts** (60/60 — `planning-with-files` installé).
+- **62 tests verts** (62/62 — `planning-with-files` installé).
 - **Plugin v0.6.0** actif.
-- **v1→v5 livrées** + skills et features :
+- **v1→v5 + glue inter-skills v1 livrées** + skills et features :
+  - **Glue inter-skills v1** ✅ (session 7) — **filet de test de cohérence**, PAS d'orchestrateur.
+    `skills/disjoint-pairs.json` + Test A (pointeurs morts : références `superpowers:`/`hyperpowers:`
+    dans les SKILL.md doivent exister) + Test B (anti-chevauchement : marqueur de frontière présent
+    dans une description). Découverte clé : les 2 baselines RED de `writing-skills` sont **verts** —
+    le comportement de symbiose émerge déjà, **aucune édition de skill justifiée** (Iron Law). Le
+    filet **protège** une symbiose déjà vivante contre la régression.
   - **`brainstorming-advanced`** ✅ v2 — méta-routage pool léger / pool dynamique, catalogue 6
     entités, test d'éligibilité 3 questions.
   - **`newproject`** ✅ — skill d'amorçage projet en 5 phases.
@@ -34,14 +40,16 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
   - **Gate runtime** ✅ — vérifié 2026-06-08.
 
 ## Ce qui était prévu ensuite
-- **Glue inter-skills** — le cœur de la promesse du projet : implémenter la composition réelle
-  entre skills. Le `check-dependencies` + les notes prérequis posent les fondations (v5). La
-  prochaine étape : identifier les cas concrets de composition (ex. brainstorming-advanced qui
-  appelle writing-plans, conseil qui appelle session-handoff) et les instrumenter.
-- **`conseil` skill** — vérifier si une note prérequis y est pertinente (conseil n'invoque pas
-  superpowers directement, mais brainstorming-advanced oui si utilisé en amont).
-- **Cycle gouvernance/construction** (signal firm) : à surveiller activement — chaque session
-  produit une décision de gouvernance, s'assurer que la suivante reprend la construction.
+- **Étendre `disjoint-pairs.json`** — au fil de l'eau, ajouter les frontières disjointes qui
+  méritent d'être protégées (chaque nouvelle paire = une ligne + un marqueur de démarcation présent
+  dans une description). Léger, pas urgent.
+- **Nouvelle arête de skill : SEULEMENT si un baseline échoue.** Leçon de la session 7 : avant de
+  durcir une arête (éditer un SKILL.md pour instruire une composition), **tester le baseline** d'un
+  subagent frais. Si le comportement émerge déjà → ne pas éditer (Iron Law + YAGNI). Deux candidates
+  ont déjà des baselines verts (brainstorming→writing-plans, brainstorming→décisions-tranchées) ;
+  ne pas les re-tenter.
+- **Cycle gouvernance/construction** (signal firm) : la session 7 a **livré du code** (le filet),
+  pas seulement une décision de gouvernance — bon signe. Continuer à surveiller.
 
 ## Révision conceptuelle clé (session 6)
 « v5 marketplace curé » → **« v5 Fondations Symbiose »**. Le marketplace.json ne change pas
@@ -51,7 +59,7 @@ dépendances entre plugins.
 
 ## Reprendre sur une machine neuve (le projet)
 - `git clone https://github.com/JoPerron88/Hyperpowers.git`
-- **Node ≥ v22**. Tests : `npm test` → doit afficher **60 verts** (60/60, 0 rouge si planning-with-files installé).
+- **Node ≥ v22**. Tests : `npm test` → doit afficher **62 verts** (62/62, 0 rouge si planning-with-files installé).
 - `npm run build:agents` pour régénérer `AGENTS.md` si besoin (le test de staleness le détecte).
 - Outillage Claude Code à installer : **voir `OUTILLAGE.md`**.
 - Ce qui NE voyage PAS au clone : la mémoire privée de Claude (`~/.claude/projects/...`).
@@ -67,6 +75,13 @@ dépendances entre plugins.
 - **Double injection (réglée)** : l'entrée manuelle dans `~/.claude/settings.json` a été retirée
   le 2026-06-07 — le plugin seul enregistre le hook désormais.
 - Tests **scopés à `tests/`** (le dépôt a aussi des `*.test.mjs` dans `spike/` à ne pas lancer).
+- **Filet de cohérence inter-skills (Test A/B)** : si tu renommes un skill ou retires la phrase de
+  démarcation d'une description, `npm test` rougit. `skills/disjoint-pairs.json` déclare les paires
+  disjointes ; le marqueur = phrase de démarcation EXACTE attendue dans une description (pas le nom
+  du skill — trop faible).
+- **Avant de durcir une arête inter-skills, teste le baseline** : un subagent frais fait-il déjà la
+  composition sans instruction ? Si oui → ne pas éditer le SKILL.md (Iron Law : pas d'édition sans
+  échec à corriger). C'est la leçon centrale de la session 7.
 - `.claude/` est **gitignoré** (journal privé) — ne pas le committer.
 - **`AGENTS.md` à régénérer** après toute modif de `standard.md` ou des skills :
   `npm run build:agents`. Le test de staleness le détectera si oublié.
@@ -97,11 +112,20 @@ dépendances entre plugins.
   marketplace.json ne référence pas les dépendances externes — le runtime ne supporte pas la
   résolution automatique. La symbiose passe par les skills eux-mêmes (`check-dependencies` +
   notes prérequis dans les skills qui délèguent).
+- **Glue inter-skills = filet de test, pas orchestrateur** (tranché 2026-06-09 session 7) : le débat
+  a écarté à l'unanimité un orchestrateur actif (« fausse autorité » — Hyperpowers ne contrôle pas
+  le déclenchement des skills). La glue est déclarative (pointeurs + descriptions disjointes), garantie
+  par un filet de test. **La symbiose émerge déjà** de Claude + des skills (prouvé par 2 baselines RED
+  verts) → on ne décrète pas, on protège. Le « bus de contexte » (artefacts partagés) reste un horizon
+  émergent, jamais formalisé (voisinage du spike mémoire rouge).
 
 ## Où trouver le détail
 - Specs/plans : `docs/superpowers/specs/` et `docs/superpowers/plans/`.
 - Skills livrés : `skills/brainstorming-advanced/`, `skills/newproject/`, `skills/session-handoff/`,
   `skills/cahier-maitre/`, `skills/project-reference/`, `skills/conseil/`, `skills/check-dependencies/`.
+- Filet de cohérence inter-skills : `skills/disjoint-pairs.json` + 2 tests dans `tests/standard.test.mjs`.
+  Spec/plan : `docs/superpowers/specs/2026-06-08-glue-inter-skills-design.md` (section « Découverte »
+  documente les baselines RED verts) + `docs/superpowers/plans/2026-06-08-glue-inter-skills.md`.
 - Consultations firm : `firm/sessions/` + `firm/index.md` (2 consultations 2026-06-08).
 - Extensions natives : `gemini-extension.json`, `.opencode/`, `.codex-plugin/`, `.cursor-plugin/`.
 - Références multi-plateforme : `references/`.
