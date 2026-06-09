@@ -514,3 +514,41 @@ test("project-reference skill pose une question unique à l'utilisateur avant de
     "question unique sur les décisions non documentées requise"
   );
 });
+
+test("check-dependencies skill existe et a un frontmatter valide", () => {
+  const skillPath = join(root, "skills/check-dependencies/SKILL.md");
+  const content = readFileSync(skillPath, "utf8");
+  assert.ok(content.startsWith("---"), "SKILL.md doit commencer par frontmatter YAML");
+  assert.ok(content.includes("name: check-dependencies"), "name requis");
+  assert.ok(content.includes("description:"), "description requise");
+  assert.ok(content.includes("user-invocable: true"), "user-invocable requis");
+});
+
+test("check-dependencies description commence par 'Use when' (CSO)", () => {
+  const content = readFileSync(join(root, "skills/check-dependencies/SKILL.md"), "utf8");
+  const frontmatter = content.match(/^---\n([\s\S]+?)\n---/)?.[1] ?? "";
+  assert.ok(frontmatter.length > 0, "frontmatter absent");
+  assert.ok(frontmatter.includes("Use when"), "description doit commencer par 'Use when' (CSO)");
+});
+
+test("check-dependencies skill référence superpowers et planning-with-files avec commandes d'install", () => {
+  const content = readFileSync(join(root, "skills/check-dependencies/SKILL.md"), "utf8");
+  assert.ok(content.includes("superpowers"), "doit mentionner superpowers");
+  assert.ok(content.includes("planning-with-files"), "doit mentionner planning-with-files");
+  assert.ok(
+    content.includes("/plugin install superpowers@claude-plugins-official"),
+    "commande install superpowers requise"
+  );
+  assert.ok(
+    content.includes("/plugin install planning-with-files@planning-with-files"),
+    "commande install planning-with-files requise"
+  );
+});
+
+test("check-dependencies skill décrit le mécanisme de vérification via installed_plugins.json", () => {
+  const content = readFileSync(join(root, "skills/check-dependencies/SKILL.md"), "utf8");
+  assert.ok(
+    content.includes("installed_plugins.json"),
+    "doit référencer installed_plugins.json comme source de vérification"
+  );
+});
