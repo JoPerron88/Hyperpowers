@@ -1,5 +1,5 @@
 # Handoff — Hyperpowers
-> Dernière mise à jour : 2026-06-09 (session 8). Reprise à froid : si tu n'as pas l'outillage de ce projet, lis
+> Dernière mise à jour : 2026-06-09 (session 9). Reprise à froid : si tu n'as pas l'outillage de ce projet, lis
 > d'abord `OUTILLAGE.md` (à côté), puis ce fichier.
 
 ## Le but (FinalGoal)
@@ -17,6 +17,10 @@ FinalGoal, le skill `session-handoff`. Étoile polaire = **qualité du code**. O
 - **Session 8 (méta)** : 2 consultations firm livrées (`firm/sessions/2026-06-09-*`), désinstallation
   de `karpathy-guidelines` + `ui-ux-pro-max` (recouvrements tranchés), fix `OUTILLAGE` (count 54→62),
   setup git bi-compte (ce repo = `JoPerron88`, défaut global = `jperron-maker`).
+- **Session 9 (méta, net nul sur le repo)** : exploration seule, **aucun changement de dépôt**.
+  Retrait des skills `brainstorming-advanced` / `conseil` / `newproject` **considéré puis écarté**
+  (revert + réinstall — décision : on les garde). **Confirmé** : le plugin s'installe directement
+  depuis le raccourci GitHub `JoPerron88/Hyperpowers` (voir `OUTILLAGE.md`).
 - **v1→v5 + glue inter-skills v1 livrées** + skills et features :
   - **Glue inter-skills v1** ✅ (session 7) — **filet de test de cohérence**, PAS d'orchestrateur.
     `skills/disjoint-pairs.json` + Test A (pointeurs morts : références `superpowers:`/`hyperpowers:`

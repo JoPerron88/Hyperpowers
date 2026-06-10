@@ -19,8 +19,11 @@ Détectés via `~/.claude/plugins/installed_plugins.json` + la structure du dép
 
 - **hyperpowers** (CE projet) — la **glue** : standard de qualité injecté au SessionStart + routage
   des plans (principe 5) + FinalGoal (principe 6 + hook) + skills `session-handoff`, `newproject`,
-  `brainstorming-advanced`. Installer depuis ce dossier : `/plugin marketplace add <chemin-de-ce-dossier>`
-  puis `/plugin install hyperpowers@hyperpowers`. ⚠️ **désinstaller `andrej-karpathy-skills`** s'il
+  `brainstorming-advanced`. Installer **depuis GitHub** (confirmé session 9) :
+  `/plugin marketplace add JoPerron88/Hyperpowers` puis `/plugin install hyperpowers@hyperpowers`
+  (⚠️ raccourci `owner/repo` = clone HTTPS ; une URL SSH `git@github.com:…` échoue sans clés SSH).
+  Alternative locale : `/plugin marketplace add <chemin-de-ce-dossier>` puis même `install`.
+  ⚠️ **désinstaller `andrej-karpathy-skills`** s'il
   est présent (son contenu est absorbé dans Hyperpowers — source unique).
 
 - **warp** (Warp terminal, marketplace `claude-code-warp`) — intégration Warp Terminal pour Claude
